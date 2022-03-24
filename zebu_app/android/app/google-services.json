@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "141696270679",
+    "project_id": "zebuapp",
+    "storage_bucket": "zebuapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141696270679:android:a588f1bdf35f53c22fbe12",
+        "android_client_info": {
+          "package_name": "com.example.zebu_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141696270679-lsval55cpdi89h5uapflfph4k7aop7t1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpNOs-9Zd_w7nDQM--7L8MX-JWkIf_O4I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141696270679-lsval55cpdi89h5uapflfph4k7aop7t1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
