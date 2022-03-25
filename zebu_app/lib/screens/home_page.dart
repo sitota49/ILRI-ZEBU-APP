@@ -1,4 +1,3 @@
-
 import 'package:zebu_app/bloc/announcement/announcement_bloc.dart';
 import 'package:zebu_app/bloc/announcement/announcement_event.dart';
 import 'package:zebu_app/bloc/announcement/announcement_state.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:zebu_app/routeGenerator.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,10 +18,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +53,7 @@ class _HomePageState extends State<HomePage> {
                   RouteGenerator.accountScreenName,
                 );
               },
-              child: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/profile.jpg'),
-              ),
+              child: CircleAvatar(),
             ),
           ),
         ],
@@ -187,8 +180,8 @@ class _HomePageState extends State<HomePage> {
                               Navigator.pushNamed(
                                 context,
                                 RouteGenerator.detailScreenName,
-                                arguments:
-                                    ScreenArguments({'id': currentAnnouncement.id}),
+                                arguments: ScreenArguments(
+                                    {'id': currentAnnouncement.id}),
                               );
                             },
                           ),
@@ -206,6 +199,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
- 
 }

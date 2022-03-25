@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:zebu_app/bloc/announcement/announcement_bloc.dart';
 import 'package:zebu_app/bloc/announcement/announcement_event.dart';
@@ -64,6 +66,7 @@ class _AppWidgetState extends State<AppWidget> {
         home: StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: ((context, snapshot) {
+              handleClickNotification(context);
               if (snapshot.hasData) {
                 return Scaffold(
                   // drawer: NavigationDrawer(),
@@ -93,5 +96,24 @@ class _AppWidgetState extends State<AppWidget> {
   Future<void> initPlatformState() async {
     const String oneSignalAppId = "078a24f1-8cf4-4a5d-850e-faa51aaa4c4f";
     OneSignal.shared.setAppId(oneSignalAppId);
+  }
+
+  static void handleClickNotification(BuildContext context) {
+    OneSignal.shared.setNotificationOpenedHandler(
+        (OSNotificationOpenedResult result) async {
+      try {
+        print("here");
+
+        var id = await result.notification.additionalData?['id'];
+
+        Navigator.pushNamed(
+          context,
+          RouteGenerator.detailScreenName,
+          arguments: ScreenArguments({'id': id}),
+        );
+      } catch (e) {
+        print(e);
+      }
+    });
   }
 }
