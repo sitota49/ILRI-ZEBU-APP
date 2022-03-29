@@ -7,6 +7,7 @@ import 'package:zebu_app/data_provider/announcement_data.dart';
 import 'package:zebu_app/repository/announcement_repositiory.dart';
 import 'package:zebu_app/routeGenerator.dart';
 import 'package:zebu_app/screens/detail_page.dart';
+import 'package:zebu_app/screens/edit_number.dart';
 import 'package:zebu_app/screens/home_page.dart';
 import 'package:zebu_app/screens/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -84,7 +85,7 @@ class _AppWidgetState extends State<AppWidget> {
                   ),
                 );
               } else {
-                return const Scaffold(body: LoginPage());
+                return const Scaffold(body: EditNumber());
               }
             })),
         debugShowCheckedModeBanner: false,

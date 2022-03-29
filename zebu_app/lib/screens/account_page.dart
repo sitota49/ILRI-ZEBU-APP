@@ -19,7 +19,7 @@ class _AccountPageState extends State<AccountPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              user.email!,
+              user.toString(),
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
