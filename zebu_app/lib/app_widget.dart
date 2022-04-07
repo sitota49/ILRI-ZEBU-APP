@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:zebu_app/screens/onboarding_page.dart';
 
 class AppWidget extends StatefulWidget {
   final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
@@ -85,7 +86,7 @@ class _AppWidgetState extends State<AppWidget> {
                   ),
                 );
               } else {
-                return const Scaffold(body: EditNumber());
+                return Scaffold(body: OnBoardingPage());
               }
             })),
         debugShowCheckedModeBanner: false,
