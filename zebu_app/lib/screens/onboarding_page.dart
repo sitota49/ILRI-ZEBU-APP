@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:zebu_app/routeGenerator.dart';
 
@@ -30,20 +31,22 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       fontFamily: 'Raleway',
       fontSize: 15,
       color: const Color(0xff000000),
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
+    );
+
+    const titleStyle = TextStyle(
+      fontFamily: 'Raleway',
+      fontSize: 26,
+      color: const Color(0xff000000),
+      fontWeight: FontWeight.w800,
     );
 
     const pageDecoration = const PageDecoration(
-        titleTextStyle: TextStyle(
-          fontFamily: 'Raleway',
-          fontSize: 26,
-          color: const Color(0xff000000),
-          fontWeight: FontWeight.w700,
-        ),
+        titleTextStyle: titleStyle,
         bodyTextStyle: bodyStyle,
         bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
         pageColor: Colors.white,
-        imagePadding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+        imagePadding: EdgeInsets.fromLTRB(16.0, 60.0, 16.0, 0.0),
         imageAlignment: Alignment.bottomCenter,
         // imagePadding: EdgeInsets.only(top: 100.0),
         bodyAlignment: Alignment.center);
@@ -51,7 +54,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     return SafeArea(
       child: IntroductionScreen(
         overrideDone: GestureDetector(
-          child: Text("Done"),
+          child: Text("Done",
+              style: GoogleFonts.raleway(
+                  textStyle: TextStyle(fontWeight: FontWeight.w700))),
           onTap: () {
             Navigator.pushNamed(
               context,
@@ -64,7 +69,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         key: introKey,
         globalBackgroundColor: Colors.white,
         globalHeader: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
+          padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
           child: Align(
             alignment: Alignment.center,
             child: Text(
@@ -84,7 +89,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             title: "Membership Managment",
             body:
                 "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
-            image: _buildImage('membership_icon.png'),
+            image: _buildImage('membership.png'),
             decoration: pageDecoration,
           ),
           PageViewModel(

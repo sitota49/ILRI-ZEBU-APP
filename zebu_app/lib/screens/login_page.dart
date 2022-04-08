@@ -1,150 +1,109 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:zebu_app/routeGenerator.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
-  late String email;
-  late String password;
-
-  final passwordValidator = MultiValidator([
-    RequiredValidator(errorText: 'password is required'),
-    MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
-    // PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-    //     errorText: 'passwords must have at least one special character')
-  ]);
-
-  final emailValidator = MultiValidator([
-    EmailValidator(errorText: 'Invalid email'),
-    RequiredValidator(errorText: "Email is required")
-  ]);
-
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+     return DefaultTextStyle(
+      style: TextStyle(decoration: TextDecoration.none),
       child: Container(
-        margin: EdgeInsets.only(top: 80),
-        child: Column(
-          children: [
-            // login Text
-            const Text(
-              'Log in',
-              style: TextStyle(fontSize: 20),
-            ),
-
-            const SizedBox(height: 50),
-
-            // Form goes here
-            Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Add TextFormFields and ElevatedButton here.
-
-                  // email field
-                  Container(
-                    padding: EdgeInsets.only(right: 20, left: 20),
-                    child: TextFormField(
-                      // The validator receives the text that the user has entered.
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.email),
-                        labelText: "Email",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
+        width: double.infinity,
+        color: Color(0xff404e65),
+        child: Container(
+          padding: EdgeInsets.only(right: 20, left: 20),
+          margin: EdgeInsets.only(top: 30),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                  flex: 0,
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 100),
+                        child: Image.asset(
+                          'assets/images/zebu.png',
+                          width: 300,
+                          height: 180,
                         ),
                       ),
-                      validator: emailValidator,
-                      onChanged: (value) {
-                        email = value;
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-
-                  // password field
-                  Container(
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    child: TextFormField(
-                      // The validator receives the text that the user has entered.
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.lock),
-                        labelText: "Password",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
+                      SizedBox(height: 20),
+                      Text(
+                        'Zebu',
+                        style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontSize: 41,
+                          color: const Color(0xffff9e16),
                         ),
+                        softWrap: false,
                       ),
-                      validator: passwordValidator,
-                      onChanged: (value) {
-                        password = value;
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 50),
-
-                  // submit Button
-                  Container(
-                    margin: EdgeInsets.only(left: 30),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Validate returns true if the form is valid, or false otherwise.
-                        if (_formKey.currentState!.validate()) {
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
-                          logIn();
-                        }
-                      },
-                      style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all<Size?>(
-                            Size.fromHeight(50)),
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry?>(
-                            const EdgeInsets.only(left: 130, right: 130)),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Color.fromARGB(255, 131, 19, 4)),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                      SizedBox(height: 15),
+                    ],
+                  )),
+              Expanded(flex: 1, child: SizedBox()),
+              Expanded(
+                flex: 0,
+                child: Column(
+                  children: [
+                    SizedBox(height: 30),
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(RouteGenerator.loginScreenName);
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color(0xffFF9E16)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              "Get Started",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontFamily: 'Raleway',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
-                      child: const Text(
-                        'Log in',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: Image.asset(
+                        'assets/images/ilri.png',
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  SizedBox(height: 10),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  Future logIn() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email.trim(), password: password.trim());
-    } on FirebaseAuthException catch (e) {
-      print(e);
-    }
   }
 }

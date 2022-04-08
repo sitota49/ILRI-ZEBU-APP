@@ -9,7 +9,7 @@ import 'package:zebu_app/routeGenerator.dart';
 import 'package:zebu_app/screens/detail_page.dart';
 import 'package:zebu_app/screens/edit_number.dart';
 import 'package:zebu_app/screens/home_page.dart';
-import 'package:zebu_app/screens/login_page.dart';
+import 'package:zebu_app/screens/login_page_old.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:zebu_app/screens/onboarding_page.dart';
+import 'package:zebu_app/screens/splash_page.dart';
 
 class AppWidget extends StatefulWidget {
   final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
@@ -65,6 +66,11 @@ class _AppWidgetState extends State<AppWidget> {
         ),
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          textTheme: GoogleFonts.ralewayTextTheme(
+            Theme.of(context).textTheme,
+          ),
+        ),
         home: StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: ((context, snapshot) {
@@ -86,7 +92,7 @@ class _AppWidgetState extends State<AppWidget> {
                   ),
                 );
               } else {
-                return Scaffold(body: OnBoardingPage());
+                return Scaffold(body: SplashPage());
               }
             })),
         debugShowCheckedModeBanner: false,
