@@ -1,11 +1,15 @@
-import 'package:zebu_app/bloc/announcement/announcement_bloc.dart';
-import 'package:zebu_app/bloc/announcement/announcement_event.dart';
-import 'package:zebu_app/bloc/announcement/announcement_state.dart';
+import 'package:zebu_app/bloc/authentication/authentication_bloc.dart';
+import 'package:zebu_app/bloc/authentication/authentication_event.dart';
+import 'package:zebu_app/bloc/authentication/authentication_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:zebu_app/routeGenerator.dart';
+import 'package:zebu_app/screens/onboarding_page.dart';
+import 'package:zebu_app/screens/splash_page.dart';
+
+import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,181 +26,69 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
-    announcementBloc.add(const AnnouncementsLoad());
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      // resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        centerTitle: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: const Icon(
-          Icons.bookmark,
-          color: Colors.black,
-        ),
-        title: const Text(
-          'Daily Blog',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  RouteGenerator.accountScreenName,
-                );
-              },
-              child: CircleAvatar(),
-            ),
-          ),
-        ],
-      ),
-      // bottomNavigationBar: BottomBarWidget(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FloatingActionButton(
-          child: const Icon(Icons.add),
-          backgroundColor: const Color.fromARGB(255, 131, 19, 4),
-          elevation: 0,
-          onPressed: () {
+        backgroundColor: Colors.grey[100],
+        body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+            listener: (context, state) {
+          if (state is UninitializedAuth) {
             Navigator.pushNamed(
               context,
-              RouteGenerator.addScreenName,
+              RouteGenerator.splashScreenName,
             );
-          },
-        ),
-      ),
-      body: SafeArea(
-        minimum: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            // TextField(
-            //   decoration: InputDecoration(
-            //     hintText: 'Search for articles, author, and tags',
-            //     filled: true,
-            //     fillColor: Colors.grey[200],
-            //     border: const OutlineInputBorder(
-            //       borderRadius: const BorderRadius.all(Radius.circular(10)),
-            //       borderSide: BorderSide.none,
-            //     ),
-            //     prefixIcon: const Icon(Icons.search),
-            //   ),
-            // ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Center(
-              child: Text(
-                "Your daily read",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            BlocBuilder<AnnouncementBloc, AnnouncementState>(
-              builder: (_, announcementState) {
-                if (announcementState is Loading) {
-                  return const CircularProgressIndicator(
-                    color: Color.fromARGB(255, 131, 19, 4),
-                  );
-                }
-
-                if (announcementState is AnnouncementsLoadFailure) {
-                  return Text(announcementState.failureMessage);
-                }
-
-                if (announcementState is AnnouncementsEmpltyFailure) {
-                  return Text(announcementState.message);
-                }
-
-                if (announcementState is AnnouncementsLoadSuccess) {
-                  final announcements = announcementState.announcements;
-
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: announcements.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final currentAnnouncement = announcements[index];
-
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ListTile(
-                            // leading: CircleAvatar(
-                            //   backgroundImage:
-                            //       AssetImage('assets/images/user.png'),
-                            // ),
-                            // trailing: Icon(Icons.keyboard_arrow_right),
-                            title: Text(
-                              currentAnnouncement.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+          }
+        }, builder: (_, authentiationState) {
+          print("home");
+          print(authentiationState);
+          if (authentiationState is Loading) {
+            return const CircularProgressIndicator(color: Color(0xff404E65));
+          }
+          if (authentiationState is Initialized) {
+            return Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text("authenticatied"),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            BlocProvider.of<AuthenticationBloc>(context)
+                                .add(LoggedOut());
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Color(0xff404E65)),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
                               ),
                             ),
-                            // subtitle: Container(
-                            //   child: Column(
-                            //     crossAxisAlignment: CrossAxisAlignment.start,
-                            //     children: [
-
-                            //       Row(
-                            //         children: [
-                            //           Icon(
-                            //             Icons.calendar_month,
-                            //             color: Colors.grey,
-                            //             size: 16,
-                            //           ),
-                            //           Text(currentAnnouncement.provider.phone),
-                            //         ],
-                            //       ),
-                            //       Row(
-                            //         children: [
-                            //           Icon(
-                            //             Icons.date_range,
-                            //             color: Colors.grey,
-                            //             size: 16,
-                            //           ),
-                            //           Text(orderCreatedDate),
-                            //         ],
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                RouteGenerator.detailScreenName,
-                                arguments: ScreenArguments(
-                                    {'id': currentAnnouncement.id}),
-                              );
-                            },
                           ),
-                        );
-                      },
+                          child: Text(
+                            "Log out",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontFamily: 'Raleway',
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ),
-                  );
-                }
+                  ),
+                ],
+              ),
+            );
+          }
 
-                return Container();
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+          return Container();
+        }));
   }
 }

@@ -5,13 +5,7 @@ import 'package:http/http.dart' as http;
 
 class AnnouncementDataProvider {
   final http.Client httpClient;
-  final _baseurl = 'http://172.28.96.22/drupal9/jsonapi/';
 
-  Uri generateUri(path) {
-    return Uri.http(_baseurl, path);
-  }
-
-  // final _baseurl= 'localhost:3000';
   AnnouncementDataProvider({required this.httpClient});
 
   Future<List<dynamic>> getAnnouncements() async {
