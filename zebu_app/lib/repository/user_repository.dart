@@ -6,6 +6,7 @@ class UserRepository {
   UserRepository({FirebaseAuth? firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
+
   Future<void> sendOtp(
       String phoneNumber,
       Duration timeOut,

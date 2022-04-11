@@ -13,7 +13,7 @@ class LoginDataProvider {
     try {
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/appuser?filter[field_phonenumber]=${phoneNumber}'),
+            'http://45.79.249.127/zebuapi/jsonapi/node/appuser?filter[field_phonenumber]=${phoneNumber.substring(1)}'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
@@ -23,9 +23,12 @@ class LoginDataProvider {
       );
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        return ZebuUser.fromJson(json['data']);
+        var user = ZebuUser.fromJson(json['data'][0]);
+        if (user != null) {
+          return true;
+        }
       } else {
-        return 'User not found!';
+        return false;
       }
     } catch (e) {
       throw Exception(e.toString());
@@ -46,9 +49,12 @@ class LoginDataProvider {
       );
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        return ZebuUser.fromJson(json['data']);
+        var user = ZebuUser.fromJson(json['data']);
+        if (user != null) {
+          return true;
+        }
       } else {
-        return 'User not found!';
+        return false;
       }
     } catch (e) {
       throw Exception(e.toString());

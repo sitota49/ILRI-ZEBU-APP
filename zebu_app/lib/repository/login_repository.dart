@@ -43,4 +43,5 @@ class LoginRepository {
     var user = await _firebaseAuth.currentUser!;
     return user;
   }
+  
 }

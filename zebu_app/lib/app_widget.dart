@@ -79,14 +79,15 @@ class _AppWidgetState extends State<AppWidget> {
                 ),
         ),
         BlocProvider(
-          create: (context) =>
-              AuthenticationBloc(userRepository: userRepository)
-                ..add(
-                  AppStarted(),
-                ),
+          create: (context) => AuthenticationBloc(
+            userRepository: userRepository,
+          )..add(
+              AppStarted(),
+            ),
         ),
         BlocProvider(
-          create: (context) => LoginBloc(userRepository: userRepository),
+          create: (context) =>
+              LoginBloc(loginRepository, userRepository: userRepository),
         ),
       ],
       child: MaterialApp(

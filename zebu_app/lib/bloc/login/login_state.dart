@@ -10,12 +10,24 @@ class InitialLoginState extends LoginState {
   List<Object> get props => [];
 }
 
-class OtpSentState extends LoginState {
+class LoadingState extends LoginState {
   @override
   List<Object> get props => [];
 }
 
-class LoadingState extends LoginState {
+class LinkSentState extends LoginState {
+  @override
+  List<Object> get props => [];
+}
+
+class OtpSentState extends LoginState {
+  String phoneNumber;
+
+  OtpSentState(this.phoneNumber);
+  String getPhone() {
+    return phoneNumber;
+  }
+
   @override
   List<Object> get props => [];
 }
@@ -24,7 +36,10 @@ class OtpVerifiedState extends LoginState {
   @override
   List<Object> get props => [];
 }
-
+class PhoneVerifiedState extends LoginState {
+  @override
+  List<Object> get props => [];
+}
 class LoginCompleteState extends LoginState {
   User _firebaseUser;
 
@@ -34,7 +49,6 @@ class LoginCompleteState extends LoginState {
   }
 
   @override
-  // TODO: implement props
   List<Object> get props => [_firebaseUser];
 }
 
@@ -44,7 +58,7 @@ class ExceptionState extends LoginState {
   ExceptionState({required this.message});
 
   @override
-  // TODO: implement props
+
   List<Object> get props => [message];
 }
 
@@ -54,6 +68,6 @@ class OtpExceptionState extends LoginState {
   OtpExceptionState({required this.message});
 
   @override
-  // TODO: implement props
+
   List<Object> get props => [message];
 }

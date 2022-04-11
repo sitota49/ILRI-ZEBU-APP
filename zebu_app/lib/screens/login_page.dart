@@ -63,7 +63,9 @@ class _LoginPageState extends State<LoginPage> {
     print(state);
     if (state is Unauthenticated) {
       return CredentialInput();
-    } else if (state is OtpSentState || state is OtpExceptionState) {
+    } else if (state is OtpSentState) {
+      return OtpInput(phoneNo: state.getPhone());
+    } else if (state is OtpExceptionState) {
       return OtpInput();
     } else if (state is LoadingState) {
       return LoadingIndicator();
@@ -94,6 +96,7 @@ class _CredentialInputState extends State<CredentialInput> {
   final _formKey = GlobalKey<FormState>();
 
   final _phoneTextController = TextEditingController();
+  final _emailTextController = TextEditingController();
 
   var _selectedIndex = 0;
 
@@ -214,15 +217,18 @@ class _CredentialInputState extends State<CredentialInput> {
                             children: [
                               Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Phone number',
-                                  style: TextStyle(
-                                    fontFamily: 'Raleway',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xff000000),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'Phone number',
+                                    style: TextStyle(
+                                      fontFamily: 'Raleway',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xff000000),
+                                    ),
+                                    softWrap: false,
                                   ),
-                                  softWrap: false,
                                 ),
                               ),
                               SizedBox(height: 10),
@@ -230,7 +236,7 @@ class _CredentialInputState extends State<CredentialInput> {
                                 key: _formKey,
                                 child: EditTextUtils().getCustomEditTextArea(
                                     // labelValue: "Enter phone number",
-                                    hintValue: "911654321",
+                                    hintValue: "912345678",
                                     controller: _phoneTextController,
                                     keyboardType: TextInputType.number,
                                     icon: countryDropDown,
@@ -250,7 +256,7 @@ class _CredentialInputState extends State<CredentialInput> {
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
                                           BlocProvider.of<LoginBloc>(context)
-                                              .add(SendOtpEvent(
+                                              .add(VerifyPhoneEvent(
                                                   phoneNumber:
                                                       _selectedCountryCode
                                                               .toString() +
@@ -288,9 +294,86 @@ class _CredentialInputState extends State<CredentialInput> {
                               ),
                             ],
                           )
-                        : Container(
-                            color: Colors.amber,
-                            child: Text("0"),
+                        : Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'E-mail',
+                                    style: TextStyle(
+                                      fontFamily: 'Raleway',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xff000000),
+                                    ),
+                                    softWrap: false,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Form(
+                                key: _formKey,
+                                child: EditTextUtils().getCustomEditTextArea(
+                                    // labelValue: "Enter phone number",
+                                    hintValue: "john@gmail.com",
+                                    controller: _emailTextController,
+                                    keyboardType: TextInputType.emailAddress,
+                                    icon: Icon(Icons.email),
+                                    validator: (value) {
+                                      return validateEmail(value!);
+                                    }),
+                              ),
+                              SizedBox(height: 30),
+                              Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16.0, right: 16.0),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    height: 50,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          BlocProvider.of<LoginBloc>(context)
+                                              .add(SendOtpEvent(
+                                                  phoneNumber:
+                                                      _selectedCountryCode
+                                                              .toString() +
+                                                          _phoneTextController
+                                                              .value.text));
+                                        }
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color(0xff404E65)),
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "Send Link",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontFamily: 'Raleway',
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
                           ))
               ],
             ),
@@ -301,47 +384,161 @@ class _CredentialInputState extends State<CredentialInput> {
   }
 
   String? validateMobile(String value) {
-// Indian Mobile number are of 10 digit only
     if (value.length != 9)
       return 'Mobile Number must be of 9 digits';
     else
       return null;
   }
+
+  String? validateEmail(String email) {
+    if (RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email)) {
+      return null;
+    } else {
+      return 'Enter valid Email Address';
+    }
+  }
 }
 
-class OtpInput extends StatelessWidget {
+class OtpInput extends StatefulWidget {
+  late String? phoneNo;
+  OtpInput({Key? key, this.phoneNo}) : super(key: key);
+  @override
+  State<OtpInput> createState() => _OtpInputState(phoneNo: phoneNo);
+}
+
+class _OtpInputState extends State<OtpInput> {
+  late String? phoneNo;
+  _OtpInputState({this.phoneNo});
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return ConstrainedBox(
-      child: Padding(
-        padding: const EdgeInsets.only(
-            top: 48, bottom: 16.0, left: 16.0, right: 16.0),
-        child: Column(
-          children: <Widget>[
-            PinEntryTextField(
-                fields: 6,
-                onSubmit: (String pin) {
-                  BlocProvider.of<LoginBloc>(context)
-                      .add(VerifyOtpEvent(otp: pin));
-                }),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                onPressed: () {
-                  BlocProvider.of<LoginBloc>(context).add(AppStartEvent());
-                },
-                color: Color(0xff000000),
-                child: Text(
-                  "Back",
-                  style: TextStyle(color: Colors.white),
-                ),
+    return SingleChildScrollView(
+      child: DefaultTextStyle(
+          style: TextStyle(decoration: TextDecoration.none),
+          child: Container(
+            width: double.infinity,
+            color: Colors.white,
+            child: Container(
+              padding: EdgeInsets.only(right: 20, left: 20),
+              margin: EdgeInsets.only(top: 30),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                      flex: 0,
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 10),
+                            child: Image.asset(
+                              'assets/images/otp.png',
+                              height: 300,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Verification Code',
+                            style: TextStyle(
+                              fontFamily: 'Raleway',
+                              fontSize: 31,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
+                            softWrap: false,
+                          ),
+                          SizedBox(height: 15),
+                          Text(
+                            'We have sent a verification code to\n your number',
+                            style: TextStyle(
+                              fontFamily: 'Raleway',
+                              fontSize: 15,
+                              color: const Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                            softWrap: false,
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            phoneNo ?? '',
+                            style: TextStyle(
+                              fontFamily: 'Raleway',
+                              fontSize: 18,
+                              color: const Color(0xffFF9E16),
+                              fontWeight: FontWeight.w700,
+                            ),
+                            textAlign: TextAlign.center,
+                            softWrap: false,
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      )),
+                  PinEntryTextField(
+                      fields: 6,
+                      onSubmit: (String pin) {
+                        BlocProvider.of<LoginBloc>(context)
+                            .add(VerifyOtpEvent(otp: pin));
+                      }),
+                  SizedBox(height: 20),
+                  Text(
+                    'Didn\'t get code?',
+                    style: TextStyle(
+                      fontFamily: 'Raleway',
+                      fontSize: 15,
+                      color: const Color(0xff000000),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                    softWrap: false,
+                  ),
+                  GestureDetector(
+                    child: Text("Resend Code",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: 'Raleway',
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xffFF9E16))),
+                    onTap: () {
+                      BlocProvider.of<LoginBloc>(context).add(AppStartEvent());
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Color(0xff404E65)),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            "Submit",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontFamily: 'Raleway',
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            )
-          ],
-        ),
-      ),
-      constraints: BoxConstraints.tight(Size.fromHeight(250)),
+            ),
+          )),
     );
   }
 }

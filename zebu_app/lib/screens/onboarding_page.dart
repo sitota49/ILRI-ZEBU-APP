@@ -59,8 +59,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
     return BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
-   
-
       if (state is Initialized) {
         Navigator.pushNamed(
           context,
@@ -68,8 +66,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         );
       }
     }, builder: (_, authentiationState) {
-     
-
       if (authentiationState is Authenticated) {
         authenticationBloc.add(StartInitializing());
       }
@@ -78,8 +74,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           child: IntroductionScreen(
             overrideDone: GestureDetector(
               child: Text("Done",
-                  style: GoogleFonts.raleway(
-                      textStyle: TextStyle(fontWeight: FontWeight.w700))),
+                  style: TextStyle(
+                      fontFamily: 'Raleway', fontWeight: FontWeight.w700)),
               onTap: () {
                 BlocProvider.of<AuthenticationBloc>(context)
                     .add(FinishInitializing());
@@ -176,10 +172,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           ),
         );
       }
-      return Container(
-        color: Colors.red,
-        height: 200,
-      );
+      return Container();
     });
   }
 }

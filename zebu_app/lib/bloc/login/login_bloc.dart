@@ -6,17 +6,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:zebu_app/repository/user_repository.dart';
+import 'package:zebu_app/repository/login_repository.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   late StreamSubscription subscription;
+  final LoginRepository loginRepository;
 
   String verID = "";
 
   // LoginBloc({required UserRepository userRepository})
   //     : assert(userRepository != null),
   //       userRepository = userRepository, super(InitialLoginState());
-  LoginBloc({required this.userRepository})
+  LoginBloc(this.loginRepository, {required this.userRepository})
       : super(InitialLoginState());
 
   @override
@@ -26,14 +28,38 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
-    if (event is SendOtpEvent) {
+    if (event is VerifyPhoneEvent) {
+      yield LoadingState();
+      try {
+        final verified = await loginRepository.checkPhone(event.phoneNumber);
+        if (verified) {
+          yield PhoneVerifiedState();
+          add(SendOtpEvent(phoneNumber: event.phoneNumber));
+        } else {
+          yield ExceptionState(message: 'Please use a registered phone number');
+        }
+      } catch (error) {
+        print(error);
+        yield ExceptionState(message: 'Please use a registered phone number');
+      }
+    } else if (event is SendOtpEvent) {
       yield LoadingState();
 
       subscription = sendOtp(event.phoneNumber).listen((event) {
         add(event);
       });
+    } else if (event is AppStartEvent) {
+      yield InitialLoginState();
     } else if (event is OtpSendEvent) {
-      yield OtpSentState();
+      yield OtpSentState(event.phoneNumber);
+    } else if (event is SendLinkEvent) {
+      yield LoadingState();
+
+      subscription = sendOtp(event.email).listen((event) {
+        add(event);
+      });
+    } else if (event is EmailSendEvent) {
+      yield LinkSentState();
     } else if (event is LoginCompleteEvent) {
       yield LoginCompleteState(event.firebaseUser);
     } else if (event is LoginExceptionEvent) {
@@ -92,7 +118,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     };
     final PhoneCodeSent = (String verId, [int? forceResent]) {
       this.verID = verId;
-      eventStream.add(OtpSendEvent());
+      eventStream.add(OtpSendEvent(phoneNumber: phoneNumber));
     };
     final PhoneCodeAutoRetrievalTimeout = (String verid) {
       this.verID = verid;
