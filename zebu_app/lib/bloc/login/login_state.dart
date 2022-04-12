@@ -11,6 +11,9 @@ class InitialLoginState extends LoginState {
 }
 
 class LoadingState extends LoginState {
+  String message;
+
+  LoadingState({required this.message});
   @override
   List<Object> get props => [];
 }

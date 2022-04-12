@@ -1,5 +1,3 @@
-import 'package:zebu_app/screens/account_page.dart';
-import 'package:zebu_app/screens/detail_page.dart';
 import 'package:zebu_app/screens/home_page.dart';
 
 import 'package:flutter/material.dart';
@@ -28,16 +26,15 @@ class RouteGenerator {
       case loginScreenName:
         return MaterialPageRoute(builder: (_) => LoginPage());
 
-      case accountScreenName:
-        return MaterialPageRoute(builder: (_) => AccountPage());
+    
 
-      case detailScreenName:
-        final args = settings.arguments as ScreenArguments;
-        return MaterialPageRoute(builder: (context) {
-          return DetailsPage(
-            argObj: args.argObj,
-          );
-        });
+      // case detailScreenName:
+      //   final args = settings.arguments as ScreenArguments;
+      //   return MaterialPageRoute(builder: (context) {
+      //     return DetailsPage(
+      //       argObj: args.argObj,
+      //     );
+      //   });
       default:
         throw const FormatException("Route was not found");
     }

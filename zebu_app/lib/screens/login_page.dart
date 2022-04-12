@@ -10,9 +10,10 @@ import 'package:zebu_app/bloc/login/login_bloc.dart';
 import 'package:zebu_app/bloc/login/login_event.dart';
 import 'package:zebu_app/bloc/login/login_state.dart';
 import 'package:zebu_app/repository/user_repository.dart';
-
+import 'package:country_icons/country_icons.dart';
 import 'package:zebu_app/routeGenerator.dart';
 import 'package:zebu_app/screens/utils/EditTextUtils.dart';
+import 'package:zebu_app/screens/utils/fadeAnimation.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -68,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
     } else if (state is OtpExceptionState) {
       return OtpInput();
     } else if (state is LoadingState) {
-      return LoadingIndicator();
+      return LoadingIndicator(message: state.message);
     } else if (state is LoginCompleteState) {
       BlocProvider.of<AuthenticationBloc>(context)
           .add(LoggedIn(token: state.getUser().uid));
@@ -78,11 +79,42 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class LoadingIndicator extends StatelessWidget {
+class LoadingIndicator extends StatefulWidget {
+  late String? message;
+  LoadingIndicator({Key? key, this.message}) : super(key: key);
+  @override
+  State<LoadingIndicator> createState() =>
+      _LoadingIndicatorState(message: message);
+}
+
+class _LoadingIndicatorState extends State<LoadingIndicator> {
+  late String? message;
+  _LoadingIndicatorState({this.message});
   @override
   Widget build(BuildContext context) => Center(
-        child: CircularProgressIndicator(
-          color: Color(0xff000000),
+        child: Expanded(
+          flex: 0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                message!,
+                style: TextStyle(
+                  fontFamily: 'Raleway',
+                  fontSize: 15,
+                  color: const Color(0xff000000),
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+                softWrap: false,
+              ),
+              SizedBox(height: 10),
+              CircularProgressIndicator(
+                color: Color(0xff404E65),
+              ),
+            ],
+          ),
         ),
       );
 }
@@ -108,9 +140,9 @@ class _CredentialInputState extends State<CredentialInput> {
   Widget build(BuildContext context) {
     Widget countryDropDown = Container(
       decoration: new BoxDecoration(
-        color: Colors.white,
+        // color: Colors.white,
         border: Border(
-          right: BorderSide(width: 0.5, color: Colors.grey),
+          right: BorderSide(width: 0.5, color: Color(0xff404E65)),
         ),
       ),
       height: 45.0,
@@ -124,9 +156,28 @@ class _CredentialInputState extends State<CredentialInput> {
             items: _countryCodes.map((String value) {
               return new DropdownMenuItem<String>(
                   value: value,
-                  child: Text(
-                    value,
-                    style: TextStyle(fontSize: 12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                          child: value == '+251'
+                              ? Image.asset(
+                                  'icons/flags/png/et.png',
+                                  package: 'country_icons',
+                                  height: 15,
+                                )
+                              : Image.asset(
+                                  'icons/flags/png/ke.png',
+                                  package: 'country_icons',
+                                  height: 15,
+                                )),
+                      SizedBox(width: 5),
+                      Text(
+                        value,
+                        style: TextStyle(fontSize: 12.0),
+                      ),
+                    ],
                   ));
             }).toList(),
             onChanged: (value) {
@@ -281,7 +332,7 @@ class _CredentialInputState extends State<CredentialInput> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontFamily: 'Raleway',
-                                            fontSize: 20,
+                                            fontSize: 17,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white),
                                       ),
@@ -320,7 +371,8 @@ class _CredentialInputState extends State<CredentialInput> {
                                     hintValue: "john@gmail.com",
                                     controller: _emailTextController,
                                     keyboardType: TextInputType.emailAddress,
-                                    icon: Icon(Icons.email),
+                                    icon: Icon(Icons.email,
+                                        color: Color(0xff404E65)),
                                     validator: (value) {
                                       return validateEmail(value!);
                                     }),
@@ -362,7 +414,7 @@ class _CredentialInputState extends State<CredentialInput> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontFamily: 'Raleway',
-                                            fontSize: 20,
+                                            fontSize: 17,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white),
                                       ),
@@ -481,27 +533,37 @@ class _OtpInputState extends State<OtpInput> {
                             .add(VerifyOtpEvent(otp: pin));
                       }),
                   SizedBox(height: 20),
-                  Text(
-                    'Didn\'t get code?',
-                    style: TextStyle(
-                      fontFamily: 'Raleway',
-                      fontSize: 15,
-                      color: const Color(0xff000000),
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                    softWrap: false,
-                  ),
-                  GestureDetector(
-                    child: Text("Resend Code",
-                        style: TextStyle(
-                            fontSize: 15,
+                  FadeAnimation(
+                    30,
+                    true,
+                    true,
+                    Column(
+                      children: [
+                        Text(
+                          'Didn\'t get code?',
+                          style: TextStyle(
                             fontFamily: 'Raleway',
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xffFF9E16))),
-                    onTap: () {
-                      BlocProvider.of<LoginBloc>(context).add(AppStartEvent());
-                    },
+                            fontSize: 15,
+                            color: const Color(0xff000000),
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                          softWrap: false,
+                        ),
+                        GestureDetector(
+                          child: Text("Resend Code",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontFamily: 'Raleway',
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xffFF9E16))),
+                          onTap: () {
+                            BlocProvider.of<LoginBloc>(context)
+                                .add(AppStartEvent());
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 20),
                   Container(
@@ -527,7 +589,7 @@ class _OtpInputState extends State<OtpInput> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontFamily: 'Raleway',
-                                fontSize: 20,
+                                fontSize: 17,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),

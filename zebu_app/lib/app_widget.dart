@@ -13,8 +13,6 @@ import 'package:zebu_app/repository/announcement_repositiory.dart';
 import 'package:zebu_app/repository/login_repository.dart';
 import 'package:zebu_app/repository/user_repository.dart';
 import 'package:zebu_app/routeGenerator.dart';
-import 'package:zebu_app/screens/detail_page.dart';
-import 'package:zebu_app/screens/edit_number.dart';
 import 'package:zebu_app/screens/home_page.dart';
 import 'package:zebu_app/screens/login_page.dart';
 import 'package:zebu_app/screens/login_page_old.dart';

@@ -29,7 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginEvent event,
   ) async* {
     if (event is VerifyPhoneEvent) {
-      yield LoadingState();
+      yield LoadingState(message: 'Verifiying phone number ...');
       try {
         final verified = await loginRepository.checkPhone(event.phoneNumber);
         if (verified) {
@@ -43,7 +43,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield ExceptionState(message: 'Please use a registered phone number');
       }
     } else if (event is SendOtpEvent) {
-      yield LoadingState();
+      yield LoadingState(message: 'Sending verification code ...');
 
       subscription = sendOtp(event.phoneNumber).listen((event) {
         add(event);
@@ -53,7 +53,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (event is OtpSendEvent) {
       yield OtpSentState(event.phoneNumber);
     } else if (event is SendLinkEvent) {
-      yield LoadingState();
+      yield LoadingState(message: 'Sending email ...');
 
       subscription = sendOtp(event.email).listen((event) {
         add(event);
@@ -65,7 +65,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (event is LoginExceptionEvent) {
       yield ExceptionState(message: event.message);
     } else if (event is VerifyOtpEvent) {
-      yield LoadingState();
+      yield LoadingState(message: 'Verifying your code ...');
       try {
         UserCredential result =
             await userRepository.verifyAndLogin(verID, event.otp);
