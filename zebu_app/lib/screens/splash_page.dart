@@ -114,6 +114,7 @@ class SplashPage extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 20),
                         child: Image.asset(
                           'assets/images/ilri.png',
+                          height: 25,
                         ),
                       ),
                     ),

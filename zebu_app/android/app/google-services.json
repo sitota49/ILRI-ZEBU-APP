@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "141696270679",
+    "firebase_url": "https://zebuapp-default-rtdb.firebaseio.com",
     "project_id": "zebuapp",
     "storage_bucket": "zebuapp.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "141696270679-kkc6931ivea5g5g17ocdrao7495ccemj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zebu_app",
+            "certificate_hash": "018a903d92ae971d6b0d9e6fc2831ef49e5376a8"
+          }
+        },
         {
           "client_id": "141696270679-lsval55cpdi89h5uapflfph4k7aop7t1.apps.googleusercontent.com",
           "client_type": 3

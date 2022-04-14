@@ -17,3 +17,4 @@ class Initializing extends AuthenticationState {}
 
 class Initialized extends AuthenticationState {}
 
+class Inside extends AuthenticationState {}

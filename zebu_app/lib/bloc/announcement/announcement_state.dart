@@ -8,7 +8,7 @@ class AnnouncementState extends Equatable {
   List<Object> get props => [];
 }
 
-class Loading extends AnnouncementState {}
+class LoadingAnnouncement extends AnnouncementState {}
 
 
 class AnnouncementsLoadSuccess extends AnnouncementState {
@@ -19,6 +19,17 @@ class AnnouncementsLoadSuccess extends AnnouncementState {
   @override
   List<Object> get props => [announcements];
 }
+
+class NewAnnouncementLoadSuccess extends AnnouncementState {
+  final dynamic newAnnouncement;
+
+  const NewAnnouncementLoadSuccess([this.newAnnouncement = const []]);
+
+  @override
+  List<Object> get props => [newAnnouncement];
+}
+
+class NewAnnouncementLoadFailure extends AnnouncementState {}
 
 class AnnouncementsLoadFailure extends AnnouncementState {}
 

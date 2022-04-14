@@ -20,3 +20,9 @@ class AnnouncementLoad extends AnnouncementEvent {
   List<Object> get props => [];
 }
 
+class NewAnnouncementLoad extends AnnouncementEvent {
+  const NewAnnouncementLoad();
+
+  @override
+  List<Object> get props => [];
+}

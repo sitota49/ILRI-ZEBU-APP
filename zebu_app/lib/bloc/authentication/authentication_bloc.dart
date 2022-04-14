@@ -24,6 +24,7 @@ class AuthenticationBloc
 
       if (hasToken) {
         yield Initialized();
+        add(GoInside());
       } else {
         yield Unauthenticated();
       }
@@ -31,14 +32,17 @@ class AuthenticationBloc
 
     if (event is LoggedIn) {
       yield Loading();
-      yield Authenticated();
+      var res = await userRepository.getUser();
+      print(res);
+      // yield Authenticated();
+      add(StartInitializing());
     }
 
     if (event is LoggedOut) {
       yield Loading();
       await userRepository.logOut();
       yield Unauthenticated();
-      // yield UninitializedAuth();
+      add(AppStarted());
     }
 
     if (event is StartInitializing) {
@@ -46,6 +50,10 @@ class AuthenticationBloc
     }
     if (event is FinishInitializing) {
       yield Initialized();
+      add(GoInside());
+    }
+    if (event is GoInside) {
+      yield Inside();
     }
   }
 }

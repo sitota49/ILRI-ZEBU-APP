@@ -52,3 +52,12 @@ class FinishInitializing extends AuthenticationEvent {
   // TODO: implement props
   List<Object> get props => [];
 }
+
+class GoInside extends AuthenticationEvent {
+  @override
+  String toString() => 'Going inside';
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}

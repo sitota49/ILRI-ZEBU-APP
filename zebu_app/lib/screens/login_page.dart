@@ -130,7 +130,7 @@ class _CredentialInputState extends State<CredentialInput> {
   final _phoneTextController = TextEditingController();
   final _emailTextController = TextEditingController();
 
-  var _selectedIndex = 0;
+  var _selectedIndex = 1;
 
   String _selectedCountryCode = "+251";
 

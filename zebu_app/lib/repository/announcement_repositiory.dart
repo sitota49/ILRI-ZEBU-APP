@@ -14,5 +14,9 @@ class AnnouncementRepository {
     return await dataProvider.getAnnouncement(id);
   }
 
+   Future<dynamic> getNewesetAnnouncement() async {
+    return await dataProvider.getNewestAnnouncement();
+  }
+
   
 }
