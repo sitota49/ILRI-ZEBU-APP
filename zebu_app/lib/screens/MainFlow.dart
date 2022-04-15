@@ -42,17 +42,30 @@ class _MainFlowState extends State<MainFlow> {
     BookingPage(
       key: PageStorageKey('Page2'),
     ),
+    MembershipPage(
+      key: PageStorageKey('Page3'),
+    ),
+    AnnouncementPage(
+      key: PageStorageKey('Page4'),
+    ),
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
   late int _selectedIndex = argObj['index'];
 
   Widget _bottomNavigationBar(int selectedIndex) => BottomNavigationBar(
+        selectedItemColor: Color(0xff404E65),
+        unselectedItemColor: Colors.grey,
         onTap: (int index) => setState(() => _selectedIndex = index),
         currentIndex: selectedIndex,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'First Page'),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Second Page'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.local_dining), label: 'Menu'),
+          BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Booking'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.wallet_membership), label: 'Membership'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_active), label: 'Announcement'),
         ],
       );
 

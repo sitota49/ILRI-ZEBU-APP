@@ -9,6 +9,7 @@ import 'package:zebu_app/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:zebu_app/screens/login_page.dart';
 import 'package:zebu_app/screens/membership_page.dart';
+import 'package:zebu_app/screens/menu_detail_page.dart';
 import 'package:zebu_app/screens/menu_page.dart';
 import 'package:zebu_app/screens/onboarding_page.dart';
 import 'package:zebu_app/screens/splash_page.dart';
@@ -25,6 +26,8 @@ class RouteGenerator {
   static const String bookingScreenName = "/bookingScreen";
   static const String announcementScreenName = "/announcementScreen";
   static const String announcementDetailScreenName = "/announcementDetailScreen";
+  static const String menuDetailScreenName =
+      "/menuDetailScreen";
   static const String mainFlowName = "/mainFlow";
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -52,6 +55,12 @@ class RouteGenerator {
       final args = settings.arguments as ScreenArguments;
          return MaterialPageRoute(
             builder: (_) => AnnouncementDetailPage(
+                  argObj: args.argObj,
+                ));
+      case menuDetailScreenName:
+        final args = settings.arguments as ScreenArguments;
+        return MaterialPageRoute(
+            builder: (_) => MenuDetailPage(
                   argObj: args.argObj,
                 ));
       case mainFlowName:

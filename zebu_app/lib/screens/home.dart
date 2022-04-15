@@ -25,6 +25,7 @@ class _HomeState extends State<Home> {
           backgroundColor: Color(0xff404E65),
           appBar: AppBar(
             backgroundColor: Color(0xff404E65),
+            elevation: 0,
           ),
           drawer: NavigationDrawer(),
           body: Center(
@@ -184,7 +185,8 @@ class _HomeState extends State<Home> {
                           onTap: () {
                             Navigator.pushNamed(
                               context,
-                              RouteGenerator.announcementScreenName,
+                              RouteGenerator.mainFlowName,
+                              arguments: ScreenArguments({'index': 3}),
                             );
                           },
                         ),
@@ -192,9 +194,95 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                 )),
+                Expanded(
+                    child: Container(
+                        decoration: new BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(25),
+                              topRight: Radius.circular(25)),
+                        ),
+                        margin: EdgeInsets.only(top: 15),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GridView.count(
+                            primary: false,
+                            padding: const EdgeInsets.all(20),
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20,
+                            crossAxisCount: 2,
+                            children: <Widget>[
+                              HomeButtons(Icons.wallet_membership,
+                                  "Membership Management", () {
+                                Navigator.pushNamed(
+                                  context,
+                                  RouteGenerator.mainFlowName,
+                                  arguments: ScreenArguments({'index': 2}),
+                                );
+                              }),
+                              HomeButtons(Icons.local_dining, "Menu", () {
+                                Navigator.pushNamed(
+                                  context,
+                                  RouteGenerator.mainFlowName,
+                                  arguments: ScreenArguments({'index': 0}),
+                                );
+                              }),
+                              HomeButtons(Icons.schedule, "Book your stay", () {
+                                Navigator.pushNamed(
+                                  context,
+                                  RouteGenerator.mainFlowName,
+                                  arguments: ScreenArguments({'index': 1}),
+                                );
+                              }),
+                              HomeButtons(Icons.feedback, "Give Feedback", () {
+                                Navigator.pushNamed(
+                                  context,
+                                  RouteGenerator.feedbackScreenName,
+                                );
+                              }),
+                            ],
+                          ),
+                        ))),
               ],
             ),
           ),
         ));
+  }
+
+  Widget HomeButtons(icon, text, onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        elevation: MaterialStateProperty.all<double>(5.0),
+        shadowColor: MaterialStateProperty.all<Color>(Colors.grey),
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Icon(
+              icon,
+              color: Color(0xff404E65),
+              size: 100,
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontFamily: 'Raleway', fontSize: 12, color: Color(0xff404E65)),
+          ),
+        ],
+      ),
+    );
   }
 }

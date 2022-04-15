@@ -8,11 +8,15 @@ import 'package:zebu_app/bloc/authentication/authentication_bloc.dart';
 import 'package:zebu_app/bloc/authentication/authentication_event.dart';
 import 'package:zebu_app/bloc/authentication/authentication_state.dart';
 import 'package:zebu_app/bloc/login/login_bloc.dart';
+import 'package:zebu_app/bloc/menu/menu_bloc.dart';
+import 'package:zebu_app/bloc/menu/menu_event.dart';
 
 import 'package:zebu_app/data_provider/announcement_data.dart';
 import 'package:zebu_app/data_provider/login_data.dart';
+import 'package:zebu_app/data_provider/menu_data.dart';
 import 'package:zebu_app/repository/announcement_repositiory.dart';
 import 'package:zebu_app/repository/login_repository.dart';
+import 'package:zebu_app/repository/menu_repository.dart';
 import 'package:zebu_app/repository/user_repository.dart';
 import 'package:zebu_app/routeGenerator.dart';
 
@@ -65,6 +69,10 @@ class _AppWidgetState extends State<AppWidget> {
     httpClient: AppWidget.httpClient,
   ));
 
+  final menuRepository = MenuRepository(
+      dataProvider: MenuDataProvider(
+    httpClient: AppWidget.httpClient,
+  ));
   final loginRepository = LoginRepository(
       dataProvider: LoginDataProvider(
     httpClient: AppWidget.httpClient,
@@ -83,6 +91,12 @@ class _AppWidgetState extends State<AppWidget> {
                 ),
         ),
         BlocProvider(
+          create: (context) => MenuBloc(menuRepository: menuRepository)
+            ..add(
+              const AllMenuLoad(),
+            ),
+        ),
+        BlocProvider(
           create: (context) => AuthenticationBloc(
             userRepository: userRepository,
           )..add(
@@ -99,6 +113,9 @@ class _AppWidgetState extends State<AppWidget> {
           textTheme: GoogleFonts.ralewayTextTheme(
             Theme.of(context).textTheme,
           ),
+          colorScheme: ThemeData().colorScheme.copyWith(
+                primary: Color(0xff404E65),
+              ),
         ),
         home: Home()
         // BlocConsumer<AuthenticationBloc, AuthenticationState>(
