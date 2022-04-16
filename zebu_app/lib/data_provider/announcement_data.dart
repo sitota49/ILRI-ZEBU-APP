@@ -11,7 +11,8 @@ class AnnouncementDataProvider {
   Future<List<dynamic>> getAnnouncements() async {
     try {
       final response = await httpClient.get(
-        Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/announcement'),
+        Uri.parse(
+            'http://45.79.249.127/zebuapi/jsonapi/node/announcement?_format=json'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
@@ -21,8 +22,8 @@ class AnnouncementDataProvider {
       );
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        List<dynamic> jsonData = json['data'];
-        return jsonData
+
+        return json
             .map<Announcement>(
                 (announcementData) => Announcement.fromJson(announcementData))
             .toList();
@@ -36,7 +37,8 @@ class AnnouncementDataProvider {
 
   Future<dynamic> getAnnouncement(String id) async {
     final response = await httpClient.get(
-      Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/announcement/${id}'),
+      Uri.parse(
+          'http://45.79.249.127/zebuapi/jsonapi/node/announcement/${id}?_format=json'),
       headers: <String, String>{
         'Accept': 'application/vnd.api+json',
         'Access-Control-Allow-Origin': '*',
@@ -47,7 +49,7 @@ class AnnouncementDataProvider {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-      return Announcement.fromJson(json['data']);
+      return Announcement.fromJson(json[0]);
     } else {
       throw Exception('Failed to load Announcement by Id');
     }
@@ -56,7 +58,7 @@ class AnnouncementDataProvider {
   Future<dynamic> getNewestAnnouncement() async {
     final response = await httpClient.get(
       Uri.parse(
-          'http://45.79.249.127/zebuapi/jsonapi/node/announcement?page[limit]=1&sort=-created'),
+          'http://45.79.249.127/zebuapi/jsonapi/node/announcement?_format=json'),
       headers: <String, String>{
         'Accept': 'application/vnd.api+json',
         'Access-Control-Allow-Origin': '*',
@@ -67,7 +69,7 @@ class AnnouncementDataProvider {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-      return Announcement.fromJson(json['data'][0]);
+      return Announcement.fromJson(json[0]);
     } else {
       throw Exception('Failed to load newest Announcement');
     }

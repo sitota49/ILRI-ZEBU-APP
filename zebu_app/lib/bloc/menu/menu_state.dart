@@ -8,6 +8,8 @@ class MenuState extends Equatable {
   List<Object> get props => [];
 }
 
+
+
 class LoadingMenu extends MenuState {}
 
 class AllMenuLoadSuccess extends MenuState {
@@ -54,3 +56,4 @@ class SingleMenuLoadSuccess extends MenuState {
 }
 
 class SingleMenuLoadFailure extends MenuState {}
+

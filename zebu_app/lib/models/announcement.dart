@@ -1,29 +1,26 @@
 class Announcement {
   final String id;
   final String title;
-  final String description;
-  final String date;
+  final String? description;
+  final String? date;
 
   Announcement(
-      {
-      required this.id,
-      required this.title,
-      required this.description,
-      required this.date});
+      {required this.id, required this.title, this.description, this.date});
 
   @override
   List<Object?> get props => [id, title, description, date];
   factory Announcement.fromJson(Map<String, dynamic> json) {
     var announcement = Announcement(
-        title: json['attributes']['title'],
-        id: json['id'],
-        description: json['attributes']['field_description'],
-        date: json['attributes']['created'],
-  );
+      title: json['title'],
+      id: json['uuid'],
+      description: json['field_description'],
+      date: json['field_date_announcement'],
+    );
 
     return announcement;
   }
 
   @override
-  String toString() => 'Announcement {id: $id , title: $title, description: $description, date: $date}';
+  String toString() =>
+      'Announcement {id: $id , title: $title, description: $description, date: $date}';
 }

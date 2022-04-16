@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zebu_app/models/menu.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,7 +23,24 @@ class MenuDataProvider {
       );
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        return json.map<Menu>((menuData) => Menu.fromJson(menuData)).toList();
+        var menu =
+            json.map<Menu>((menuData) => Menu.fromJson(menuData)).toList();
+
+        // final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        // var menuItemStringList = menu
+        //     .map((menuItem) => {
+        //           menuItem.toString(),
+        //         })
+        //     .toList();
+
+        // var encoded = jsonEncode(menuItemStringList);
+        // var decoded = jsonDecode(encoded);
+        // var result =
+        //     decoded.map<Menu>((menuData) => Menu.fromJson(menuData)).toList();
+
+        // print(result);
+        return menu;
       } else {
         return ["No Menu Items Found"];
       }

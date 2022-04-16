@@ -39,7 +39,6 @@ class _HomeState extends State<Home> {
                     children: [
                       BlocBuilder<AnnouncementBloc, AnnouncementState>(
                         builder: (_, homePageState) {
-                          print(homePageState);
                           if (homePageState is LoadingAnnouncement) {
                             return Container(
                               height: 180,

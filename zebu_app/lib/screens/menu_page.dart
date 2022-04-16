@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zebu_app/bloc/menu/menu_bloc.dart';
 import 'package:zebu_app/bloc/menu/menu_event.dart';
 import 'package:zebu_app/bloc/menu/menu_state.dart';
@@ -161,6 +164,7 @@ class _MenuPageState extends State<MenuPage>
   }
 }
 
+
 class MenuItem extends StatelessWidget {
   const MenuItem({
     Key? key,
@@ -172,10 +176,29 @@ class MenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var currentMenu = menu;
+
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
-          onTap: () {
+          onTap: () async {
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            var prefObj = {'id': currentMenu.id, 'image': currentMenu.image};
+            var prefObjEncoded = jsonEncode(prefObj);
+
+            var recentlyViewedList =
+                prefs.getStringList('recentlyViewed') ?? [];
+            if (!recentlyViewedList.contains(prefObjEncoded)) {
+              if (recentlyViewedList.length > 5) {
+                recentlyViewedList.remove(recentlyViewedList[4]);
+                recentlyViewedList.insert(0, prefObjEncoded);
+              } else {
+                recentlyViewedList.add(prefObjEncoded);
+              }
+            }
+
+            prefs.setStringList(('recentlyViewed'), recentlyViewedList);
+
             Navigator.pushNamed(
               context,
               RouteGenerator.menuDetailScreenName,
@@ -211,7 +234,7 @@ class MenuItem extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
@@ -261,8 +284,9 @@ class MenuItem extends StatelessWidget {
                       ),
                       Expanded(
                         child: Container(
+                          margin: EdgeInsets.only(right: 15),
                           child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
@@ -302,24 +326,13 @@ class AllMenu extends StatelessWidget {
     return BlocBuilder<MenuBloc, MenuState>(
       builder: (_, menuState) {
         if (menuState is LoadingMenu) {
-          return Column(
-            children: [
-              Expanded(
-                child: Container(),
+           return SizedBox(
+            height: MediaQuery.of(context).size.height / 1.3,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
               ),
-              Center(
-                child: SizedBox(
-                  height: 30,
-                  width: 30,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(),
-              ),
-            ],
+            ),
           );
         }
 
@@ -332,7 +345,7 @@ class AllMenu extends StatelessWidget {
         }
 
         if (menuState is AllMenuLoadSuccess) {
-          final categoryMenus = menuState.allMenus;
+          final allMenus = menuState.allMenus;
 
           return Material(
             child: Container(
@@ -344,9 +357,9 @@ class AllMenu extends StatelessWidget {
                     mainAxisSpacing: 10,
                     childAspectRatio: 2.25 / 2,
                   ),
-                  itemCount: categoryMenus.length,
+                  itemCount: allMenus.length,
                   itemBuilder: (BuildContext ctx, index) {
-                    final currentItem = categoryMenus[index];
+                    final currentItem = allMenus[index];
                     return MenuItem(menu: currentItem);
                   }),
             ),
@@ -371,24 +384,13 @@ class CategoryMenu extends StatelessWidget {
     return BlocBuilder<MenuBloc, MenuState>(
       builder: (_, menuState) {
         if (menuState is LoadingMenu) {
-          return Column(
-            children: [
-              Expanded(
-                child: Container(),
+          return SizedBox(
+            height: MediaQuery.of(context).size.height / 1.3,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
               ),
-              Center(
-                child: SizedBox(
-                  height: 30,
-                  width: 30,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(),
-              ),
-            ],
+            ),
           );
         }
 

@@ -7,19 +7,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AnnouncementBloc extends Bloc<AnnouncementEvent, AnnouncementState> {
   final AnnouncementRepository announcementRepository;
 
-  AnnouncementBloc({required this.announcementRepository}) : super(LoadingAnnouncement());
+  AnnouncementBloc({required this.announcementRepository})
+      : super(LoadingAnnouncement());
 
   @override
   Stream<AnnouncementState> mapEventToState(AnnouncementEvent event) async* {
     if (event is AnnouncementsLoad) {
       yield LoadingAnnouncement();
       try {
-        final posts = await announcementRepository.getAnnouncements();
-        if (posts.isEmpty) {
+        final announcements = await announcementRepository.getAnnouncements();
+        if (announcements[0] == "No Announcements Found") {
           yield const AnnouncementsEmpltyFailure(
               message: "No Announcements Found");
         } else {
-          yield AnnouncementsLoadSuccess(posts);
+          yield AnnouncementsLoadSuccess(announcements);
         }
       } catch (error) {
         print(error);
@@ -29,7 +30,8 @@ class AnnouncementBloc extends Bloc<AnnouncementEvent, AnnouncementState> {
     if (event is AnnouncementLoad) {
       yield LoadingAnnouncement();
       try {
-        final announcement = await announcementRepository.getAnnouncement(event.id);
+        final announcement =
+            await announcementRepository.getAnnouncement(event.id);
 
         if (announcement != null) {
           yield AnnouncementLoadSuccess(announcement);
@@ -42,7 +44,8 @@ class AnnouncementBloc extends Bloc<AnnouncementEvent, AnnouncementState> {
     if (event is NewAnnouncementLoad) {
       yield LoadingAnnouncement();
       try {
-        final newAnnouncement = await announcementRepository.getNewesetAnnouncement();
+        final newAnnouncement =
+            await announcementRepository.getNewesetAnnouncement();
 
         if (newAnnouncement != null) {
           yield NewAnnouncementLoadSuccess(newAnnouncement);

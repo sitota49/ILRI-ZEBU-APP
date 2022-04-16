@@ -53,5 +53,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         yield SingleMenuLoadFailure();
       }
     }
+    
   }
 }
+

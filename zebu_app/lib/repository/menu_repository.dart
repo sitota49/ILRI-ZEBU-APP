@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zebu_app/models/menu.dart';
 import 'package:zebu_app/data_provider/menu_data.dart';
 
@@ -16,5 +17,11 @@ class MenuRepository {
 
   Future<dynamic> getSingleMenu(String id) async {
     return await dataProvider.getSingleMenu(id);
+  }
+
+  Future<dynamic> getRecentlyviewed() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var recentlyViewedList = prefs.getStringList('recentlyViewed');
+    return recentlyViewedList;
   }
 }

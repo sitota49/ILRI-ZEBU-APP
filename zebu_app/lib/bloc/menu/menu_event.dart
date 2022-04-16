@@ -5,6 +5,13 @@ abstract class MenuEvent extends Equatable {
   const MenuEvent();
 }
 
+class RecentlyViewedLoad extends MenuEvent {
+  const RecentlyViewedLoad();
+
+  @override
+  List<Object> get props => [];
+}
+
 class AllMenuLoad extends MenuEvent {
   const AllMenuLoad();
 
