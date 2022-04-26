@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
@@ -10,6 +8,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:zebu_app/bloc/service/service_bloc.dart';
 import 'package:zebu_app/bloc/service/service_event.dart';
 import 'package:zebu_app/bloc/service/service_state.dart';
+import 'package:zebu_app/models/service.dart';
 import 'package:zebu_app/screens/utils/CalendarUtils.dart';
 
 class BookingPage extends StatefulWidget {
@@ -19,20 +18,32 @@ class BookingPage extends StatefulWidget {
   State<BookingPage> createState() => _BookingPageState();
 }
 
-class _BookingPageState extends State<BookingPage> {
+class _BookingPageState extends State<BookingPage>
+    with TickerProviderStateMixin {
   late ServiceBloc servicebloc;
+  late TabController _tabController;
+  List<dynamic> serv = [];
+  var _selectedIndex = 0;
 
   @override
   void initState() {
     servicebloc = BlocProvider.of<ServiceBloc>(context);
     servicebloc.add(AllServiceLoad());
+    _tabController = TabController(length: 8, vsync: this);
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   GlobalKey<_BookingPageState> _sliderKey = GlobalKey();
 
-  int curerntIndex = 0;
-
+  late String selectedServiceIndex = "Dining";
+  ScrollController listScrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,22 +93,126 @@ class _BookingPageState extends State<BookingPage> {
 
                 if (serviceListState is AllServiceLoadSuccess) {
                   final services = serviceListState.allServices;
-
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: CoverFlow(
-                      height: 700,
-                      // dismissedCallback: disposeDismissed,
-                      currentItemChangedCallback: (int index) {
-                        print(services[index]);
-                        setState(() {
-                          curerntIndex = index;
-                        });
-                      },
-
+                  return Container(
+                    width: double.infinity,
+                    height: 180,
+                    child: ListView.builder(
+                      controller: listScrollController,
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
                       itemCount: services.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Item(index, curerntIndex, services[index]);
+                      itemBuilder: (context, index) {
+                        var currentService = services[index];
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedServiceIndex = services[index].title;
+                              print(selectedServiceIndex);
+                              print(
+                                ((index / services.length) *
+                                    MediaQuery.of(context).size.width),
+                              );
+                              listScrollController.jumpTo(
+                                  (index / services.length) *
+                                      5 *
+                                      MediaQuery.of(context).size.width);
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.height * 0.4,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25)),
+                                color: selectedServiceIndex ==
+                                        currentService.title
+                                    ? index % 2 == 0
+                                        ? Color(0xffFF9E16)
+                                        : Color(0xff404E65)
+                                    : index % 2 == 0
+                                        ? Color.fromARGB(255, 248, 188, 103)
+                                        : Color.fromARGB(255, 114, 119, 131),
+                                child: SafeArea(
+                                  child: Column(children: <Widget>[
+                                    SizedBox(height: 10),
+                                    Image.network(
+                                      "http://45.79.249.127" +
+                                          currentService.image,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.1,
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      currentService.title,
+                                      style: TextStyle(
+                                          color: index % 2 == 0
+                                              ? Colors.black
+                                              : Color(0xffFF9E16),
+                                          fontSize: selectedServiceIndex ==
+                                                  currentService.title
+                                              ? 16.0
+                                              : 14.0,
+                                          fontWeight: selectedServiceIndex ==
+                                                  currentService.title
+                                              ? FontWeight.w700
+                                              : FontWeight.w500),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      currentService.description!,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12.0),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 8.0),
+                                      child: Container(
+                                        child: currentService.options.length ==
+                                                2
+                                            ? FlutterToggleTab(
+                                                // width in percent, to set full width just set to 100
+                                                width: 50,
+                                                borderRadius: 30,
+                                                height: 20,
+                                                // initialIndex: 0,
+                                                selectedBackgroundColors: [
+                                                  Colors.white
+                                                ],
+                                                selectedTextStyle: TextStyle(
+                                                    color: Color(0xff7D7D7D),
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                                unSelectedTextStyle: TextStyle(
+                                                    color: Color(0xff7D7D7D),
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                labels: currentService.options,
+                                                selectedLabelIndex:
+                                                    (labelIndex) {
+                                                  print(currentService
+                                                      .options[labelIndex]);
+                                                  setState(() {
+                                                    _selectedIndex = labelIndex;
+                                                  });
+                                                },
+                                                selectedIndex: _selectedIndex,
+                                              )
+                                            : Container(),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                  ]),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
                       },
                     ),
                   );
@@ -105,102 +220,6 @@ class _BookingPageState extends State<BookingPage> {
                 return Container();
               }),
         ));
-  }
-}
-
-class Item extends StatefulWidget {
-  final int index;
-  final int curerntIndex;
-  final service;
-  Item(this.index, this.curerntIndex, this.service);
-  @override
-  _ItemState createState() => _ItemState(index, curerntIndex, service);
-}
-
-class _ItemState extends State<Item> {
-  final int index;
-  final int curerntIndex;
-  final service;
-  var _selectedIndex = 0;
-
-  _ItemState(this.index, this.curerntIndex, this.service);
-
-  @override
-  Widget build(BuildContext context) {
-    var currentService = service;
-    return Column(
-      children: [
-        Container(
-          height: MediaQuery.of(context).size.height * 0.265,
-          width: double.infinity,
-          child: Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            color: index % 2 == 0 ? Color(0xffFF9E16) : Color(0xff404E65),
-            child: SafeArea(
-              child: Column(children: <Widget>[
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Image.network(
-                  "http://45.79.249.127" + currentService.image,
-                  height: MediaQuery.of(context).size.height * 0.1,
-                ),
-                SizedBox(height: 5),
-                Text(
-                  currentService.title,
-                  style: TextStyle(
-                      color: index % 2 == 0 ? Colors.black : Color(0xffFF9E16),
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w700),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                Text(
-                  currentService.description!,
-                  style: TextStyle(color: Colors.white, fontSize: 12.0),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: Container(
-                    child: currentService.options.length == 2
-                        ? FlutterToggleTab(
-                            // width in percent, to set full width just set to 100
-                            width: 50,
-                            borderRadius: 30,
-                            height: 25,
-                            // initialIndex: 0,
-                            selectedBackgroundColors: [Colors.white],
-                            selectedTextStyle: TextStyle(
-                                color: Color(0xff7D7D7D),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700),
-                            unSelectedTextStyle: TextStyle(
-                                color: Color(0xff7D7D7D),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                            labels: currentService.options,
-                            selectedLabelIndex: (labelIndex) {
-                              print(currentService.options[labelIndex]);
-                              setState(() {
-                                _selectedIndex = labelIndex;
-                              });
-                            },
-                            selectedIndex: _selectedIndex,
-                          )
-                        : Container(),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              ]),
-            ),
-          ),
-        ),
-        Container(
-          height: MediaQuery.of(context).size.height * 0.38,
-          width: MediaQuery.of(context).size.width * 0.7,
-          child: Calendar(),
-        ),
-      ],
-    );
   }
 }
 

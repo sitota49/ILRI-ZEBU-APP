@@ -22,9 +22,6 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage>
     with SingleTickerProviderStateMixin {
-  int _currentIndex = 0;
-
-  late PageController _pageController;
   late TabController _tabController;
   TextEditingController searchController = TextEditingController();
   String queryParam = '';
@@ -32,7 +29,7 @@ class _MenuPageState extends State<MenuPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 7, vsync: this);
-    _pageController = PageController();
+
     searchController.addListener(_printLatestValue);
   }
 
