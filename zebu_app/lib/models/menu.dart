@@ -28,7 +28,7 @@ class Menu {
         title: json['title'],
         id: json['uuid'],
         description: json['field_menu_description']?.toString(),
-        image: json['field_image'],
+        image: json['field_image'] == '' ?  null : json['field_image'],
         category: json['field_category']?.split(','),
         type: json['field_type']?.split(','),
         memberPrice: json['field_member_price']);

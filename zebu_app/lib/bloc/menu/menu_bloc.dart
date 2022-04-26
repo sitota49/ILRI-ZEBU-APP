@@ -14,7 +14,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     if (event is AllMenuLoad) {
       yield LoadingMenu();
       try {
-        final allMenu = await menuRepository.getAllMenu();
+        final allMenu = await menuRepository.getAllMenu(event.queryparam);
         if (allMenu.isEmpty) {
           yield const AllMenuEmpltyFailure(message: "No Menu Items Found");
         } else {

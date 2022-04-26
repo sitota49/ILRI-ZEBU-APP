@@ -7,13 +7,17 @@ import 'package:zebu_app/bloc/login/login_bloc.dart';
 import 'package:zebu_app/bloc/menu/menu_bloc.dart';
 import 'package:zebu_app/bloc/menu/menu_event.dart';
 import 'package:zebu_app/bloc/menu/recent_bloc.dart';
+import 'package:zebu_app/bloc/service/service_bloc.dart';
+import 'package:zebu_app/bloc/service/service_event.dart';
 
 import 'package:zebu_app/data_provider/announcement_data.dart';
 import 'package:zebu_app/data_provider/login_data.dart';
 import 'package:zebu_app/data_provider/menu_data.dart';
+import 'package:zebu_app/data_provider/service_data.dart';
 import 'package:zebu_app/repository/announcement_repositiory.dart';
 import 'package:zebu_app/repository/login_repository.dart';
 import 'package:zebu_app/repository/menu_repository.dart';
+import 'package:zebu_app/repository/service_repository.dart';
 import 'package:zebu_app/repository/user_repository.dart';
 import 'package:zebu_app/routeGenerator.dart';
 
@@ -62,6 +66,10 @@ class _AppWidgetState extends State<AppWidget> {
       dataProvider: MenuDataProvider(
     httpClient: AppWidget.httpClient,
   ));
+  final serviceRepository = ServiceRepository(
+      dataProvider: ServiceDataProvider(
+    httpClient: AppWidget.httpClient,
+  ));
   final loginRepository = LoginRepository(
       dataProvider: LoginDataProvider(
     httpClient: AppWidget.httpClient,
@@ -82,7 +90,13 @@ class _AppWidgetState extends State<AppWidget> {
         BlocProvider(
           create: (context) => MenuBloc(menuRepository: menuRepository)
             ..add(
-              const AllMenuLoad(),
+              const AllMenuLoad(''),
+            ),
+        ),
+        BlocProvider(
+          create: (context) => ServiceBloc(serviceRepository: serviceRepository)
+            ..add(
+              const AllServiceLoad(),
             ),
         ),
         BlocProvider(
@@ -162,23 +176,22 @@ class _AppWidgetState extends State<AppWidget> {
     OneSignal.shared.setAppId(oneSignalAppId);
   }
 
-  // static void handleClickNotification(BuildContext context) {
-  //   OneSignal.shared.setNotificationOpenedHandler(
-  //       (OSNotificationOpenedResult result) async {
-  //     try {
-  //       print("here");
+  static void handleClickNotification(BuildContext context) {
+    OneSignal.shared.setNotificationOpenedHandler(
+        (OSNotificationOpenedResult result) async {
+      try {
+        print("here");
 
-  //       var id = await result.notification.additionalData?['id'];
+        var id = await result.notification.additionalData?['id'];
 
-  //       Navigator.pushNamed(
-  //         context,
-  //         RouteGenerator.detailScreenName,
-  //         arguments: ScreenArguments({'id': id}),
-  //       );
-  //     } catch (e) {
-  //       print(e);
-  //     }
-  //   });
-  // }
-
+        Navigator.pushNamed(
+          context,
+          RouteGenerator.announcementDetailScreenName,
+          arguments: ScreenArguments({'id': id}),
+        );
+      } catch (e) {
+        print(e);
+      }
+    });
+  }
 }

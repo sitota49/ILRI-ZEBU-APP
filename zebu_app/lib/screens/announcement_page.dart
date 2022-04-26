@@ -76,107 +76,113 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                     if (announcementListState is AnnouncementsLoadSuccess) {
                       final announcements = announcementListState.announcements;
                       return Expanded(
-                        child: ListView.builder(
-                          itemCount: announcements.length,
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            final currentAnnouncement = announcements[index];
-                            var date =
-                                currentAnnouncement.date.substring(0, 10);
-                            var parsed = DateTime.parse(date);
-                            var year = DateFormat.y().format(parsed);
-                            var month = DateFormat.MMM().format(parsed);
-                            var day = DateFormat.d().format(parsed);
+                        child: SingleChildScrollView(
+                          physics: ScrollPhysics(),
+                          child: ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: announcements.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              final currentAnnouncement = announcements[index];
+                              var date =
+                                  currentAnnouncement.date.substring(0, 10);
+                              var parsed = DateTime.parse(date);
+                              var year = DateFormat.y().format(parsed);
+                              var month = DateFormat.MMM().format(parsed);
+                              var day = DateFormat.d().format(parsed);
 
-                            return Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    RouteGenerator.announcementDetailScreenName,
-                                    arguments: ScreenArguments(
-                                        {'id': currentAnnouncement.id}),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8.0, right: 8.0),
-                                  child: Container(
-                                    height: 100,
-                                    decoration: new BoxDecoration(
-                                        color: Color(0xff404E65),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(25))),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 230,
-                                              margin: EdgeInsets.only(left: 10),
-                                              child: Text(
-                                                currentAnnouncement.title,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                                softWrap: true,
+                              return Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteGenerator
+                                          .announcementDetailScreenName,
+                                      arguments: ScreenArguments(
+                                          {'id': currentAnnouncement.id}),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, right: 8.0),
+                                    child: Container(
+                                      height: 100,
+                                      decoration: new BoxDecoration(
+                                          color: Color(0xff404E65),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 230,
+                                                margin:
+                                                    EdgeInsets.only(left: 10),
+                                                child: Text(
+                                                  currentAnnouncement.title,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                  softWrap: true,
+                                                ),
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: Container(),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(right: 40),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    month,
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xffFF9E16),
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  SizedBox(height: 2),
-                                                  Text(
-                                                    day.length == 1
-                                                        ? "0" + day
-                                                        : day,
-                                                    style:
-                                                        TextStyle(fontSize: 18),
-                                                  ),
-                                                  SizedBox(height: 2),
-                                                  Text(
-                                                    year,
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xffFF9E16),
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )
-                                                ],
+                                              Expanded(
+                                                child: Container(),
                                               ),
-                                            )
-                                          ]),
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(right: 40),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      month.toUpperCase(),
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xffFF9E16),
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    SizedBox(height: 2),
+                                                    Text(
+                                                      day.length == 1
+                                                          ? "0" + day
+                                                          : day,
+                                                      style: TextStyle(
+                                                          fontSize: 22),
+                                                    ),
+                                                    SizedBox(height: 2),
+                                                    Text(
+                                                      year,
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xffFF9E16),
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ]),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       );
                     }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
@@ -26,6 +27,7 @@ class _MenuPageState extends State<MenuPage>
   late PageController _pageController;
   late TabController _tabController;
   TextEditingController searchController = TextEditingController();
+  String queryParam = '';
   @override
   void initState() {
     super.initState();
@@ -42,7 +44,9 @@ class _MenuPageState extends State<MenuPage>
   }
 
   _printLatestValue() {
-    print("Textfield value: ${searchController.text}");
+    setState(() {
+      queryParam = searchController.text;
+    });
   }
 
   @override
@@ -146,7 +150,9 @@ class _MenuPageState extends State<MenuPage>
                         Expanded(
                           child: TabBarView(
                             children: [
-                              AllMenu(),
+                              AllMenu(
+                                queryParam: queryParam,
+                              ),
                               CategoryMenu(category: 'breakfast'),
                               CategoryMenu(category: 'lunch&dinner'),
                               CategoryMenu(category: 'pizza'),
@@ -164,7 +170,6 @@ class _MenuPageState extends State<MenuPage>
   }
 }
 
-
 class MenuItem extends StatelessWidget {
   const MenuItem({
     Key? key,
@@ -181,24 +186,27 @@ class MenuItem extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
           onTap: () async {
-            final SharedPreferences prefs =
-                await SharedPreferences.getInstance();
-            var prefObj = {'id': currentMenu.id, 'image': currentMenu.image};
-            var prefObjEncoded = jsonEncode(prefObj);
+            if (currentMenu.image != null) {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              var prefObj = {'id': currentMenu.id, 'image': currentMenu.image};
+              var prefObjEncoded = jsonEncode(prefObj);
 
-            var recentlyViewedList =
-                prefs.getStringList('recentlyViewed') ?? [];
-            if (!recentlyViewedList.contains(prefObjEncoded)) {
-              if (recentlyViewedList.length > 5) {
-                recentlyViewedList.remove(recentlyViewedList[4]);
-                recentlyViewedList.insert(0, prefObjEncoded);
-              } else {
-                recentlyViewedList.add(prefObjEncoded);
+              var recentlyViewedList =
+                  prefs.getStringList('recentlyViewed') ?? [];
+              print("ezi");
+              print(recentlyViewedList);
+              if (!recentlyViewedList.contains(prefObjEncoded)) {
+                if (recentlyViewedList.length > 5) {
+                  recentlyViewedList.remove(recentlyViewedList[4]);
+                  recentlyViewedList.insert(0, prefObjEncoded);
+                } else {
+                  recentlyViewedList.add(prefObjEncoded);
+                }
               }
+
+              prefs.setStringList(('recentlyViewed'), recentlyViewedList);
             }
-
-            prefs.setStringList(('recentlyViewed'), recentlyViewedList);
-
             Navigator.pushNamed(
               context,
               RouteGenerator.menuDetailScreenName,
@@ -221,13 +229,20 @@ class MenuItem extends StatelessWidget {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15)),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        "http://45.79.249.127" + menu.image,
-                      ),
-                      fit: BoxFit.fitWidth,
-                      alignment: Alignment.topCenter,
-                    ),
+                    image: menu.image != null
+                        ? DecorationImage(
+                            image: NetworkImage(
+                              "http://45.79.249.127" + menu.image,
+                            ),
+                            fit: BoxFit.fitWidth,
+                            alignment: Alignment.topCenter,
+                          )
+                        : DecorationImage(
+                            image: AssetImage(
+                                'assets/images/menu_placeholder.png'),
+                            fit: BoxFit.fitWidth,
+                            alignment: Alignment.topCenter,
+                          ),
                   ),
                 ),
                 SizedBox(height: 5),
@@ -314,19 +329,29 @@ class MenuItem extends StatelessWidget {
   }
 }
 
-class AllMenu extends StatelessWidget {
+class AllMenu extends StatefulWidget {
+  final String queryParam;
   const AllMenu({
     Key? key,
+    required this.queryParam,
   }) : super(key: key);
 
   @override
+  State<AllMenu> createState() => _AllMenuState(queryParam: queryParam);
+}
+
+class _AllMenuState extends State<AllMenu> {
+  final String queryParam;
+  _AllMenuState({required this.queryParam});
+  @override
   Widget build(BuildContext context) {
     final menuBloc = BlocProvider.of<MenuBloc>(context);
-    menuBloc.add(AllMenuLoad());
-    return BlocBuilder<MenuBloc, MenuState>(
+    Timer(Duration(seconds: 1), () => menuBloc.add(AllMenuLoad(queryParam)));
+    return BlocConsumer<MenuBloc, MenuState>(
+      listener: (_, menuState) {},
       builder: (_, menuState) {
         if (menuState is LoadingMenu) {
-           return SizedBox(
+          return SizedBox(
             height: MediaQuery.of(context).size.height / 1.3,
             child: Center(
               child: CircularProgressIndicator(
@@ -337,11 +362,25 @@ class AllMenu extends StatelessWidget {
         }
 
         if (menuState is AllMenuLoadFailure) {
-          return Text(menuState.failureMessage);
+          return SizedBox(
+            height: MediaQuery.of(context).size.height / 1.3,
+            child: Center(
+                child: Text(
+              menuState.failureMessage,
+              style: TextStyle(color: Colors.white),
+            )),
+          );
         }
 
         if (menuState is AllMenuEmpltyFailure) {
-          return Text(menuState.message);
+          return SizedBox(
+            height: MediaQuery.of(context).size.height / 1.3,
+            child: Center(
+                child: Text(
+              menuState.message,
+              style: TextStyle(color: Colors.white),
+            )),
+          );
         }
 
         if (menuState is AllMenuLoadSuccess) {
@@ -395,11 +434,25 @@ class CategoryMenu extends StatelessWidget {
         }
 
         if (menuState is CategoryMenuLoadFailure) {
-          return Text(menuState.failureMessage);
+          return SizedBox(
+            height: MediaQuery.of(context).size.height / 1.3,
+            child: Center(
+                child: Text(
+              menuState.failureMessage,
+              style: TextStyle(color: Colors.white),
+            )),
+          );
         }
 
         if (menuState is CategoryMenuEmpltyFailure) {
-          return Text(menuState.message);
+          return SizedBox(
+            height: MediaQuery.of(context).size.height / 1.3,
+            child: Center(
+                child: Text(
+              menuState.message,
+              style: TextStyle(color: Colors.white),
+            )),
+          );
         }
 
         if (menuState is CategoryMenuLoadSuccess) {

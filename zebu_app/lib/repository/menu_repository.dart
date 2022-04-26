@@ -7,8 +7,8 @@ class MenuRepository {
 
   MenuRepository({required this.dataProvider});
 
-  Future<List<dynamic>> getAllMenu() async {
-    return await dataProvider.getAllMenu();
+  Future<List<dynamic>> getAllMenu(queryParam) async {
+    return await dataProvider.getAllMenu(queryParam);
   }
 
   Future<dynamic> getCategoryMenu(String id) async {

@@ -13,7 +13,8 @@ class RecentlyViewedLoad extends MenuEvent {
 }
 
 class AllMenuLoad extends MenuEvent {
-  const AllMenuLoad();
+  final String queryparam;
+  const AllMenuLoad(this.queryparam);
 
   @override
   List<Object> get props => [];

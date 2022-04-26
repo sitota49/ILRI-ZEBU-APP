@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:zebu_app/bloc/announcement/announcement_bloc.dart';
 import 'package:zebu_app/bloc/announcement/announcement_event.dart';
 import 'package:zebu_app/bloc/announcement/announcement_state.dart';
 import 'package:zebu_app/routeGenerator.dart';
 import 'package:zebu_app/screens/utils/NavigationDrawer.dart';
+import 'dart:math' as math;
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -14,26 +16,36 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late AnnouncementBloc announcementBloc;
+
+  @override
+  void initState() {
+    announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
+    announcementBloc.add(NewAnnouncementLoad());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
-    announcementBloc.add(NewAnnouncementLoad());
-
     return WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-          backgroundColor: Color(0xff404E65),
+          backgroundColor: Colors.white,
           appBar: AppBar(
-            backgroundColor: Color(0xff404E65),
+            iconTheme: IconThemeData(color: Color(0xff404E65)),
+            backgroundColor: Colors.white,
             elevation: 0,
           ),
           drawer: NavigationDrawer(),
           body: Center(
             child: Column(
               children: [
+                SizedBox(
+                  height: 5,
+                ),
                 Container(
                     child: Container(
-                  margin: EdgeInsets.only(left: 15, top: 20),
+                  margin: EdgeInsets.only(left: 15),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -62,37 +74,37 @@ class _HomeState extends State<Home> {
                                       fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(
-                                  height: 15,
+                                  height: 10,
                                 ),
                                 Container(
-                                  width: 200,
+                                  width: 230,
                                   child: Text(
                                     'Zebu Club Mobile App',
                                     style: TextStyle(
                                         fontFamily: 'Raleway',
-                                        fontSize: 18,
-                                        color: Colors.white,
+                                        fontSize: 15,
+                                        color: Color(0xff404E65),
                                         fontWeight: FontWeight.w700),
                                     softWrap: true,
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 15,
+                                  height: 10,
                                 ),
                                 Container(
-                                  width: 250,
+                                  width: 260,
                                   child: Text(
                                     'Feel free to browse through our different services and book your stay!',
                                     style: TextStyle(
                                         fontFamily: 'Raleway',
-                                        fontSize: 12,
-                                        color: Colors.white,
+                                        fontSize: 10,
+                                        color: Colors.black,
                                         fontWeight: FontWeight.w500),
                                     softWrap: true,
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 15,
+                                  height: 10,
                                 ),
                               ],
                             );
@@ -113,25 +125,25 @@ class _HomeState extends State<Home> {
                                       fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(
-                                  height: 15,
+                                  height: 10,
                                 ),
                                 Container(
-                                  width: 200,
+                                  width: 230,
                                   child: Text(
                                     newAnnouncement.title!,
                                     style: TextStyle(
                                         fontFamily: 'Raleway',
-                                        fontSize: 18,
-                                        color: Colors.white,
+                                        fontSize: 15,
+                                        color: Color(0xff404E65),
                                         fontWeight: FontWeight.w700),
                                     softWrap: true,
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 15,
+                                  height: 10,
                                 ),
                                 Container(
-                                  width: 250,
+                                  width: 260,
                                   child: Text(
                                     newAnnouncement.description.length > 100
                                         ? newAnnouncement.description
@@ -140,18 +152,19 @@ class _HomeState extends State<Home> {
                                         : newAnnouncement.description,
                                     style: TextStyle(
                                         fontFamily: 'Raleway',
-                                        fontSize: 12,
-                                        color: Colors.white,
+                                        fontSize: 10,
+                                        color: Colors.black,
                                         fontWeight: FontWeight.w500),
                                     softWrap: true,
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 15,
+                                  height: 10,
                                 ),
                                 GestureDetector(
                                   child: Text("Learn More >>",
                                       style: TextStyle(
+                                          fontSize: 10,
                                           fontFamily: 'Raleway',
                                           color: Color(0xffff9e16),
                                           fontWeight: FontWeight.w700)),
@@ -173,115 +186,222 @@ class _HomeState extends State<Home> {
                         },
                       ),
                       Expanded(
-                        child: GestureDetector(
-                          child: Center(
-                            child: Icon(
-                              Icons.notifications_active,
-                              color: Colors.white,
-                              size: 100,
-                            ),
+                        child: Center(
+                          child: Icon(
+                            Icons.notifications_active,
+                            color: Color(0xff404E65),
+                            size: 80,
                           ),
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              RouteGenerator.mainFlowName,
-                              arguments: ScreenArguments({'index': 3}),
-                            );
-                          },
                         ),
-                      )
+                      ),
                     ],
                   ),
                 )),
                 Expanded(
-                    child: Container(
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(25),
-                              topRight: Radius.circular(25)),
+                    child: Stack(
+                  children: [
+                    Stack(children: [
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        child: SizedBox(
+                          // height: 150,
+                          child: Stack(children: [
+                            Container(
+                                color: Colors.transparent,
+                                child: _Triangle(color: Colors.black)),
+                            Container(
+                              alignment: Alignment.center,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(top: 100),
+                                      child: Image.asset(
+                                        'assets/images/zebu.png',
+                                        width: 150,
+                                        height: 90,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Container(
+                                        margin: EdgeInsets.only(bottom: 20),
+                                        child: Image.asset(
+                                          'assets/images/ilri.png',
+                                          height: 20,
+                                        )),
+                                  ]),
+                            ),
+                          ]),
                         ),
-                        margin: EdgeInsets.only(top: 15),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GridView.count(
-                            primary: false,
-                            padding: const EdgeInsets.all(20),
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20,
-                            crossAxisCount: 2,
-                            children: <Widget>[
-                              HomeButtons(Icons.wallet_membership,
-                                  "Membership Management", () {
-                                Navigator.pushNamed(
-                                  context,
-                                  RouteGenerator.mainFlowName,
-                                  arguments: ScreenArguments({'index': 2}),
-                                );
-                              }),
-                              HomeButtons(Icons.local_dining, "Menu", () {
+                      ),
+                    ]),
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GridView.count(
+                          primary: false,
+                          padding: const EdgeInsets.all(20),
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 20,
+                          crossAxisCount: 2,
+                          childAspectRatio: (80 / 60),
+                          children: <Widget>[
+                            HomeButtons(Icons.schedule, "Booking", () {
+                              Navigator.pushNamed(
+                                context,
+                                RouteGenerator.mainFlowName,
+                                arguments: ScreenArguments({'index': 1}),
+                              );
+                            }, Colors.white, Color(0xff404E65),
+                                Color(0xffFF9E16)),
+                            HomeButtons(
+                              Icons.local_dining,
+                              "Menu",
+                              () {
                                 Navigator.pushNamed(
                                   context,
                                   RouteGenerator.mainFlowName,
                                   arguments: ScreenArguments({'index': 0}),
                                 );
-                              }),
-                              HomeButtons(Icons.schedule, "Book your stay", () {
+                              },
+                              Color(0xffFF9E16),
+                              Colors.white,
+                              Color(0xff404E65),
+                            ),
+                            HomeButtons(
+                              Ionicons.ios_book,
+                              "Announcement",
+                              () {
                                 Navigator.pushNamed(
                                   context,
                                   RouteGenerator.mainFlowName,
-                                  arguments: ScreenArguments({'index': 1}),
+                                  arguments: ScreenArguments({'index': 3}),
                                 );
-                              }),
-                              HomeButtons(Icons.feedback, "Give Feedback", () {
-                                Navigator.pushNamed(
-                                  context,
-                                  RouteGenerator.feedbackScreenName,
-                                );
-                              }),
-                            ],
-                          ),
-                        ))),
+                              },
+                              Color(0xffFF9E16),
+                              Colors.white,
+                              Color(0xff404E65),
+                            ),
+                            HomeButtons(Icons.feedback, "Feedback", () {
+                              Navigator.pushNamed(
+                                context,
+                                RouteGenerator.feedbackScreenName,
+                              );
+                            }, Colors.white, Color(0xff404E65),
+                                Color.fromARGB(218, 255, 158, 22)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
               ],
             ),
           ),
         ));
   }
 
-  Widget HomeButtons(icon, text, onPressed) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ButtonStyle(
-        elevation: MaterialStateProperty.all<double>(5.0),
-        shadowColor: MaterialStateProperty.all<Color>(Colors.grey),
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+  Widget HomeButtons(icon, text, onPressed, iconColor, textColor, bgColor) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.all(Radius.circular(25)),
         ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Icon(
-              icon,
-              color: Color(0xff404E65),
-              size: 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Icon(
+                icon,
+                color: iconColor,
+                size: 50,
+              ),
             ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Text(
-            text,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontFamily: 'Raleway', fontSize: 12, color: Color(0xff404E65)),
-          ),
-        ],
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: 'Raleway',
+                  fontSize: 14,
+                  color: textColor,
+                  fontWeight: FontWeight.w900),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+class _Triangle extends StatelessWidget {
+  const _Triangle({
+    Key? key,
+    required this.color,
+  }) : super(key: key);
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+        painter: _ShapesPainter(color),
+        child: Container(
+            child: Center(
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0, bottom: 16),
+                    child: Transform.rotate(
+                      // angle: math.pi / 4,
+                      angle: 0,
+                    )))));
+  }
+}
+
+class _ShapesPainter extends CustomPainter {
+  final Color color;
+  _ShapesPainter(this.color);
+  @override
+  void paint(Canvas canvas, Size size) {
+    // final paint = Paint();
+    // paint.color = color;
+    // var path = Path();
+    // path.lineTo(size.width, 0);
+    // path.lineTo(size.height, size.width);
+    // path.close();
+    // canvas.drawPath(path, paint);
+
+    final paintBlue = Paint()..color = Color.fromARGB(255, 171, 192, 224);
+    final paintYellow = Paint()..color = Color.fromARGB(255, 248, 199, 162);
+    final paintRed = Paint()..color = Color.fromARGB(200, 232, 163, 146);
+
+    final pathYellow = Path();
+    pathYellow.moveTo(0, size.height);
+    pathYellow.lineTo(size.width, size.height);
+    pathYellow.lineTo(0, size.height / 2.5);
+    pathYellow.close();
+
+    final pathBlue = Path();
+    pathBlue.moveTo(size.width, size.height);
+    pathBlue.lineTo(0, size.height);
+    pathBlue.lineTo(size.width, size.height / 2.5);
+    pathBlue.close();
+
+    final pathRed = Path();
+    pathRed.moveTo(size.width / 1.2, size.height / 2);
+    pathRed.lineTo(size.width, size.height / 1.65);
+    pathRed.lineTo(size.width, size.height / 2.5);
+    pathRed.close();
+
+    canvas.drawPath(pathYellow, paintYellow);
+    canvas.drawPath(pathBlue, paintBlue);
+    canvas.drawPath(pathRed, paintRed);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

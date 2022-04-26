@@ -9,11 +9,11 @@ class MenuDataProvider {
 
   MenuDataProvider({required this.httpClient});
 
-  Future<List<dynamic>> getAllMenu() async {
+  Future<List<dynamic>> getAllMenu(queryParam) async {
     try {
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/menu?_format=json'),
+            'http://45.79.249.127/zebuapi/jsonapi/node/menu/search?title=${queryParam}&_format=json'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
@@ -40,6 +40,7 @@ class MenuDataProvider {
         //     decoded.map<Menu>((menuData) => Menu.fromJson(menuData)).toList();
 
         // print(result);
+
         return menu;
       } else {
         return ["No Menu Items Found"];
