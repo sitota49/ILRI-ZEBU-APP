@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:zebu_app/models/zebuUser.dart';
@@ -39,7 +38,7 @@ class LoginDataProvider {
     try {
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/appuser?filter[field_email]=${email}'),
+            'http://45.79.249.127/zebuapi/jsonapi/node/appuser?filter[field_email]=$email'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',

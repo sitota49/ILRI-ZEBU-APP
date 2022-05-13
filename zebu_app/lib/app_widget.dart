@@ -3,6 +3,7 @@ import 'package:zebu_app/bloc/announcement/announcement_bloc.dart';
 import 'package:zebu_app/bloc/announcement/announcement_event.dart';
 import 'package:zebu_app/bloc/authentication/authentication_bloc.dart';
 import 'package:zebu_app/bloc/authentication/authentication_event.dart';
+import 'package:zebu_app/bloc/booking/booking_bloc.dart';
 import 'package:zebu_app/bloc/login/login_bloc.dart';
 import 'package:zebu_app/bloc/menu/menu_bloc.dart';
 import 'package:zebu_app/bloc/menu/menu_event.dart';
@@ -11,17 +12,18 @@ import 'package:zebu_app/bloc/service/service_bloc.dart';
 import 'package:zebu_app/bloc/service/service_event.dart';
 
 import 'package:zebu_app/data_provider/announcement_data.dart';
+import 'package:zebu_app/data_provider/booking_data.dart';
 import 'package:zebu_app/data_provider/login_data.dart';
 import 'package:zebu_app/data_provider/menu_data.dart';
 import 'package:zebu_app/data_provider/service_data.dart';
 import 'package:zebu_app/repository/announcement_repositiory.dart';
+import 'package:zebu_app/repository/booking_repository.dart';
 import 'package:zebu_app/repository/login_repository.dart';
 import 'package:zebu_app/repository/menu_repository.dart';
 import 'package:zebu_app/repository/service_repository.dart';
 import 'package:zebu_app/repository/user_repository.dart';
 import 'package:zebu_app/routeGenerator.dart';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,17 +32,16 @@ import 'package:http/http.dart' as http;
 import 'package:zebu_app/screens/home.dart';
 
 class AppWidget extends StatefulWidget {
-  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
-
   final navigatorKey = GlobalKey<NavigatorState>();
   static final httpClient = http.Client();
+
+ AppWidget({Key? key}) : super(key: key);
   @override
   State<AppWidget> createState() => _AppWidgetState();
 }
 
 class _AppWidgetState extends State<AppWidget> {
-  int _currentIndex = 0;
-
+  
   late PageController _pageController;
   @override
   void initState() {
@@ -68,6 +69,10 @@ class _AppWidgetState extends State<AppWidget> {
   ));
   final serviceRepository = ServiceRepository(
       dataProvider: ServiceDataProvider(
+    httpClient: AppWidget.httpClient,
+  ));
+  final bookingRepository = BookingRepository(
+      dataProvider: BookingDataProvider(
     httpClient: AppWidget.httpClient,
   ));
   final loginRepository = LoginRepository(
@@ -100,6 +105,10 @@ class _AppWidgetState extends State<AppWidget> {
             ),
         ),
         BlocProvider(
+          create: (context) =>
+              BookingBloc(bookingRepository: bookingRepository),
+        ),
+        BlocProvider(
           create: (context) => RecentMenuBloc(menuRepository: menuRepository)
             ..add(
               const RecentlyViewedLoad(),
@@ -123,7 +132,7 @@ class _AppWidgetState extends State<AppWidget> {
               Theme.of(context).textTheme,
             ),
             colorScheme: ThemeData().colorScheme.copyWith(
-                  primary: Color(0xff404E65),
+                  primary: const Color(0xff404E65),
                 ),
             scaffoldBackgroundColor: Colors.white),
         home: Home()
@@ -180,8 +189,6 @@ class _AppWidgetState extends State<AppWidget> {
     OneSignal.shared.setNotificationOpenedHandler(
         (OSNotificationOpenedResult result) async {
       try {
-        print("here");
-
         var id = await result.notification.additionalData?['id'];
 
         Navigator.pushNamed(

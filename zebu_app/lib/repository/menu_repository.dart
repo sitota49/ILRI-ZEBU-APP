@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zebu_app/models/menu.dart';
 import 'package:zebu_app/data_provider/menu_data.dart';
 
 class MenuRepository {

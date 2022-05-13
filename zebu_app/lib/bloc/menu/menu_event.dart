@@ -1,4 +1,3 @@
-import 'package:zebu_app/models/menu.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class MenuEvent extends Equatable {

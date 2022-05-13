@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zebu_app/models/service.dart';
 import 'package:http/http.dart' as http;
 

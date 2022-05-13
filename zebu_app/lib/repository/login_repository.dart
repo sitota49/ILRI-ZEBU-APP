@@ -1,4 +1,3 @@
-import 'package:zebu_app/models/zebuUser.dart';
 import 'package:zebu_app/data_provider/login_data.dart';
 import "package:firebase_auth/firebase_auth.dart";
 

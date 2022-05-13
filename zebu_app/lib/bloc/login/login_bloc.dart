@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'package:zebu_app/bloc/authentication/authentication_event.dart';
-import 'package:zebu_app/bloc/login/login_bloc.dart';
 import 'package:zebu_app/bloc/login/login_event.dart';
 import 'package:zebu_app/bloc/login/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:zebu_app/repository/user_repository.dart';
 import 'package:zebu_app/repository/login_repository.dart';
 
@@ -84,14 +81,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   void onEvent(LoginEvent event) {
-    // TODO: implement onEvent
     super.onEvent(event);
     print(event);
   }
 
   @override
   void onError(Object error, StackTrace stacktrace) {
-    // TODO: implement onError
     super.onError(error, stacktrace);
     print(stacktrace);
   }

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:zebu_app/bloc/authentication/authentication_bloc.dart';
 import 'package:zebu_app/bloc/authentication/authentication_event.dart';
 import 'package:zebu_app/bloc/authentication/authentication_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,8 +31,7 @@ class AuthenticationBloc
 
     if (event is LoggedIn) {
       yield Loading();
-      var res = await userRepository.getUser();
-      print(res);
+      await userRepository.getUser();
       // yield Authenticated();
       add(StartInitializing());
     }

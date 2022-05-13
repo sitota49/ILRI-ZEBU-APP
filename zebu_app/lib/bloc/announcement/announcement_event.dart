@@ -1,4 +1,3 @@
-import 'package:zebu_app/models/announcement.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AnnouncementEvent extends Equatable {

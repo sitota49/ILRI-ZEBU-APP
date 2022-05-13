@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 class Service {
   final String id;
@@ -18,7 +17,7 @@ class Service {
   @override
   List<Object?> get props => [id, title, description, image, options];
   factory Service.fromJson(Map<String, dynamic> json) {
-    var menu = Service(
+    var service = Service(
       title: json['title'],
       id: json['uuid'],
       description: json['field_service_description']?.toString(),
@@ -26,7 +25,7 @@ class Service {
       options: json['field_options']?.split(','),
     );
 
-    return menu;
+    return service;
   }
 
   @override

@@ -1,4 +1,3 @@
-import 'package:zebu_app/models/announcement.dart';
 import 'package:zebu_app/data_provider/announcement_data.dart';
 
 class AnnouncementRepository {

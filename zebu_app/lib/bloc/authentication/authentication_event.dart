@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class AuthenticationEvent extends Equatable {
-  AuthenticationEvent([List props = const []]);
+  const AuthenticationEvent([List props = const []]);
 }
 
 class AppStarted extends AuthenticationEvent {
@@ -31,7 +31,6 @@ class LoggedOut extends AuthenticationEvent {
   String toString() => 'LoggedOut';
 
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }
 
@@ -40,7 +39,6 @@ class StartInitializing extends AuthenticationEvent {
   String toString() => 'Start Intialize';
 
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }
 
@@ -49,7 +47,6 @@ class FinishInitializing extends AuthenticationEvent {
   String toString() => 'Finish Intialize';
 
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }
 
@@ -58,6 +55,5 @@ class GoInside extends AuthenticationEvent {
   String toString() => 'Going inside';
 
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }

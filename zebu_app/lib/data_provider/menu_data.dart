@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zebu_app/models/menu.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,7 +11,7 @@ class MenuDataProvider {
     try {
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/menu/search?title=${queryParam}&_format=json'),
+            'http://45.79.249.127/zebuapi/jsonapi/node/menu/search?title=$queryParam&_format=json'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
@@ -53,7 +51,7 @@ class MenuDataProvider {
   Future<dynamic> getCategoryMenu(String id) async {
     final response = await httpClient.get(
       Uri.parse(
-          'http://45.79.249.127/zebuapi/jsonapi/node/menu/${id}?_format=json'),
+          'http://45.79.249.127/zebuapi/jsonapi/node/menu/$id?_format=json'),
       headers: <String, String>{
         'Accept': 'application/vnd.api+json',
         'Access-Control-Allow-Origin': '*',
@@ -73,7 +71,7 @@ class MenuDataProvider {
   Future<dynamic> getSingleMenu(String id) async {
     final response = await httpClient.get(
       Uri.parse(
-          'http://45.79.249.127/zebuapi/jsonapi/node/menu/${id}?_format=json'),
+          'http://45.79.249.127/zebuapi/jsonapi/node/menu/$id?_format=json'),
       headers: <String, String>{
         'Accept': 'application/vnd.api+json',
         'Access-Control-Allow-Origin': '*',
