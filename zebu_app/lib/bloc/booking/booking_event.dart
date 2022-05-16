@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 
 abstract class BookingEvent extends Equatable {
@@ -6,8 +5,10 @@ abstract class BookingEvent extends Equatable {
 }
 
 class ServiceBookingLoad extends BookingEvent {
- final String service;
-  const ServiceBookingLoad(this.service);
+  final String service;
+  final String date;
+  final String serviceDetail;
+  const ServiceBookingLoad(this.service, this.date, this.serviceDetail);
 
   @override
   List<Object> get props => [];

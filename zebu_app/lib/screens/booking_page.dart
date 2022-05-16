@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
+import 'package:intl/intl.dart';
 
 import 'package:table_calendar/table_calendar.dart';
 import 'package:zebu_app/bloc/booking/booking_bloc.dart';
@@ -29,8 +30,12 @@ class _BookingPageState extends State<BookingPage>
   var _selectedIndex = 0;
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  DateTime _focusedDay = new DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+  DateTime _selectedDay = new DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+  late String serviceSelectedDay =
+      DateFormat('yyyy-MM-dd').format(_selectedDay);
 
   @override
   void initState() {
@@ -38,7 +43,8 @@ class _BookingPageState extends State<BookingPage>
     servicebloc.add(AllServiceLoad());
     serviceSelected = "Dining Lunch";
     bookingbloc = BlocProvider.of<BookingBloc>(context);
-    bookingbloc.add(ServiceBookingLoad(serviceSelected));
+    bookingbloc.add(ServiceBookingLoad(
+        serviceSelected, serviceSelectedDay, serviceSelected));
     super.initState();
   }
 
@@ -127,6 +133,23 @@ class _BookingPageState extends State<BookingPage>
                                                   MediaQuery.of(context)
                                                       .size
                                                       .width);
+
+                                          var serviceDetailPhrase =
+                                              serviceSelected ==
+                                                          'Dining Lunch' ||
+                                                      serviceSelected ==
+                                                          'Dining Dinner' ||
+                                                      serviceSelected ==
+                                                          'Steam Sauna Men' ||
+                                                      serviceSelected ==
+                                                          'Steam Sauna Women'
+                                                  ? serviceSelected
+                                                  : selectedServiceIndex;
+
+                                          bookingbloc.add(ServiceBookingLoad(
+                                              serviceSelected,
+                                              serviceSelectedDay,
+                                              serviceDetailPhrase));
                                         });
                                       },
                                       child: Padding(
@@ -255,6 +278,21 @@ class _BookingPageState extends State<BookingPage>
                                                                             currentService.options[labelIndex];
                                                                     print(
                                                                         serviceSelected);
+
+                                                                    var serviceDetailPhrase = serviceSelected == 'Dining Lunch' ||
+                                                                            serviceSelected ==
+                                                                                'Dining Dinner' ||
+                                                                            serviceSelected ==
+                                                                                'Steam Sauna Men' ||
+                                                                            serviceSelected ==
+                                                                                'Steam Sauna Women'
+                                                                        ? serviceSelected
+                                                                        : selectedServiceIndex;
+
+                                                                    bookingbloc.add(ServiceBookingLoad(
+                                                                        serviceSelected,
+                                                                        serviceSelectedDay,
+                                                                        serviceDetailPhrase));
                                                                   });
                                                                 },
                                                                 selectedIndex:
@@ -285,12 +323,6 @@ class _BookingPageState extends State<BookingPage>
                       }
                       return Container();
                     }),
-                Container(
-                  child: Text(
-                    serviceSelected,
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
                 BlocConsumer<BookingBloc, BookingState>(
                     listener: (ctx, bookingState) {},
                     builder: (_, bookingState) {
@@ -318,110 +350,118 @@ class _BookingPageState extends State<BookingPage>
 
                       if (bookingState is ServiceBookingLoadSuccess) {
                         final bookings = bookingState.serviceBookings;
-
+                        final serviceDetail = bookingState.serviceDetail;
+                        print(serviceDetail);
                         return SingleChildScrollView(
                           child: Column(
                             children: [
-                              // Container(
-                              //   child: ListView.builder(
-                              //     controller: listScrollController,
-                              //     scrollDirection: Axis.vertical,
-                              //     shrinkWrap: true,
-                              //     itemCount: bookings.length,
-                              //     itemBuilder: (context, index) {
-                              //       var currentBooking = bookings[index];
-                              //       return Text(
-                              //         currentBooking.title,
-                              //         style: TextStyle(color: Colors.black),
-                              //       );
-                              //     },
-                              //   ),
-                              // ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  height: 350,
-                                  child: TableCalendar(
-                                    headerStyle: const HeaderStyle(
-                                      headerPadding: EdgeInsets.only(
-                                          left: 16.0, bottom: 12.0),
-                                      leftChevronVisible: false,
-                                      rightChevronVisible: false,
-                                      formatButtonVisible: false,
-                                      titleCentered: false,
-                                      titleTextStyle: TextStyle(
-                                          color: Colors.black, fontSize: 22),
-                                      formatButtonTextStyle:
-                                          TextStyle(color: Colors.white),
-                                      formatButtonShowsNext: false,
-                                    ),
-                                    calendarStyle: const CalendarStyle(
-                                      cellMargin: EdgeInsets.all(0.0),
-                                      weekendTextStyle: TextStyle(
-                                          color: Color(0xff3D3D3D),
-                                          fontWeight: FontWeight.w700),
-                                      outsideTextStyle: TextStyle(
-                                        color: Color(0xffFFDEDE),
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14.0,
-                                      ),
-                                      defaultTextStyle: TextStyle(
-                                          color: Color(0xff3D3D3D),
-                                          fontWeight: FontWeight.w700),
-                                      cellPadding: EdgeInsets.all(0.0),
-                                      selectedDecoration: BoxDecoration(
-                                          color: const Color(0xFFFF9E16),
-                                          shape: BoxShape.rectangle),
-                                      selectedTextStyle: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14.0,
-                                      ),
-                                      todayDecoration: BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.rectangle),
-                                      todayTextStyle: TextStyle(
-                                        color: Color(0xFFFF9E16),
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
-                                    firstDay: kFirstDay,
-                                    lastDay: kLastDay,
-                                    focusedDay: _focusedDay,
-                                    calendarFormat: CalendarFormat.twoWeeks,
-                                    selectedDayPredicate: (day) {
-                                      // Use `selectedDayPredicate` to determine which day is currently selected.
-                                      // If this returns true, then `day` will be marked as selected.
-
-                                      // Using `isSameDay` is recommended to disregard
-                                      // the time-part of compared DateTime objects.
-                                      return isSameDay(_selectedDay, day);
-                                    },
-                                    onDaySelected: (selectedDay, focusedDay) {
-                                      if (!isSameDay(
-                                          _selectedDay, selectedDay)) {
-                                        // Call `setState()` when updating the selected day
-                                        setState(() {
-                                          _selectedDay = selectedDay;
-                                          _focusedDay = focusedDay;
-                                        });
-                                        print("selected");
-                                        print(_selectedDay);
-                                      }
-                                    },
-                                    onPageChanged: (focusedDay) {
-                                      // No need to call `setState()` here
-                                      _focusedDay = focusedDay;
-                                    },
-                                  ),
+                              Container(
+                                child: ListView.builder(
+                                  controller: listScrollController,
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount: bookings.length,
+                                  itemBuilder: (context, index) {
+                                    var currentBooking = bookings[index];
+                                    return Text(
+                                      currentBooking.title,
+                                      style: TextStyle(color: Colors.black),
+                                    );
+                                  },
                                 ),
                               ),
                               SizedBox(
                                 height: 10,
                               ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TableCalendar(
+                                  rowHeight: 45.0,
+                                  sixWeekMonthsEnforced: true,
+                                  headerStyle: const HeaderStyle(
+                                    headerPadding: EdgeInsets.only(
+                                        left: 16.0, bottom: 12.0),
+                                    leftChevronVisible: false,
+                                    rightChevronVisible: false,
+                                    formatButtonVisible: false,
+                                    titleCentered: false,
+                                    titleTextStyle: TextStyle(
+                                        color: Colors.black, fontSize: 22),
+                                    formatButtonTextStyle:
+                                        TextStyle(color: Colors.white),
+                                    formatButtonShowsNext: false,
+                                  ),
+                                  calendarStyle: const CalendarStyle(
+                                    cellMargin: EdgeInsets.all(0.0),
+                                    weekendTextStyle: TextStyle(
+                                        color: Color(0xff3D3D3D),
+                                        fontWeight: FontWeight.w700),
+                                    outsideTextStyle: TextStyle(
+                                      color: Color(0xffFFDEDE),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14.0,
+                                    ),
+                                    defaultTextStyle: TextStyle(
+                                        color: Color(0xff3D3D3D),
+                                        fontWeight: FontWeight.w700),
+                                    cellPadding: EdgeInsets.all(0.0),
+                                    selectedDecoration: BoxDecoration(
+                                        color: const Color(0xFFFF9E16),
+                                        shape: BoxShape.rectangle),
+                                    selectedTextStyle: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14.0,
+                                    ),
+                                    todayDecoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.rectangle),
+                                    todayTextStyle: TextStyle(
+                                      color: Color(0xFFFF9E16),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14.0,
+                                    ),
+                                  ),
+                                  firstDay: kFirstDay,
+                                  lastDay: kLastDay,
+                                  focusedDay: _focusedDay,
+                                  calendarFormat: CalendarFormat.month,
+                                  selectedDayPredicate: (day) {
+                                    // Use `selectedDayPredicate` to determine which day is currently selected.
+                                    // If this returns true, then `day` will be marked as selected.
+
+                                    // Using `isSameDay` is recommended to disregard
+                                    // the time-part of compared DateTime objects.
+                                    return isSameDay(_selectedDay, day);
+                                  },
+                                  onDaySelected: (selectedDay, focusedDay) {
+                                    if (!isSameDay(_selectedDay, selectedDay)) {
+                                      // Call `setState()` when updating the selected day
+                                      setState(() {
+                                        _selectedDay = selectedDay;
+                                        _focusedDay = focusedDay;
+                                      });
+                                      print("selected");
+                                      print(_selectedDay);
+                                      serviceSelectedDay =
+                                          DateFormat('yyyy-MM-dd')
+                                              .format(_selectedDay);
+                                    }
+                                  },
+                                  onPageChanged: (focusedDay) {
+                                    // No need to call `setState()` here
+                                    _focusedDay = focusedDay;
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                child: Text(
+                                  serviceSelectedDay,
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              )
                             ],
                           ),
                         );

@@ -9,7 +9,11 @@ class BookingRepository {
     return await dataProvider.getAllBooking();
   }
 
-  Future<dynamic> getServiceBooking(String service) async {
-    return await dataProvider.getServiceBooking(service);
+  Future<dynamic> getServiceBooking(String service, String date) async {
+    return await dataProvider.getServiceBooking(service, date);
+  }
+
+   Future<dynamic> getServiceDetail(String serviceDetail) async {
+    return await dataProvider.getServiceDetail(serviceDetail);
   }
 }
