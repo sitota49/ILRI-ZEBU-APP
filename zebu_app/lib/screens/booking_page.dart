@@ -36,7 +36,7 @@ class _BookingPageState extends State<BookingPage>
       DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
   late String serviceSelectedDay =
       DateFormat('yyyy-MM-dd').format(_selectedDay);
-
+  String selectedTime = '';
   @override
   void initState() {
     servicebloc = BlocProvider.of<ServiceBloc>(context);
@@ -350,26 +350,22 @@ class _BookingPageState extends State<BookingPage>
 
                       if (bookingState is ServiceBookingLoadSuccess) {
                         final bookings = bookingState.serviceBookings;
-                        final serviceDetail = bookingState.serviceDetail;
-                        print(serviceDetail);
+                        final slots = bookingState.serviceDetail.slots;
+                        final quota =
+                            int.parse(bookingState.serviceDetail.quota);
+
+                        bookings.forEach((booking) {
+                          slots[booking.time]++;
+                        });
+
+                        var availableSlots = [];
+                        slots.forEach((k, v) => {
+                              if (v < quota) {availableSlots.add(k)}
+                            });
+
                         return SingleChildScrollView(
                           child: Column(
                             children: [
-                              Container(
-                                child: ListView.builder(
-                                  controller: listScrollController,
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemCount: bookings.length,
-                                  itemBuilder: (context, index) {
-                                    var currentBooking = bookings[index];
-                                    return Text(
-                                      currentBooking.title,
-                                      style: TextStyle(color: Colors.black),
-                                    );
-                                  },
-                                ),
-                              ),
                               SizedBox(
                                 height: 10,
                               ),
@@ -440,8 +436,7 @@ class _BookingPageState extends State<BookingPage>
                                         _selectedDay = selectedDay;
                                         _focusedDay = focusedDay;
                                       });
-                                      print("selected");
-                                      print(_selectedDay);
+
                                       serviceSelectedDay =
                                           DateFormat('yyyy-MM-dd')
                                               .format(_selectedDay);
@@ -456,12 +451,82 @@ class _BookingPageState extends State<BookingPage>
                               SizedBox(
                                 height: 10,
                               ),
-                              Container(
-                                child: Text(
-                                  serviceSelectedDay,
-                                  style: TextStyle(color: Colors.black),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 10.0),
+                                    availableSlots.length == 0
+                                        ? Padding(
+                                            padding: const EdgeInsets.all(15.0),
+                                            child: Text(
+                                              'No Data Available',
+                                              style: TextStyle(
+                                                color: Color(0xff5D7498),
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          )
+                                        : GridView.builder(
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              crossAxisSpacing: 5,
+                                              mainAxisSpacing: 5,
+                                              childAspectRatio: 0.90 / 0.35,
+                                            ),
+                                            scrollDirection: Axis.vertical,
+                                            shrinkWrap: true,
+                                            physics: ClampingScrollPhysics(),
+                                            itemCount: availableSlots.length,
+                                            itemBuilder: (context, index) {
+                                              var timeslot =
+                                                  availableSlots[index];
+                                              return Container(
+                                                height: 20.0,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    3.5,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      selectedTime == timeslot
+                                                          ? Color(0xFFFF9E16)
+                                                          : Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(10.0),
+                                                  ),
+                                                ),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      selectedTime = timeslot;
+                                                    });
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      timeslot.toString(),
+                                                      style: TextStyle(
+                                                        color: selectedTime ==
+                                                                timeslot
+                                                            ? Colors.white
+                                                            : Color(0xff5D7498),
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                  ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         );
