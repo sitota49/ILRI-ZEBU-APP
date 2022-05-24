@@ -21,4 +21,8 @@ class BookingRepository {
   Future<dynamic> createBooking(Booking booking) async {
     return await dataProvider.createBooking(booking);
   }
+
+    Future<List<dynamic>> getBookingsByPhone() async {
+    return await dataProvider.getBookingsByPhone();
+  }
 }

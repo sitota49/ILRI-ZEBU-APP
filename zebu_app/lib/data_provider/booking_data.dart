@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zebu_app/models/booking.dart';
 import 'package:http/http.dart' as http;
 import 'package:zebu_app/models/serviceDetail.dart';
@@ -107,6 +108,36 @@ class BookingDataProvider {
       return 'Booking created';
     } else {
       throw Exception('Failed to create booking.');
+    }
+  }
+
+  Future<List<dynamic>> getBookingsByPhone() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var fetchedUser = json.decode(prefs.getString('user')!);
+      var phoneNo = fetchedUser['phoneNumber'];
+      final response = await httpClient.get(
+        Uri.parse(
+            'http://45.79.249.127/zebuapi/jsonapi/node/booking/member?_format=json&phone=$phoneNo'),
+        headers: <String, String>{
+          'Accept': 'application/vnd.api+json',
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/vnd.api+json',
+          'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Accept'
+        },
+      );
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+        var booking = json
+            .map<Booking>((bookingData) => Booking.fromJson(bookingData))
+            .toList();
+
+        return booking;
+      } else {
+        return ["No Booking Items Found"];
+      }
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 }

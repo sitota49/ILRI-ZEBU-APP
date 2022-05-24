@@ -18,7 +18,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
             await bookingRepository.getServiceDetail(event.serviceDetail);
         final serviceBookings = await bookingRepository.getServiceBooking(
             event.service, event.date);
-       
+
         yield ServiceBookingLoadSuccess(serviceBookings, serviceDetail);
       } catch (error) {
         print(error);
@@ -27,20 +27,35 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       }
     }
 
-     if (event is Book) {
+    if (event is Book) {
       yield LoadingBooking();
       try {
-        final status =
-            await bookingRepository.createBooking(event.booking);
-        if(status == 'Booking created'){
-
-        yield BookingSuccess();
+        final status = await bookingRepository.createBooking(event.booking);
+        if (status == 'Booking created') {
+          yield BookingSuccess();
         }
-
       } catch (error) {
         print(error);
 
         yield BookingFailure();
+      }
+    }
+
+    if (event is MyBookingsLoad) {
+      yield LoadingBooking();
+      try {
+        final myBookings =
+            await bookingRepository.getBookingsByPhone();
+
+        if (myBookings[0] == "No Booking Items Found") {
+          yield const MyBookingsEmpltyFailure(message: "No Bookings Found");
+        } else {
+          yield MyBookingsLoadSuccess(myBookings);
+        }
+      } catch (error) {
+        print(error);
+
+        yield MyBookingsLoadFailure();
       }
     }
   }

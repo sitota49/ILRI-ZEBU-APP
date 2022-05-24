@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zebu_app/bloc/authentication/authentication_event.dart';
 import 'package:zebu_app/bloc/authentication/authentication_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,13 +42,16 @@ class AuthenticationBloc
       yield Registering();
     }
 
-     if (event is FinishRegistering) {
+    if (event is FinishRegistering) {
       yield Registered();
       add(StartInitializing());
     }
 
     if (event is LoggedOut) {
       yield Loading();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+
       await userRepository.logOut();
       yield Unauthenticated();
       add(AppStarted());

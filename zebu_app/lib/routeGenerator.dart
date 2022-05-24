@@ -11,6 +11,7 @@ import 'package:zebu_app/screens/login_page.dart';
 import 'package:zebu_app/screens/membership_page.dart';
 import 'package:zebu_app/screens/menu_detail_page.dart';
 import 'package:zebu_app/screens/menu_page.dart';
+import 'package:zebu_app/screens/my_booking_page.dart';
 import 'package:zebu_app/screens/onboarding_page.dart';
 import 'package:zebu_app/screens/splash_page.dart';
 
@@ -25,10 +26,11 @@ class RouteGenerator {
   static const String feedbackScreenName = "/feedbackScreen";
   static const String membershipScreenName = "/membershipScreen";
   static const String bookingScreenName = "/bookingScreen";
+  static const String mybookingScreenName = "/mybookingScreen";
   static const String announcementScreenName = "/announcementScreen";
-  static const String announcementDetailScreenName = "/announcementDetailScreen";
-  static const String menuDetailScreenName =
-      "/menuDetailScreen";
+  static const String announcementDetailScreenName =
+      "/announcementDetailScreen";
+  static const String menuDetailScreenName = "/menuDetailScreen";
   static const String mainFlowName = "/mainFlow";
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -50,11 +52,13 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => MembershipPage());
       case bookingScreenName:
         return MaterialPageRoute(builder: (_) => BookingPage());
+      case mybookingScreenName:
+        return MaterialPageRoute(builder: (_) => MyBookingPage());
       case announcementScreenName:
         return MaterialPageRoute(builder: (_) => AnnouncementPage());
       case announcementDetailScreenName:
-      final args = settings.arguments as ScreenArguments;
-         return MaterialPageRoute(
+        final args = settings.arguments as ScreenArguments;
+        return MaterialPageRoute(
             builder: (_) => AnnouncementDetailPage(
                   argObj: args.argObj,
                 ));
@@ -65,10 +69,11 @@ class RouteGenerator {
                   argObj: args.argObj,
                 ));
       case mainFlowName:
-      final args = settings.arguments as ScreenArguments;
-        return MaterialPageRoute(builder: (_) =>  MainFlow(
-            argObj: args.argObj,
-          ));
+        final args = settings.arguments as ScreenArguments;
+        return MaterialPageRoute(
+            builder: (_) => MainFlow(
+                  argObj: args.argObj,
+                ));
 
       // case detailScreenName:
       //   final args = settings.arguments as ScreenArguments;

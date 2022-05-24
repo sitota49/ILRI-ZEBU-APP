@@ -47,3 +47,22 @@ class BookingFailure extends BookingState {
   @override
   List<Object> get props => [];
 }
+
+class MyBookingsLoadSuccess extends BookingState {
+  final List<dynamic> myBookings;
+
+
+  const MyBookingsLoadSuccess(
+      [this.myBookings = const []]);
+
+  @override
+  List<Object> get props => [myBookings];
+}
+
+class MyBookingsLoadFailure extends BookingState {}
+
+class MyBookingsEmpltyFailure extends BookingState {
+  final String message;
+
+  const MyBookingsEmpltyFailure({required this.message});
+}

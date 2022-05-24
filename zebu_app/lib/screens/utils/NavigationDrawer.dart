@@ -12,6 +12,7 @@ import 'package:zebu_app/screens/booking_page.dart';
 import 'package:zebu_app/screens/feedback_page.dart';
 import 'package:zebu_app/screens/membership_page.dart';
 import 'package:zebu_app/screens/menu_page.dart';
+import 'package:zebu_app/screens/my_booking_page.dart';
 
 class NavigationDrawer extends StatelessWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
@@ -60,20 +61,33 @@ class NavigationDrawer extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => FeedbackPage()));
-                    } else {
-                      if (navState is Announcement) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AnnouncementPage()));
-                      } else if (navState is LoggedOutNavState) {
-                        authBloc.add(LoggedOut());
-                      }
+                    } else if (navState is Announcement) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AnnouncementPage()));
+                    } else if (navState is LoggedOutNavState) {
+                      authBloc.add(LoggedOut());
+                    } else if (navState is MyBooking) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyBookingPage()));
                     }
                   },
                   builder: (context, navState) {
                     return Column(
                       children: [
+                        const SizedBox(height: 24),
+                        ListTile(
+                          leading: Icon(Icons.calendar_month),
+                          title: Text("My Bookings"),
+                          onTap: () {
+                            final navBloc =
+                                BlocProvider.of<NavDrawerBloc>(context);
+                            navBloc.add(MyBookingPageEvent());
+                          },
+                        ),
                         const SizedBox(height: 24),
                         ListTile(
                           leading: Icon(Icons.man),

@@ -22,3 +22,12 @@ class Book extends BookingEvent {
   
   List<Object?> get props => [];
 }
+
+class MyBookingsLoad extends BookingEvent {
+  
+
+  const MyBookingsLoad();
+
+  @override
+  List<Object> get props => [];
+}
