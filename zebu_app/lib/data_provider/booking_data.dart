@@ -76,4 +76,37 @@ class BookingDataProvider {
       return ["No Items Found"];
     }
   }
+
+  Future<dynamic> createBooking(Booking booking) async {
+    final response = await httpClient.post(
+      Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/booking'),
+      headers: <String, String>{
+        'Content-Type': 'application/vnd.api+json',
+        'Accept': 'application/vnd.api+json',
+        'Authorization': 'Basic QWRtaW46QWRtaW5AMTIzNDU2'
+      },
+      body: jsonEncode(<String, dynamic>{
+        'data': {
+          "type": "node--booking",
+          "attributes": {
+            "title": booking.title,
+            "field_date": booking.date,
+            "field_booking_email": booking.email,
+            "field_phone_number": booking.phoneNo,
+            "field_service_type": booking.serviceType,
+            "field_time": booking.time
+          }
+        }
+      }),
+    );
+
+    print(response.body);
+    print(response.statusCode);
+
+    if (response.statusCode == 201) {
+      return 'Booking created';
+    } else {
+      throw Exception('Failed to create booking.');
+    }
+  }
 }

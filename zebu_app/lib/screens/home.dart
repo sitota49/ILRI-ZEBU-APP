@@ -24,6 +24,7 @@ class _HomeState extends State<Home> {
     announcementBloc.add(NewAnnouncementLoad());
     super.initState();
   }
+  
 
   @override
   Widget build(BuildContext context) {

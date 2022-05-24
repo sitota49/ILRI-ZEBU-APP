@@ -33,6 +33,15 @@ class AuthenticationBloc
       yield Loading();
       await userRepository.getUser();
       // yield Authenticated();
+      add(StartRegistering());
+    }
+
+    if (event is StartRegistering) {
+      yield Registering();
+    }
+
+     if (event is FinishRegistering) {
+      yield Registered();
       add(StartInitializing());
     }
 

@@ -18,6 +18,7 @@ class RouteGenerator {
   static const String homeScreenName = "/homeScreen";
   static const String accountScreenName = "/accountScreen";
   static const String onBoardingScreenName = "/onBoardingScreen";
+  static const String registrationScreenName = "/registrationScreen";
   static const String loginScreenName = "/loginScreen";
   static const String splashScreenName = "/splashScreen";
   static const String menuScreenName = "/menuScreen";

@@ -12,17 +12,14 @@ class NavDrawerBloc extends Bloc<NavDrawerEvent,NavDrawerState>{
     }else if (event is BookingPageEvent){
       yield Booking();
     }
-    else if (event is MembershipPageEvent){
-      yield Membership();
+    else if (event is FeedbackPageEvent){
+      yield FeedbackState();
     }
      else if (event is AnnouncementPageEvent) {
       yield Announcement();
     }
-    else if(event is FeedbackPageEvent){
-      yield Feedback();
-    }
     else if(event is LogoutPageEvent){
-      yield LoggedOut();
+      yield LoggedOutNavState();
     }
   }
 

@@ -37,3 +37,13 @@ class ServiceDetailLoadSuccess extends BookingState {
 }
 
 class ServiceDetailLoadFailure extends BookingState {}
+
+class BookingSuccess extends BookingState {
+  @override
+  List<Object> get props => [];
+}
+
+class BookingFailure extends BookingState {
+  @override
+  List<Object> get props => [];
+}

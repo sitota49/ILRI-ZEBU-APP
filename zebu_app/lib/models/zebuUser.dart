@@ -1,26 +1,29 @@
 class ZebuUser {
-  final String id;
-  final String fullName;
+  final String name;
   final String? email;
   final String? phoneNumber;
 
   ZebuUser(
-      {required this.id, required this.fullName, this.email, this.phoneNumber});
+      { required this.name, this.email, this.phoneNumber});
 
   @override
-  List<Object?> get props => [id, fullName, email, phoneNumber];
-  factory ZebuUser.fromJson(Map<String, dynamic> json) {
-    var zebuUser = ZebuUser(
-      fullName: json['attributes']['title'],
-      id: json['id'],
-      email: json['attributes']['field_email']?.toString(),
-      phoneNumber: json['attributes']['field_phonenumber']?.toString(),
-    );
+  List<Object?> get props =>  [name, email, phoneNumber];
 
-    return zebuUser;
-  }
+
+  ZebuUser.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        email = json['email'],
+        phoneNumber = json['phoneNumber'];
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'email': email,
+        'phoneNumber': phoneNumber,
+      };
+
+
 
   @override
   String toString() =>
-      'ZebuUser {id: $id , fullName: $fullName, email: $email, phoneNumber: $phoneNumber}';
+      'ZebuUser {name: $name, email: $email, phoneNumber: $phoneNumber}';
 }

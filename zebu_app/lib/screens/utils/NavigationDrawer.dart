@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zebu_app/bloc/authentication/authentication_bloc.dart';
 import 'package:zebu_app/bloc/navigation_drawer/nav_drawer_bloc.dart';
 import 'package:zebu_app/bloc/navigation_drawer/nav_drawer_event.dart';
 import 'package:zebu_app/bloc/navigation_drawer/nav_drawer_state.dart';
+import 'package:zebu_app/bloc/authentication/authentication_bloc.dart';
+import 'package:zebu_app/bloc/authentication/authentication_event.dart';
+import 'package:zebu_app/bloc/authentication/authentication_state.dart';
 import 'package:zebu_app/screens/announcement_page.dart';
 import 'package:zebu_app/screens/booking_page.dart';
+import 'package:zebu_app/screens/feedback_page.dart';
 import 'package:zebu_app/screens/membership_page.dart';
 import 'package:zebu_app/screens/menu_page.dart';
 
@@ -13,6 +18,7 @@ class NavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationBloc authBloc = BlocProvider.of<AuthenticationBloc>(context);
     return Drawer(
       child: Container(
         child: ListView(
@@ -42,30 +48,28 @@ class NavigationDrawer extends StatelessWidget {
                 child: BlocConsumer<NavDrawerBloc, NavDrawerState>(
                   listener: (context, navState) {
                     if (navState is Menu) {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new MenuPage()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => MenuPage()));
                     } else if (navState is Booking) {
                       Navigator.push(
                           context,
-                          new MaterialPageRoute(
-                              builder: (context) => new BookingPage()));
-                    } else if (navState is Membership) {
+                          MaterialPageRoute(
+                              builder: (context) => BookingPage()));
+                    } else if (navState is FeedbackState) {
                       Navigator.push(
                           context,
-                          new MaterialPageRoute(
-                              builder: (context) => new MembershipPage()));
-                    } else if (navState is Announcement) {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new AnnouncementPage()));
+                          MaterialPageRoute(
+                              builder: (context) => FeedbackPage()));
+                    } else {
+                      if (navState is Announcement) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AnnouncementPage()));
+                      } else if (navState is LoggedOutNavState) {
+                        authBloc.add(LoggedOut());
+                      }
                     }
-
-                    // else if(navState is LoggedOut){
-                    //   Navigator.of(context).pushNamed(LogoutPage.routeName);
-                    // }
                   },
                   builder: (context, navState) {
                     return Column(
@@ -85,9 +89,7 @@ class NavigationDrawer extends StatelessWidget {
                           leading: Icon(Icons.logout),
                           title: Text("Logout"),
                           onTap: () {
-                            final navBloc =
-                                BlocProvider.of<NavDrawerBloc>(context);
-                            navBloc.add(LogoutPageEvent());
+                            authBloc.add(LoggedOut());
                           },
                         ),
                       ],

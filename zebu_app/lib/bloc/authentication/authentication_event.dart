@@ -34,6 +34,30 @@ class LoggedOut extends AuthenticationEvent {
   List<Object> get props => [];
 }
 
+class Register extends AuthenticationEvent {
+  @override
+  String toString() => 'Register';
+
+  @override
+  List<Object> get props => [];
+}
+
+class StartRegistering extends AuthenticationEvent {
+  @override
+  String toString() => 'Start Register';
+
+  @override
+  List<Object> get props => [];
+}
+
+class FinishRegistering extends AuthenticationEvent {
+  @override
+  String toString() => 'Finish Register';
+
+  @override
+  List<Object> get props => [];
+}
+
 class StartInitializing extends AuthenticationEvent {
   @override
   String toString() => 'Start Intialize';

@@ -201,7 +201,7 @@ class MenuItem extends StatelessWidget {
                   recentlyViewedList.add(prefObjEncoded);
                 }
               }
-
+              
               prefs.setStringList(('recentlyViewed'), recentlyViewedList);
             }
             Navigator.pushNamed(

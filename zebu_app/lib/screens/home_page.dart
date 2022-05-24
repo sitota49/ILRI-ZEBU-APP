@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:zebu_app/routeGenerator.dart';
+import 'package:zebu_app/screens/home.dart';
 import 'package:zebu_app/screens/onboarding_page.dart';
 import 'package:zebu_app/screens/splash_page.dart';
 import 'package:zebu_app/screens/utils/NavigationDrawer.dart';
@@ -50,91 +51,8 @@ class _HomePageState extends State<HomePage> {
           }
           if (authentiationState is Inside) {
             //main home page goes here
-            return Container(); //   Container(
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       crossAxisAlignment: CrossAxisAlignment.center,
-            //       children: [
-            //         const Text("homepage"),
-            //         Container(
-            //           color: Colors.white,
-            //           child: Padding(
-            //             padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-            //             child: SizedBox(
-            //               width: double.infinity,
-            //               height: 50,
-            //               child: ElevatedButton(
-            //                 onPressed: () {
-            //                   Navigator.pushNamed(
-            //                     context,
-            //                     RouteGenerator.mainFlowName,
-            //                     arguments: ScreenArguments({'index': 0}),
-            //                   );
-            //                 },
-            //                 style: ButtonStyle(
-            //                   backgroundColor: MaterialStateProperty.all<Color>(
-            //                       Color(0xff404E65)),
-            //                   shape: MaterialStateProperty.all<
-            //                       RoundedRectangleBorder>(
-            //                     RoundedRectangleBorder(
-            //                       borderRadius: BorderRadius.circular(20),
-            //                     ),
-            //                   ),
-            //                 ),
-            //                 child: Text(
-            //                   "Menu",
-            //                   textAlign: TextAlign.center,
-            //                   style: TextStyle(
-            //                       fontFamily: 'Raleway',
-            //                       fontSize: 20,
-            //                       fontWeight: FontWeight.bold,
-            //                       color: Colors.white),
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //         Container(
-            //           child: Padding(
-            //             padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-            //             child: SizedBox(
-            //               width: double.infinity,
-            //               height: 50,
-            //               child: ElevatedButton(
-            //                 onPressed: () {
-            //                   Navigator.pushNamed(
-            //                     context,
-            //                     RouteGenerator.mainFlowName,
-            //                     arguments: ScreenArguments({'index': 1}),
-            //                   );
-            //                 },
-            //                 style: ButtonStyle(
-            //                   backgroundColor: MaterialStateProperty.all<Color>(
-            //                       Color(0xff404E65)),
-            //                   shape: MaterialStateProperty.all<
-            //                       RoundedRectangleBorder>(
-            //                     RoundedRectangleBorder(
-            //                       borderRadius: BorderRadius.circular(20),
-            //                     ),
-            //                   ),
-            //                 ),
-            //                 child: Text(
-            //                   "booking",
-            //                   textAlign: TextAlign.center,
-            //                   style: TextStyle(
-            //                       fontFamily: 'Raleway',
-            //                       fontSize: 20,
-            //                       fontWeight: FontWeight.bold,
-            //                       color: Colors.white),
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // );
+            return Home(); 
+           
           }
 
           return Container();

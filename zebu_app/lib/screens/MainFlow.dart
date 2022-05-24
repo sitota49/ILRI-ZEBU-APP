@@ -63,7 +63,7 @@ class _MainFlowState extends State<MainFlow> {
               icon: Icon(Icons.local_dining), label: 'Menu'),
           BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Booking'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.wallet_membership), label: 'Membership'),
+              icon: Icon(Icons.question_mark), label: 'Feedback'),
           BottomNavigationBarItem(
               icon: Icon(Icons.notifications_active), label: 'Announcement'),
         ],

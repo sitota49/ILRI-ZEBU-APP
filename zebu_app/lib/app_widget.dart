@@ -3,6 +3,7 @@ import 'package:zebu_app/bloc/announcement/announcement_bloc.dart';
 import 'package:zebu_app/bloc/announcement/announcement_event.dart';
 import 'package:zebu_app/bloc/authentication/authentication_bloc.dart';
 import 'package:zebu_app/bloc/authentication/authentication_event.dart';
+import 'package:zebu_app/bloc/authentication/authentication_state.dart';
 import 'package:zebu_app/bloc/booking/booking_bloc.dart';
 import 'package:zebu_app/bloc/login/login_bloc.dart';
 import 'package:zebu_app/bloc/menu/menu_bloc.dart';
@@ -30,18 +31,21 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:zebu_app/screens/home.dart';
+import 'package:zebu_app/screens/home_page.dart';
+import 'package:zebu_app/screens/onboarding_page.dart';
+
+import 'package:zebu_app/screens/splash_page.dart';
 
 class AppWidget extends StatefulWidget {
   final navigatorKey = GlobalKey<NavigatorState>();
   static final httpClient = http.Client();
 
- AppWidget({Key? key}) : super(key: key);
+  AppWidget({Key? key}) : super(key: key);
   @override
   State<AppWidget> createState() => _AppWidgetState();
 }
 
 class _AppWidgetState extends State<AppWidget> {
-  
   late PageController _pageController;
   @override
   void initState() {
@@ -135,45 +139,45 @@ class _AppWidgetState extends State<AppWidget> {
                   primary: const Color(0xff404E65),
                 ),
             scaffoldBackgroundColor: Colors.white),
-        home: Home()
-        // BlocConsumer<AuthenticationBloc, AuthenticationState>(
-        //     listener: (context, state) {
-        //   print("listener app");
-        //   print(state);
-        //   if (state is Unauthenticated) {
-        //     Navigator.of(context).pushAndRemoveUntil(
-        //         MaterialPageRoute(builder: (context) => const SplashPage()),
-        //         (Route<dynamic> route) => false);
-        //   } else if (state is Initializing) {
-        //     Navigator.pushNamed(
-        //       context,
-        //       RouteGenerator.onBoardingScreenName,
-        //     );
-        //   } else if (state is Inside) {
-        //     Navigator.pushNamed(
-        //       context,
-        //       RouteGenerator.homeScreenName,
-        //     );
-        //   }
-        // }, buildWhen: ((previous, current) {
-        //   if (current is Unauthenticated) {
-        //     return false;
-        //   }
-        //   return true;
-        // }), builder: (context, state) {
-        //   print("builder app");
-        //   print(state);
-        //   if (state is Unauthenticated) {
-        //     return SplashPage();
-        //   } else if (state is Initializing) {
-        //     return OnBoardingPage();
-        //   } else if (state is Inside) {
-        //     return HomePage();
-        //   } else {
-        //     return SplashPage();
-        //   }
-        // }),
-        ,
+        home:
+            // Home()
+            BlocConsumer<AuthenticationBloc, AuthenticationState>(
+                listener: (context, state) {
+          print("listener app");
+          print(state);
+          if (state is Unauthenticated) {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const SplashPage()),
+                (Route<dynamic> route) => false);
+          } else if (state is Initializing || state is Registering) {
+            Navigator.pushNamed(
+              context,
+              RouteGenerator.onBoardingScreenName,
+            );
+          } else if (state is Inside) {
+            Navigator.pushNamed(
+              context,
+              RouteGenerator.homeScreenName,
+            );
+          }
+        }, buildWhen: ((previous, current) {
+          if (current is Unauthenticated) {
+            return false;
+          }
+          return true;
+        }), builder: (context, state) {
+          print("builder app");
+          print(state);
+          if (state is Unauthenticated) {
+            return SplashPage();
+          } else if (state is Initializing || state is Registering) {
+            return OnBoardingPage();
+          } else if (state is Inside) {
+            return HomePage();
+          } else {
+            return SplashPage();
+          }
+        }),
         debugShowCheckedModeBanner: false,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),

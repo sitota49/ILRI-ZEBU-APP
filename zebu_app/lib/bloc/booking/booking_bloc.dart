@@ -26,5 +26,22 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         yield ServiceBookingLoadFailure();
       }
     }
+
+     if (event is Book) {
+      yield LoadingBooking();
+      try {
+        final status =
+            await bookingRepository.createBooking(event.booking);
+        if(status == 'Booking created'){
+
+        yield BookingSuccess();
+        }
+
+      } catch (error) {
+        print(error);
+
+        yield BookingFailure();
+      }
+    }
   }
 }

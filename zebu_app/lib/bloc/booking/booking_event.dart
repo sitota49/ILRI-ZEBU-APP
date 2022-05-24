@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:zebu_app/models/booking.dart';
 
 abstract class BookingEvent extends Equatable {
   const BookingEvent();
@@ -12,4 +13,12 @@ class ServiceBookingLoad extends BookingEvent {
 
   @override
   List<Object> get props => [];
+}
+
+class Book extends BookingEvent {
+  final Booking booking;
+  const Book(this.booking);
+
+  
+  List<Object?> get props => [];
 }

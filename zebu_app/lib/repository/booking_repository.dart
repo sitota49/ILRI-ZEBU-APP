@@ -1,4 +1,5 @@
 import 'package:zebu_app/data_provider/booking_data.dart';
+import 'package:zebu_app/models/booking.dart';
 
 class BookingRepository {
   final BookingDataProvider dataProvider;
@@ -15,5 +16,9 @@ class BookingRepository {
 
    Future<dynamic> getServiceDetail(String serviceDetail) async {
     return await dataProvider.getServiceDetail(serviceDetail);
+  }
+
+  Future<dynamic> createBooking(Booking booking) async {
+    return await dataProvider.createBooking(booking);
   }
 }
