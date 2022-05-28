@@ -150,6 +150,8 @@ class _BookingPageState extends State<BookingPage>
                                                   ? serviceSelected
                                                   : selectedServiceIndex;
 
+                                          
+                                          
                                           bookingbloc.add(ServiceBookingLoad(
                                               serviceSelected,
                                               serviceSelectedDay,

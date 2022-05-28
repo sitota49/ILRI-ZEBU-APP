@@ -101,8 +101,6 @@ class BookingDataProvider {
       }),
     );
 
-    print(response.body);
-    print(response.statusCode);
 
     if (response.statusCode == 201) {
       return 'Booking created';
@@ -138,6 +136,38 @@ class BookingDataProvider {
       }
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  Future<dynamic> deleteBooking(String id) async {
+    final response = await httpClient.delete(
+      Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/booking/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/vnd.api+json',
+        'Accept': 'application/vnd.api+json',
+        'Authorization': 'Basic QWRtaW46QWRtaW5AMTIzNDU2'
+      },
+      body: jsonEncode(<String, dynamic>{
+        // 'data': {
+        //   "type": "node--booking",
+        //   "attributes": {
+        //     "title": booking.title,
+        //     "field_date": booking.date,
+        //     "field_booking_email": booking.email,
+        //     "field_phone_number": booking.phoneNo,
+        //     "field_service_type": booking.serviceType,
+        //     "field_time": booking.time
+        //   }
+        // }
+      }),
+    );
+
+
+
+    if (response.statusCode == 204) {
+      return 'Booking deleted';
+    } else {
+      throw Exception('Failed to delete booking.');
     }
   }
 }

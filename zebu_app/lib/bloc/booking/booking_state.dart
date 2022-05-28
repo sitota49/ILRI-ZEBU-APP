@@ -66,3 +66,13 @@ class MyBookingsEmpltyFailure extends BookingState {
 
   const MyBookingsEmpltyFailure({required this.message});
 }
+
+class DeleteBookingSuccess extends BookingState {
+  @override
+  List<Object> get props => [];
+}
+
+class DeleteBookingFailure extends BookingState {
+  @override
+  List<Object> get props => [];
+}

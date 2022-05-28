@@ -22,7 +22,11 @@ class BookingRepository {
     return await dataProvider.createBooking(booking);
   }
 
-    Future<List<dynamic>> getBookingsByPhone() async {
+  Future<List<dynamic>> getBookingsByPhone() async {
     return await dataProvider.getBookingsByPhone();
+  }
+
+   Future<dynamic> deleteBooking(String id) async {
+    return await dataProvider.deleteBooking(id);
   }
 }

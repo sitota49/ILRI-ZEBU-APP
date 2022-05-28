@@ -58,159 +58,175 @@ class _MyBookingPageState extends State<MyBookingPage> {
         body: DefaultTextStyle(
           style: TextStyle(decoration: TextDecoration.none),
           child: SingleChildScrollView(
-            child: Center(
-              child: BlocConsumer<BookingBloc, BookingState>(
-                  listener: (ctx, myBookingsListState) {},
-                  builder: (_, myBookingsListState) {
-                    if (myBookingsListState is LoadingBooking) {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.3,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Color(0xff5D7498),
-                          ),
+            child: BlocConsumer<BookingBloc, BookingState>(
+                listener: (ctx, myBookingsListState) {},
+                builder: (_, myBookingsListState) {
+                  if (myBookingsListState is LoadingBooking) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height / 1.3,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xff5D7498),
                         ),
-                      );
-                    }
+                      ),
+                    );
+                  }
 
-                    if (myBookingsListState is MyBookingsLoadFailure) {
-                      return const Text(
-                        "Failed Loading",
-                        style: TextStyle(
-                          color: Color(0xff404E65),
-                          fontSize: 14,
-                        ),
-                      );
-                    }
+                  if (myBookingsListState is MyBookingsLoadFailure) {
+                    return const Text(
+                      "Failed Loading",
+                      style: TextStyle(
+                        color: Color(0xff404E65),
+                        fontSize: 14,
+                      ),
+                    );
+                  }
 
-                    if (myBookingsListState is MyBookingsEmpltyFailure) {
-                      return const Text(
-                        "No Booking Items Found",
-                        style: TextStyle(
-                          color: Color(0xff404E65),
-                          fontSize: 14,
-                        ),
-                      );
-                    }
+                  if (myBookingsListState is MyBookingsEmpltyFailure) {
+                    return const Text(
+                      "No Booking Items Found",
+                      style: TextStyle(
+                        color: Color(0xff404E65),
+                        fontSize: 14,
+                      ),
+                    );
+                  }
 
-                    if (myBookingsListState is MyBookingsLoadSuccess) {
-                      final myBookings = myBookingsListState.myBookings;
-                      return Expanded(
-                        child: SingleChildScrollView(
-                          physics: ScrollPhysics(),
-                          child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: myBookings.length,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              final currentBooking = myBookings[index];
-                              var date = currentBooking.date.substring(0, 10);
-                              var parsed = DateTime.parse(date);
-                              var year = DateFormat.y().format(parsed);
-                              var month = DateFormat.MMM().format(parsed);
-                              var day = DateFormat.d().format(parsed);
+                  if (myBookingsListState is MyBookingsLoadSuccess) {
+                    final myBookings = myBookingsListState.myBookings;
+                    return SingleChildScrollView(
+                      physics: ScrollPhysics(),
+                      child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: myBookings.length,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final currentBooking = myBookings[index];
+                          var date = currentBooking.date.substring(0, 10);
+                          var parsed = DateTime.parse(date);
+                          var year = DateFormat.y().format(parsed);
+                          var month = DateFormat.MMM().format(parsed);
+                          var day = DateFormat.d().format(parsed);
 
-                              return Padding(
-                                padding: const EdgeInsets.all(2.0),
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, right: 8.0),
+                              child: Container(
+                                height: 100,
+                                decoration: new BoxDecoration(
+                                    color: Color(0xff404E65),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(25))),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8.0, right: 8.0),
-                                  child: Container(
-                                    height: 100,
-                                    decoration: new BoxDecoration(
-                                        color: Color(0xff404E65),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(25))),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 230,
-                                              margin: EdgeInsets.only(left: 10),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    currentBooking.serviceType,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                    softWrap: true,
-                                                  ),
-                                                  Text(
-                                                    currentBooking.time,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                    softWrap: true,
-                                                  ),
-                                                ],
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 230,
+                                          margin: EdgeInsets.only(left: 10),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                currentBooking.serviceType,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                softWrap: true,
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: Container(),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(right: 40),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    month.toUpperCase(),
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xffFF9E16),
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  SizedBox(height: 2),
-                                                  Text(
-                                                    day.length == 1
-                                                        ? "0" + day
-                                                        : day,
-                                                    style:
-                                                        TextStyle(fontSize: 22),
-                                                  ),
-                                                  SizedBox(height: 2),
-                                                  Text(
-                                                    year,
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xffFF9E16),
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )
-                                                ],
+                                              Text(
+                                                currentBooking.time,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                softWrap: true,
                                               ),
-                                            )
-                                          ]),
-                                    ),
-                                  ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(right: 40),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                month.toUpperCase(),
+                                                style: TextStyle(
+                                                    color: Color(0xffFF9E16),
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              SizedBox(height: 2),
+                                              Text(
+                                                day.length == 1
+                                                    ? "0" + day
+                                                    : day,
+                                                style: TextStyle(fontSize: 22),
+                                              ),
+                                              SizedBox(height: 2),
+                                              Text(
+                                                year,
+                                                style: TextStyle(
+                                                    color: Color(0xffFF9E16),
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () => {
+                                            BlocProvider.of<BookingBloc>(
+                                                    context)
+                                                .add(DeleteBooking(
+                                                    currentBooking.id)),
+                                            BlocProvider.of<BookingBloc>(
+                                                    context)
+                                                .add(MyBookingsLoad())
+                                          },
+                                          child: Container(
+                                            child: Column(children: [
+                                              Icon(
+                                                Icons.cancel,
+                                                color: Colors.red,
+                                              ),
+                                              Text(
+                                                "Delete",
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              )
+                                            ]),
+                                          ),
+                                        ),
+                                      ]),
                                 ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    }
-                    return Container();
-                  }),
-            ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return Container();
+                }),
           ),
         ));
   }

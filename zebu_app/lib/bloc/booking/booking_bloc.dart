@@ -58,5 +58,19 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         yield MyBookingsLoadFailure();
       }
     }
+
+    if (event is DeleteBooking) {
+      yield LoadingBooking();
+      try {
+        final status = await bookingRepository.deleteBooking(event.id);
+        if (status == 'Booking created') {
+          yield DeleteBookingSuccess();
+        }
+      } catch (error) {
+        print(error);
+
+        yield DeleteBookingFailure();
+      }
+    }
   }
 }
