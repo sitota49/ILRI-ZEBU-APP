@@ -170,4 +170,25 @@ class BookingDataProvider {
       throw Exception('Failed to delete booking.');
     }
   }
+
+Future<dynamic> getSingleBooking(String id) async {
+    final response = await httpClient.get(
+      Uri.parse(
+          'http://45.79.249.127/zebuapi/jsonapi/node/booking/$id?_format=json'),
+      headers: <String, String>{
+        'Accept': 'application/vnd.api+json',
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Accept'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+
+      return Booking.fromJson(json[0]);
+    } else {
+      return ["No Menu Items Found"];
+    }
+  }
 }

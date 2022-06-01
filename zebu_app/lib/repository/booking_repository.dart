@@ -29,4 +29,8 @@ class BookingRepository {
    Future<dynamic> deleteBooking(String id) async {
     return await dataProvider.deleteBooking(id);
   }
+
+  Future<dynamic> getSingleBooking(String id) async {
+    return await dataProvider.getSingleBooking(id);
+  }
 }

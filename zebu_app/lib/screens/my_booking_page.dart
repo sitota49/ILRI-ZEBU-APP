@@ -41,10 +41,14 @@ class _MyBookingPageState extends State<MyBookingPage> {
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            color: Color(0xff404E65),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+              icon: Icon(Icons.arrow_back_ios),
+              color: Color(0xff404E65),
+              onPressed: () => {
+                    Navigator.pushNamed(
+                      context,
+                      RouteGenerator.homeScreenName,
+                    ),
+                  }),
           backgroundColor: Colors.white,
           title: Text(
             'BOOKINGS',
@@ -135,7 +139,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                                MainAxisAlignment.center,
                                             children: [
                                               Text(
                                                 currentBooking.serviceType,
@@ -143,6 +147,26 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                                     fontWeight:
                                                         FontWeight.w500),
                                                 softWrap: true,
+                                              ),
+                                              SizedBox(
+                                                height: 3,
+                                              ),
+                                              Text(
+                                                month +
+                                                    ' ' +
+                                                    (day.length == 1
+                                                        ? "0" + day
+                                                        : day) +
+                                                    ' ' +
+                                                    year,
+                                                style: TextStyle(
+                                                    color: Color(0xffFF9E16),
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                softWrap: true,
+                                              ),
+                                              SizedBox(
+                                                height: 3,
                                               ),
                                               Text(
                                                 currentBooking.time,
@@ -165,55 +189,49 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
                                             children: [
-                                              Text(
-                                                month.toUpperCase(),
-                                                style: TextStyle(
-                                                    color: Color(0xffFF9E16),
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w500),
+                                              GestureDetector(
+                                                onTap: () => {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    RouteGenerator
+                                                        .editBookingScreenName,
+                                                    arguments: ScreenArguments({
+                                                      'booking': currentBooking
+                                                    }),
+                                                  ),
+                                                },
+                                                child: Container(
+                                                  child: Container(
+                                                    child: Image.asset(
+                                                      'assets/images/edit.png',
+                                                      width: 20,
+                                                      height: 20,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                              SizedBox(height: 2),
-                                              Text(
-                                                day.length == 1
-                                                    ? "0" + day
-                                                    : day,
-                                                style: TextStyle(fontSize: 22),
+                                              SizedBox(height: 15),
+                                              GestureDetector(
+                                                onTap: () => {
+                                                  BlocProvider.of<BookingBloc>(
+                                                          context)
+                                                      .add(DeleteBooking(
+                                                          currentBooking.id)),
+                                                  BlocProvider.of<BookingBloc>(
+                                                          context)
+                                                      .add(MyBookingsLoad())
+                                                },
+                                                child: Container(
+                                                  child: Container(
+                                                    child: Image.asset(
+                                                      'assets/images/delete.png',
+                                                      width: 20,
+                                                      height: 20,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                              SizedBox(height: 2),
-                                              Text(
-                                                year,
-                                                style: TextStyle(
-                                                    color: Color(0xffFF9E16),
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              )
                                             ],
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () => {
-                                            BlocProvider.of<BookingBloc>(
-                                                    context)
-                                                .add(DeleteBooking(
-                                                    currentBooking.id)),
-                                            BlocProvider.of<BookingBloc>(
-                                                    context)
-                                                .add(MyBookingsLoad())
-                                          },
-                                          child: Container(
-                                            child: Column(children: [
-                                              Icon(
-                                                Icons.cancel,
-                                                color: Colors.red,
-                                              ),
-                                              Text(
-                                                "Delete",
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              )
-                                            ]),
                                           ),
                                         ),
                                       ]),

@@ -52,6 +52,7 @@ dependencies:
   table_calendar: ^3.0.5
   scrollable_positioned_list: ^0.2.3
   calendar_calendar: ^1.0.0
+  grouped_buttons: ^1.0.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -99,6 +100,10 @@ flutter:
     - assets/images/vegeterian.png
     - assets/images/vegan.png
     - assets/images/menu_placeholder.png
+    - assets/images/delete.png
+    - assets/images/edit.png
+    - assets/images/ilriFaded.png
+    - assets/images/zebuFaded.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

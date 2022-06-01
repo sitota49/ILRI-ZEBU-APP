@@ -76,3 +76,13 @@ class DeleteBookingFailure extends BookingState {
   @override
   List<Object> get props => [];
 }
+class SingleBookingLoadSuccess extends BookingState {
+  final dynamic singleBooking;
+
+  const SingleBookingLoadSuccess([this.singleBooking = const []]);
+
+  @override
+  List<Object> get props => [singleBooking];
+}
+
+class SingleBookingLoadFailure extends BookingState {}

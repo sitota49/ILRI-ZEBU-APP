@@ -72,5 +72,19 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         yield DeleteBookingFailure();
       }
     }
+
+     if (event is SingleBookingLoad) {
+      yield LoadingBooking();
+      try {
+        final booking = await bookingRepository.getSingleBooking(event.id);
+
+        if (booking != null) {
+          yield SingleBookingLoadSuccess(booking);
+        }
+      } catch (error) {
+        print(error);
+        yield SingleBookingLoadFailure();
+      }
+    }
   }
 }

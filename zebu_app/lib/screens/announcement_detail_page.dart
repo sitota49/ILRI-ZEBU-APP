@@ -23,8 +23,8 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
   @override
   Widget build(BuildContext context) {
     var id = argObj['id'];
-    final menuBloc = BlocProvider.of<AnnouncementBloc>(context);
-    menuBloc.add(AnnouncementLoad(id));
+    final announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
+    announcementBloc.add(AnnouncementLoad(id));
     return Scaffold(
         appBar: AppBar(
           elevation: 0,

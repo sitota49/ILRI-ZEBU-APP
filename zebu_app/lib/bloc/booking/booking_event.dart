@@ -38,3 +38,11 @@ class DeleteBooking extends BookingEvent {
 
   List<Object?> get props => [];
 }
+
+class SingleBookingLoad extends BookingEvent {
+  final String id;
+  const SingleBookingLoad(this.id);
+
+  @override
+  List<Object> get props => [];
+}

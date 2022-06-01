@@ -24,7 +24,6 @@ class _HomeState extends State<Home> {
     announcementBloc.add(NewAnnouncementLoad());
     super.initState();
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -219,9 +218,9 @@ class _HomeState extends State<Home> {
                                     Container(
                                       margin: EdgeInsets.only(top: 100),
                                       child: Image.asset(
-                                        'assets/images/zebu.png',
-                                        width: 150,
-                                        height: 90,
+                                        'assets/images/zebuFaded.png',
+                                        width: 100,
+                                        height: 60,
                                       ),
                                     ),
                                     SizedBox(
@@ -230,7 +229,7 @@ class _HomeState extends State<Home> {
                                     Container(
                                         margin: EdgeInsets.only(bottom: 20),
                                         child: Image.asset(
-                                          'assets/images/ilri.png',
+                                          'assets/images/ilriFaded.png',
                                           height: 20,
                                         )),
                                   ]),
@@ -289,7 +288,8 @@ class _HomeState extends State<Home> {
                             HomeButtons(Icons.feedback, "Feedback", () {
                               Navigator.pushNamed(
                                 context,
-                                RouteGenerator.feedbackScreenName,
+                                RouteGenerator.mainFlowName,
+                                arguments: ScreenArguments({'index': 2}),
                               );
                             }, Colors.white, Color(0xff404E65),
                                 Color.fromARGB(218, 255, 158, 22)),

@@ -234,199 +234,88 @@ class _CredentialInputState extends State<CredentialInput> {
             flex: 0,
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: FlutterToggleTab(
-                    // width in percent, to set full width just set to 100
-                    width: 90,
-                    borderRadius: 30,
-                    height: 30,
-                    // initialIndex: 0,
-                    selectedBackgroundColors: [Colors.white],
-                    selectedTextStyle: TextStyle(
-                        color: Color(0xff7D7D7D),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700),
-                    unSelectedTextStyle: TextStyle(
-                        color: Color(0xff7D7D7D),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500),
-                    labels: ["E-mail", "Phone"],
-                    selectedLabelIndex: (index) {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                    },
-                    selectedIndex: _selectedIndex,
-                  ),
-                ),
                 SizedBox(height: 20),
                 Container(
                     margin: EdgeInsets.only(left: 25),
-                    child: _selectedIndex != 0
-                        ? Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    'Phone number',
-                                    style: TextStyle(
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              'Phone number',
+                              style: TextStyle(
+                                fontFamily: 'Raleway',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xff000000),
+                              ),
+                              softWrap: false,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Form(
+                          key: _formKey,
+                          child: EditTextUtils().getCustomEditTextArea(
+                              // labelValue: "Enter phone number",
+                              hintValue: "912345678",
+                              controller: _phoneTextController,
+                              keyboardType: TextInputType.number,
+                              icon: countryDropDown,
+                              validator: (value) {
+                                return validateMobile(value!);
+                              }),
+                        ),
+                        SizedBox(height: 30),
+                        Container(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 16.0, right: 16.0),
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    BlocProvider.of<LoginBloc>(context).add(
+                                        SendOtpEvent(
+                                            phoneNumber: _selectedCountryCode
+                                                    .toString() +
+                                                _phoneTextController
+                                                    .value.text));
+                                  }
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color(0xff404E65)),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Request Code",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
                                       fontFamily: 'Raleway',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xff000000),
-                                    ),
-                                    softWrap: false,
-                                  ),
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
                                 ),
                               ),
-                              SizedBox(height: 10),
-                              Form(
-                                key: _formKey,
-                                child: EditTextUtils().getCustomEditTextArea(
-                                    // labelValue: "Enter phone number",
-                                    hintValue: "912345678",
-                                    controller: _phoneTextController,
-                                    keyboardType: TextInputType.number,
-                                    icon: countryDropDown,
-                                    validator: (value) {
-                                      return validateMobile(value!);
-                                    }),
-                              ),
-                              SizedBox(height: 30),
-                              Container(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16.0, right: 16.0),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          BlocProvider.of<LoginBloc>(context)
-                                              .add(VerifyPhoneEvent(
-                                                  phoneNumber:
-                                                      _selectedCountryCode
-                                                              .toString() +
-                                                          _phoneTextController
-                                                              .value.text));
-                                        }
-                                      },
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Color(0xff404E65)),
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        "Request Code",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontFamily: 'Raleway',
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    'E-mail',
-                                    style: TextStyle(
-                                      fontFamily: 'Raleway',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xff000000),
-                                    ),
-                                    softWrap: false,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Form(
-                                key: _formKey,
-                                child: EditTextUtils().getCustomEditTextArea(
-                                    // labelValue: "Enter phone number",
-                                    hintValue: "john@gmail.com",
-                                    controller: _emailTextController,
-                                    keyboardType: TextInputType.emailAddress,
-                                    icon: Icon(Icons.email,
-                                        color: Color(0xff404E65)),
-                                    validator: (value) {
-                                      return validateEmail(value!);
-                                    }),
-                              ),
-                              SizedBox(height: 30),
-                              Container(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16.0, right: 16.0),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          BlocProvider.of<LoginBloc>(context)
-                                              .add(SendOtpEvent(
-                                                  phoneNumber:
-                                                      _selectedCountryCode
-                                                              .toString() +
-                                                          _phoneTextController
-                                                              .value.text));
-                                        }
-                                      },
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Color(0xff404E65)),
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        "Send Link",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontFamily: 'Raleway',
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          ))
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ))
               ],
             ),
           ),
