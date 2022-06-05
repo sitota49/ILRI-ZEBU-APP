@@ -1,4 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zebu_app/bloc/feedback/feedback_bloc.dart';
+import 'package:zebu_app/bloc/feedback/feedback_event.dart';
+import 'package:zebu_app/models/feedback.dart';
 import 'package:zebu_app/routeGenerator.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
@@ -322,16 +329,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-
-                        // hintText: "Input your opinion",
-                        hintStyle: TextStyle(color: Colors.white30),
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(new Radius.circular(10.0))),
-                        labelStyle: TextStyle(color: Colors.white)),
+                      // hintText: "Input your opinion",
+                      // hintStyle: TextStyle(color: Colors.white30),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(new Radius.circular(10.0))),
+                      // labelStyle: TextStyle(color: Colors.white)
+                    ),
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 12.0,
                     ),
                     controller: improoveTextController,
@@ -443,16 +450,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-
-                        // hintText: "Input your opinion",
-                        hintStyle: TextStyle(color: Colors.white30),
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(new Radius.circular(10.0))),
-                        labelStyle: TextStyle(color: Colors.white)),
+                      // hintText: "Input your opinion",
+                      // hintStyle: TextStyle(color: Colors.white30),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(new Radius.circular(10.0))),
+                      // labelStyle: TextStyle(color: Colors.white)
+                    ),
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 12.0,
                     ),
                     controller: specificCommentTextController,
@@ -477,16 +484,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-
-                        // hintText: "Input your opinion",
-                        hintStyle: TextStyle(color: Colors.white30),
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(new Radius.circular(10.0))),
-                        labelStyle: TextStyle(color: Colors.white)),
+                      // hintText: "Input your opinion",
+                      // hintStyle: TextStyle(color: Colors.white30),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(new Radius.circular(10.0))),
+                      // labelStyle: TextStyle(color: Colors.white)
+                    ),
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 12.0,
                     ),
                     controller: describeMenuTextController,
@@ -511,16 +518,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-
-                        // hintText: "Input your opinion",
-                        hintStyle: TextStyle(color: Colors.white30),
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(new Radius.circular(10.0))),
-                        labelStyle: TextStyle(color: Colors.white)),
+                      // hintText: "Input your opinion",
+                      // hintStyle: TextStyle(color: Colors.white30),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(new Radius.circular(10.0))),
+                      // labelStyle: TextStyle(color: Colors.white)
+                    ),
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 12.0,
                     ),
                     controller: addedMenuTextController,
@@ -545,16 +552,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-
-                        // hintText: "Input your opinion",
-                        hintStyle: TextStyle(color: Colors.white30),
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(new Radius.circular(10.0))),
-                        labelStyle: TextStyle(color: Colors.white)),
+                      // hintText: "Input your opinion",
+                      // hintStyle: TextStyle(color: Colors.white30),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(new Radius.circular(10.0))),
+                      // labelStyle: TextStyle(color: Colors.white)
+                    ),
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 12.0,
                     ),
                     controller: serviceOutstandingTextController,
@@ -579,19 +586,19 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-
-                        // hintText: "Input your opinion",
-                        hintStyle: TextStyle(color: Colors.white30),
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(new Radius.circular(10.0))),
-                        labelStyle: TextStyle(color: Colors.white)),
+                      // hintText: "Input your opinion",
+                      // hintStyle: TextStyle(color: Colors.white30),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(new Radius.circular(10.0))),
+                      // labelStyle: TextStyle(color: Colors.white)
+                    ),
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 12.0,
                     ),
-                    controller: improoveTextController,
+                    controller: otherCommentTextController,
                   ),
                   SizedBox(
                     height: 15,
@@ -603,14 +610,37 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // if (_formKey.currentState!.validate()) {
-                            //   BlocProvider.of<LoginBloc>(context).add(
-                            //       SendOtpEvent(
-                            //           phoneNumber:
-                            //               _selectedCountryCode.toString() +
-                            //                   _phoneTextController.value.text));
-                            // }
+                          onPressed: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            var fetchedUser =
+                                json.decode(prefs.getString('user')!);
+
+                            MyFeedBack myFeedback = MyFeedBack(
+                                title: fetchedUser['name'],
+                                email: fetchedUser['email'],
+                                phoneNo: fetchedUser['phoneNumber'],
+                                dineOften: _pickedDine,
+                                englishCommuincation: _pickedLanguage,
+                                faciltiyRating: _FacilityIndex + 1,
+                                foodItemComment:
+                                    specificCommentTextController.value.text,
+                                foodRating: _FoodIndex + 1,
+                                improoveWhat: improoveTextController.value.text,
+                                menuAdded: addedMenuTextController.value.text,
+                                menudidntMatch:
+                                    describeMenuTextController.value.text,
+                                outStandingService:
+                                    serviceOutstandingTextController.value.text,
+                                serviceRating: _ServiceIndex + 1,
+                                otherComment:
+                                    otherCommentTextController.value.text);
+                            print(myFeedback);
+                            BlocProvider.of<FeedbackBloc>(context)
+                                .add(Post(myFeedback));
+                            Navigator.pushNamed(
+                              context,
+                              RouteGenerator.homeScreenName,
+                            );
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(

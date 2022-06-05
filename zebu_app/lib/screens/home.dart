@@ -249,7 +249,7 @@ class _HomeState extends State<Home> {
                           crossAxisCount: 2,
                           childAspectRatio: (80 / 60),
                           children: <Widget>[
-                            HomeButtons(Icons.schedule, "Booking", () {
+                            HomeButtons("bookinghome", "Booking", () {
                               Navigator.pushNamed(
                                 context,
                                 RouteGenerator.mainFlowName,
@@ -258,7 +258,7 @@ class _HomeState extends State<Home> {
                             }, Colors.white, Color(0xff404E65),
                                 Color(0xffFF9E16)),
                             HomeButtons(
-                              Icons.local_dining,
+                              "Menu_ichome",
                               "Menu",
                               () {
                                 Navigator.pushNamed(
@@ -272,7 +272,7 @@ class _HomeState extends State<Home> {
                               Color(0xff404E65),
                             ),
                             HomeButtons(
-                              Ionicons.ios_book,
+                              "announcehome",
                               "Announcement",
                               () {
                                 Navigator.pushNamed(
@@ -285,7 +285,7 @@ class _HomeState extends State<Home> {
                               Colors.white,
                               Color(0xff404E65),
                             ),
-                            HomeButtons(Icons.feedback, "Feedback", () {
+                            HomeButtons("feedhome", "Feedback", () {
                               Navigator.pushNamed(
                                 context,
                                 RouteGenerator.mainFlowName,
@@ -317,10 +317,12 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
-              child: Icon(
-                icon,
-                color: iconColor,
-                size: 50,
+              child: Container(
+                child: Image.asset(
+                  'assets/images/$icon.png',
+                  width: 100,
+                  height: 60,
+                ),
               ),
             ),
             SizedBox(

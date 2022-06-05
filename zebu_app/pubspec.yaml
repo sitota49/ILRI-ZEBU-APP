@@ -104,6 +104,10 @@ flutter:
     - assets/images/edit.png
     - assets/images/ilriFaded.png
     - assets/images/zebuFaded.png
+    - assets/images/announcehome.png
+    - assets/images/feedhome.png
+    - assets/images/bookinghome.png
+    - assets/images/Menu_ichome.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
