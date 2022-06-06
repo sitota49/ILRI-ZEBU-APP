@@ -21,7 +21,6 @@ class AnnouncementDataProvider {
       );
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-
         return json
             .map<Announcement>(
                 (announcementData) => Announcement.fromJson(announcementData))

@@ -33,7 +33,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:zebu_app/screens/home.dart';
 import 'package:zebu_app/screens/home_page.dart';
 import 'package:zebu_app/screens/onboarding_page.dart';
 
@@ -82,7 +81,7 @@ class _AppWidgetState extends State<AppWidget> {
       dataProvider: BookingDataProvider(
     httpClient: AppWidget.httpClient,
   ));
-   final feedbackRepository = FeedbackRepository(
+  final feedbackRepository = FeedbackRepository(
       dataProvider: FeedbackDataProvider(
     httpClient: AppWidget.httpClient,
   ));
@@ -151,11 +150,10 @@ class _AppWidgetState extends State<AppWidget> {
                 ),
             scaffoldBackgroundColor: Colors.white),
         home:
-            // Home()
+            // Home(),
             BlocConsumer<AuthenticationBloc, AuthenticationState>(
                 listener: (context, state) {
-          print("listener app");
-          print(state);
+        
           if (state is Unauthenticated) {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => const SplashPage()),
@@ -171,14 +169,9 @@ class _AppWidgetState extends State<AppWidget> {
               RouteGenerator.homeScreenName,
             );
           }
-        }, buildWhen: ((previous, current) {
-          if (current is Unauthenticated) {
-            return false;
-          }
-          return true;
-        }), builder: (context, state) {
-          print("builder app");
-          print(state);
+        }, builder: (context, state) {
+          handleClickNotification(context);
+         
           if (state is Unauthenticated) {
             return SplashPage();
           } else if (state is Initializing || state is Registering) {
@@ -186,7 +179,7 @@ class _AppWidgetState extends State<AppWidget> {
           } else if (state is Inside) {
             return HomePage();
           } else {
-            return SplashPage();
+            return const SplashPage();
           }
         }),
         debugShowCheckedModeBanner: false,

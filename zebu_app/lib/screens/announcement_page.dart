@@ -32,7 +32,10 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             color: Color(0xff404E65),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              RouteGenerator.homeScreenName,
+            ),
           ),
           backgroundColor: Colors.white,
           title: Text(
@@ -51,6 +54,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
               child: BlocConsumer<AnnouncementBloc, AnnouncementState>(
                   listener: (ctx, announcementListState) {},
                   builder: (_, announcementListState) {
+                    print(announcementListState);
                     if (announcementListState is LoadingAnnouncement) {
                       return SizedBox(
                         height: MediaQuery.of(context).size.height / 1.3,

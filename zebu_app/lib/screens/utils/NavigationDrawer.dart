@@ -90,16 +90,6 @@ class NavigationDrawer extends StatelessWidget {
                         ),
                         const SizedBox(height: 24),
                         ListTile(
-                          leading: Icon(Icons.man),
-                          title: Text("Account"),
-                          onTap: () {
-                            final navBloc =
-                                BlocProvider.of<NavDrawerBloc>(context);
-                            navBloc.add(AccountPageEvent());
-                          },
-                        ),
-                        const SizedBox(height: 24),
-                        ListTile(
                           leading: Icon(Icons.logout),
                           title: Text("Logout"),
                           onTap: () {

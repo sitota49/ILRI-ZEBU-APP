@@ -10,13 +10,14 @@ class Announcement {
   @override
   List<Object?> get props => [id, title, description, date];
   factory Announcement.fromJson(Map<String, dynamic> json) {
+   
     var announcement = Announcement(
       title: json['title'],
       id: json['uuid'],
       description: json['field_description'],
       date: json['field_date_announcement'],
     );
-
+    
     return announcement;
   }
 

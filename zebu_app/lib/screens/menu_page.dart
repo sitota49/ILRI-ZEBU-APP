@@ -25,6 +25,7 @@ class _MenuPageState extends State<MenuPage>
   late TabController _tabController;
   TextEditingController searchController = TextEditingController();
   String queryParam = '';
+
   @override
   void initState() {
     super.initState();
@@ -54,7 +55,10 @@ class _MenuPageState extends State<MenuPage>
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             color: Color(0xff404E65),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              RouteGenerator.homeScreenName,
+            ),
           ),
           backgroundColor: Colors.white,
           title: Text(
@@ -74,10 +78,11 @@ class _MenuPageState extends State<MenuPage>
                 padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                 child: TextField(
                   onChanged: (value) {
-                    setState(() {
-                      _tabController.index = 0;
+                    Timer(const Duration(milliseconds: 500), () {
+                      setState(() {
+                        _tabController.index = 0;
+                      });
                     });
-                    print(value);
                   },
                   controller: searchController,
                   decoration: InputDecoration(
@@ -191,8 +196,7 @@ class MenuItem extends StatelessWidget {
 
               var recentlyViewedList =
                   prefs.getStringList('recentlyViewed') ?? [];
-              print("ezi");
-              print(recentlyViewedList);
+
               if (!recentlyViewedList.contains(prefObjEncoded)) {
                 if (recentlyViewedList.length > 5) {
                   recentlyViewedList.remove(recentlyViewedList[4]);
@@ -201,7 +205,7 @@ class MenuItem extends StatelessWidget {
                   recentlyViewedList.add(prefObjEncoded);
                 }
               }
-              
+
               prefs.setStringList(('recentlyViewed'), recentlyViewedList);
             }
             Navigator.pushNamed(

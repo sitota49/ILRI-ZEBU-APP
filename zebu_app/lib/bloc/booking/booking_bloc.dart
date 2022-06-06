@@ -39,13 +39,28 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
 
         yield BookingFailure();
       }
+
+    }
+    if (event is UpdateBooking) {
+      yield LoadingBooking();
+      try {
+       
+        final status = await bookingRepository.updateBooking(event.bookingUpdate);
+        
+        if (status == 'Booking updated') {
+          yield UpdateBookingSuccess();
+        }
+      } catch (error) {
+        print(error);
+
+        yield UpdateBookingFailure();
+      }
     }
 
     if (event is MyBookingsLoad) {
       yield LoadingBooking();
       try {
-        final myBookings =
-            await bookingRepository.getBookingsByPhone();
+        final myBookings = await bookingRepository.getBookingsByPhone();
 
         if (myBookings[0] == "No Booking Items Found") {
           yield const MyBookingsEmpltyFailure(message: "No Bookings Found");
@@ -73,7 +88,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       }
     }
 
-     if (event is SingleBookingLoad) {
+    if (event is SingleBookingLoad) {
       yield LoadingBooking();
       try {
         final booking = await bookingRepository.getSingleBooking(event.id);

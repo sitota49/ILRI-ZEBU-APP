@@ -1,5 +1,5 @@
 import 'package:zebu_app/screens/MainFlow.dart';
-import 'package:zebu_app/screens/account_page.dart';
+
 import 'package:zebu_app/screens/announcement_detail_page.dart';
 import 'package:zebu_app/screens/announcement_page.dart';
 import 'package:zebu_app/screens/booking_page.dart';
@@ -18,7 +18,7 @@ import 'package:zebu_app/screens/splash_page.dart';
 
 class RouteGenerator {
   static const String homeScreenName = "/homeScreen";
-  static const String accountScreenName = "/accountScreen";
+
   static const String onBoardingScreenName = "/onBoardingScreen";
   static const String registrationScreenName = "/registrationScreen";
   static const String loginScreenName = "/loginScreen";
@@ -40,8 +40,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => HomePage());
       case splashScreenName:
         return MaterialPageRoute(builder: (_) => SplashPage());
-      case accountScreenName:
-        return MaterialPageRoute(builder: (_) => AccountPage());
+
       case onBoardingScreenName:
         return MaterialPageRoute(builder: (_) => OnBoardingPage());
       case loginScreenName:

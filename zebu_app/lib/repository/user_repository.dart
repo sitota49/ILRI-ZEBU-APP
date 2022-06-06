@@ -35,6 +35,11 @@ class UserRepository {
     return user;
   }
 
+  Future<bool> hasUser() async {
+    var user = await _firebaseAuth.currentUser != null;
+    return user;
+  }
+
   Future<void> logOut() async {
     await _firebaseAuth.signOut();
   }

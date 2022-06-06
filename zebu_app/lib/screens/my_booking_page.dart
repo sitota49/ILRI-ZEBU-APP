@@ -107,8 +107,10 @@ class _MyBookingPageState extends State<MyBookingPage> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           final currentBooking = myBookings[index];
+
                           var date = currentBooking.date.substring(0, 10);
                           var parsed = DateTime.parse(date);
+
                           var year = DateFormat.y().format(parsed);
                           var month = DateFormat.MMM().format(parsed);
                           var day = DateFormat.d().format(parsed);
@@ -119,7 +121,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                               padding:
                                   const EdgeInsets.only(left: 8.0, right: 8.0),
                               child: Container(
-                                height: 100,
+                                height: 105,
                                 decoration: new BoxDecoration(
                                     color: Color(0xff404E65),
                                     borderRadius:
@@ -182,58 +184,68 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                           child: Container(),
                                         ),
                                         Container(
-                                          margin: EdgeInsets.only(right: 40),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () => {
-                                                  Navigator.pushNamed(
-                                                    context,
-                                                    RouteGenerator
-                                                        .editBookingScreenName,
-                                                    arguments: ScreenArguments({
-                                                      'booking': currentBooking
-                                                    }),
-                                                  ),
-                                                },
-                                                child: Container(
-                                                  child: Container(
-                                                    child: Image.asset(
-                                                      'assets/images/edit.png',
-                                                      width: 20,
-                                                      height: 20,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(height: 15),
-                                              GestureDetector(
-                                                onTap: () => {
-                                                  BlocProvider.of<BookingBloc>(
-                                                          context)
-                                                      .add(DeleteBooking(
-                                                          currentBooking.id)),
-                                                  BlocProvider.of<BookingBloc>(
-                                                          context)
-                                                      .add(MyBookingsLoad())
-                                                },
-                                                child: Container(
-                                                  child: Container(
-                                                    child: Image.asset(
-                                                      'assets/images/delete.png',
-                                                      width: 20,
-                                                      height: 20,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                            margin: EdgeInsets.only(right: 40),
+                                            child: (parsed
+                                                    .isAfter(DateTime.now()))
+                                                ? Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () => {
+                                                          Navigator.pushNamed(
+                                                            context,
+                                                            RouteGenerator
+                                                                .editBookingScreenName,
+                                                            arguments:
+                                                                ScreenArguments({
+                                                              'booking':
+                                                                  currentBooking
+                                                            }),
+                                                          ),
+                                                        },
+                                                        child: Container(
+                                                          child: Container(
+                                                            child: Image.asset(
+                                                              'assets/images/edit.png',
+                                                              width: 20,
+                                                              height: 20,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 15),
+                                                      GestureDetector(
+                                                        onTap: () => {
+                                                          BlocProvider.of<
+                                                                      BookingBloc>(
+                                                                  context)
+                                                              .add(DeleteBooking(
+                                                                  currentBooking
+                                                                      .id)),
+                                                          BlocProvider.of<
+                                                                      BookingBloc>(
+                                                                  context)
+                                                              .add(
+                                                                  MyBookingsLoad())
+                                                        },
+                                                        child: Container(
+                                                          child: Container(
+                                                            child: Image.asset(
+                                                              'assets/images/delete.png',
+                                                              width: 20,
+                                                              height: 20,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Container()),
                                       ]),
                                 ),
                               ),

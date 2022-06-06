@@ -101,7 +101,6 @@ class BookingDataProvider {
       }),
     );
 
-
     if (response.statusCode == 201) {
       return 'Booking created';
     } else {
@@ -162,8 +161,6 @@ class BookingDataProvider {
       }),
     );
 
-
-
     if (response.statusCode == 204) {
       return 'Booking deleted';
     } else {
@@ -171,7 +168,7 @@ class BookingDataProvider {
     }
   }
 
-Future<dynamic> getSingleBooking(String id) async {
+  Future<dynamic> getSingleBooking(String id) async {
     final response = await httpClient.get(
       Uri.parse(
           'http://45.79.249.127/zebuapi/jsonapi/node/booking/$id?_format=json'),
@@ -185,10 +182,35 @@ Future<dynamic> getSingleBooking(String id) async {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-
       return Booking.fromJson(json[0]);
     } else {
-      return ["No Menu Items Found"];
+      return ["No Booking Items Found"];
+    }
+  }
+
+  Future<dynamic> updateBooking(Booking booking) async {
+    var id = booking.id;
+    print(id);
+    final response = await httpClient.patch(
+      Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/booking/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/vnd.api+json',
+        'Accept': 'application/vnd.api+json',
+        'Authorization': 'Basic QWRtaW46QWRtaW5AMTIzNDU2'
+      },
+      body: jsonEncode(<String, dynamic>{
+        "data": {
+          "type": "node--booking",
+          "id": booking.id,
+          "attributes": {"field_date": booking.date, "field_time": booking.time}
+        }
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return 'Booking updated';
+    } else {
+      throw Exception('Failed to update booking.');
     }
   }
 }

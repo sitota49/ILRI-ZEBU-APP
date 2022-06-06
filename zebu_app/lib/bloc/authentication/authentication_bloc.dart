@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zebu_app/bloc/authentication/authentication_event.dart';
 import 'package:zebu_app/bloc/authentication/authentication_state.dart';
@@ -53,6 +54,17 @@ class AuthenticationBloc
       await prefs.clear();
 
       await userRepository.logOut();
+
+      Directory tempDir = await getTemporaryDirectory();
+      if (tempDir.existsSync()) {
+        tempDir.deleteSync(recursive: true);
+      }
+
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+
+      if (appDocDir.existsSync()) {
+        appDocDir.deleteSync(recursive: true);
+      }
       yield Unauthenticated();
       add(AppStarted());
     }

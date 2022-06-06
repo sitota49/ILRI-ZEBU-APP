@@ -14,7 +14,7 @@ class BookingRepository {
     return await dataProvider.getServiceBooking(service, date);
   }
 
-   Future<dynamic> getServiceDetail(String serviceDetail) async {
+  Future<dynamic> getServiceDetail(String serviceDetail) async {
     return await dataProvider.getServiceDetail(serviceDetail);
   }
 
@@ -22,11 +22,17 @@ class BookingRepository {
     return await dataProvider.createBooking(booking);
   }
 
+  Future<dynamic> updateBooking(Booking booking) async {
+    print("repo");
+    print(booking);
+    return await dataProvider.updateBooking(booking);
+  }
+
   Future<List<dynamic>> getBookingsByPhone() async {
     return await dataProvider.getBookingsByPhone();
   }
 
-   Future<dynamic> deleteBooking(String id) async {
+  Future<dynamic> deleteBooking(String id) async {
     return await dataProvider.deleteBooking(id);
   }
 

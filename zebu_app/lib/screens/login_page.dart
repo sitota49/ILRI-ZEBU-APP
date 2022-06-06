@@ -61,6 +61,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   getViewAsPerState(LoginState state) {
+    print("loginPageBuilder");
     print(state);
     if (state is Unauthenticated) {
       return CredentialInput();
@@ -73,6 +74,13 @@ class _LoginPageState extends State<LoginPage> {
     } else if (state is LoginCompleteState) {
       BlocProvider.of<AuthenticationBloc>(context)
           .add(LoggedIn(token: state.getUser().uid));
+
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Navigator.pushNamed(
+          context,
+          RouteGenerator.onBoardingScreenName,
+        );
+      });
     } else {
       return CredentialInput();
     }

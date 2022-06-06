@@ -48,6 +48,17 @@ class BookingFailure extends BookingState {
   List<Object> get props => [];
 }
 
+
+class UpdateBookingSuccess extends BookingState {
+  @override
+  List<Object> get props => [];
+}
+
+class UpdateBookingFailure extends BookingState {
+  @override
+  List<Object> get props => [];
+}
+
 class MyBookingsLoadSuccess extends BookingState {
   final List<dynamic> myBookings;
 

@@ -13,6 +13,7 @@ import 'package:zebu_app/bloc/authentication/authentication_event.dart';
 import 'package:zebu_app/bloc/authentication/authentication_state.dart';
 import 'package:zebu_app/models/zebuUser.dart';
 import 'package:zebu_app/routeGenerator.dart';
+import 'package:zebu_app/screens/splash_page.dart';
 import 'package:zebu_app/screens/utils/EditTextUtils.dart';
 
 class OnBoardingPage extends StatefulWidget {
@@ -85,10 +86,19 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           RouteGenerator.homeScreenName,
         );
       }
-    }, builder: (_, authentiationState) {
-      if (authentiationState is Authenticated) {
-        authenticationBloc.add(StartInitializing());
+      if (state is Unauthenticated) {
+        Navigator.pushNamed(
+          context,
+          RouteGenerator.splashScreenName,
+        );
       }
+    }, builder: (_, authentiationState) {
+      print("boardingScreenBuilder");
+      print(authentiationState);
+      if (authentiationState is Authenticated) {
+        authenticationBloc.add(StartRegistering());
+      }
+
       if (authentiationState is Registering) {
         return Material(
           child: Padding(
@@ -230,7 +240,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             prefs.setString(
                                 'user', json.encode(zebuUser.toJson()));
 
-                        
                             BlocProvider.of<AuthenticationBloc>(context)
                                 .add(FinishRegistering());
                           }

@@ -19,13 +19,17 @@ class Book extends BookingEvent {
   final Booking booking;
   const Book(this.booking);
 
-  
+  List<Object?> get props => [];
+}
+
+class UpdateBooking extends BookingEvent {
+  final Booking bookingUpdate;
+  const UpdateBooking(this.bookingUpdate);
+
   List<Object?> get props => [];
 }
 
 class MyBookingsLoad extends BookingEvent {
-  
-
   const MyBookingsLoad();
 
   @override

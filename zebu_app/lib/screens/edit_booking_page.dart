@@ -23,36 +23,69 @@ class _EditBookingPageState extends State<EditBookingPage> {
   final Map argObj;
   _EditBookingPageState({required this.argObj});
 
-  late DateTime _selectedDay;
-  late DateTime _focusedDay;
-  late String serviceSelectedDay;
-  late String selectedTime;
+  var _selectedDay;
+  var _focusedDay;
+  var serviceSelectedDay;
+  var selectedTime;
+  var newDate;
+  var newTime;
+  var mydate;
+  var booking;
+  var serviceSelected;
+  late BookingBloc bookingbloc;
+  @override
+  void initState() {
+    booking = argObj['booking'];
+    _selectedDay = DateTime.parse(booking.date);
+    _focusedDay = DateTime.parse(booking.date);
+    serviceSelectedDay = booking.date;
+    selectedTime = booking.time;
+    serviceSelected = booking.serviceType;
+    if (booking.serviceType == 'Football/Basketball/Playground With Coach' ||
+        booking.serviceType == 'Football/Basketball/Playground Without Coach') {
+      serviceSelected = 'Football/Basketball/Playground';
+    }
+    if (booking.serviceType == 'Squash With Coach' ||
+        booking.serviceType == 'Squash Without Coach') {
+      serviceSelected = 'Squash';
+    }
+
+    if (booking.serviceType == 'Ground Tennis With Coach' ||
+        booking.serviceType == 'Ground Tennis Without Coach') {
+      serviceSelected = 'Ground Tennis';
+    }
+    if (booking.serviceType == 'Jogging Path Individual' ||
+        booking.serviceType == 'Jogging Path Family') {
+      serviceSelected = 'Jogging Path';
+    }
+    if (booking.serviceType == 'Swimming Individual' ||
+        booking.serviceType == 'Swimming Family') {
+      serviceSelected = 'Swimming';
+    }
+    if (booking.serviceType == 'Gym ') {
+      serviceSelected = 'Gym';
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var booking = argObj['booking'];
-
     // DateTime _focusedDay = new DateTime(
     //     DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
 
     // DateTime _selectedDay = new DateTime(
     //     DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
-    var mydate = DateTime.parse(booking.date);
-    _selectedDay = new DateTime(mydate.year, mydate.month, mydate.day);
-    _focusedDay = new DateTime(mydate.year, mydate.month, mydate.day);
 
-    serviceSelectedDay = booking.date;
-    selectedTime = booking.time;
-    late BookingBloc bookingbloc;
+    // _selectedDay = new DateTime(mydate.year, mydate.month, mydate.day);
+    // _focusedDay = new DateTime(mydate.year, mydate.month, mydate.day);
 
-    String serviceSelected = booking.serviceType;
     bookingbloc = BlocProvider.of<BookingBloc>(context);
     bookingbloc.add(ServiceBookingLoad(
         serviceSelected, serviceSelectedDay, serviceSelected));
 
     var date = booking.date!.substring(0, 10);
     var parsed = DateTime.parse(date);
-    var output = DateFormat.yMMMMd().format(parsed);
+    var output = DateFormat.yMMMMd().format(_selectedDay);
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -83,19 +116,22 @@ class _EditBookingPageState extends State<EditBookingPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 20),
-                Text(
-                  booking.serviceType + ' ' + 'Reservation',
-                  style: TextStyle(
-                      color: Color(0xff404E65),
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18),
-                  softWrap: true,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    booking.serviceType + ' ' + 'Reservation',
+                    style: TextStyle(
+                        color: Color(0xff404E65),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18),
+                    softWrap: true,
+                  ),
                 ),
                 SizedBox(
                   height: 15,
                 ),
                 Text(
-                  output + ' - ' + booking.time,
+                  output + ' - ' + selectedTime,
                   style: TextStyle(
                       color: Color(0xff404E65),
                       fontWeight: FontWeight.w700,
@@ -104,12 +140,13 @@ class _EditBookingPageState extends State<EditBookingPage> {
                 ),
                 BlocConsumer<BookingBloc, BookingState>(
                     listener: (ctx, bookingState) {
-                  if (bookingState is BookingSuccess) {
+                  if (bookingState is UpdateBookingSuccess) {
                     showDialog<String>(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
                               // title: const Text('Time Not Set'),
-                              content: const Text('Booked Succefully'),
+                              content:
+                                  const Text('Booking Rescheduled Succefully'),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () => {
@@ -124,6 +161,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                             ));
                   }
                 }, builder: (_, bookingState) {
+                  print(bookingState);
                   if (bookingState is LoadingBooking) {
                     return SizedBox(
                       height: MediaQuery.of(context).size.height / 1.3,
@@ -215,7 +253,8 @@ class _EditBookingPageState extends State<EditBookingPage> {
                               ),
                               firstDay: kFirstDay,
                               lastDay: kLastDay,
-                              focusedDay: _focusedDay,
+                              focusedDay:
+                                  newDate != null ? newDate : _focusedDay,
                               calendarFormat: CalendarFormat.month,
                               selectedDayPredicate: (day) {
                                 // Use `selectedDayPredicate` to determine which day is currently selected.
@@ -234,7 +273,9 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                   });
 
                                   serviceSelectedDay = DateFormat('yyyy-MM-dd')
-                                      .format(_selectedDay);
+                                      .format(newDate != null
+                                          ? newDate
+                                          : _selectedDay);
 
                                   var serviceDetailPhrase = serviceSelected;
                                   //         'Dining Lunch' ||
@@ -314,14 +355,16 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  timeslot.toString(),
-                                                  style: TextStyle(
-                                                    color:
-                                                        selectedTime == timeslot
-                                                            ? Colors.white
-                                                            : Color(0xff5D7498),
-                                                    fontSize: 14,
+                                                child: Center(
+                                                  child: Text(
+                                                    timeslot.toString(),
+                                                    style: TextStyle(
+                                                      color: selectedTime ==
+                                                              timeslot
+                                                          ? Colors.white
+                                                          : Color(0xff5D7498),
+                                                      fontSize: 14,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -332,75 +375,66 @@ class _EditBookingPageState extends State<EditBookingPage> {
                               ],
                             ),
                           ),
+                          Container(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 16.0, right: 16.0),
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    // final prefs = await SharedPreferences.getInstance();
+                                    // var fetchedUser =
+                                    //     json.decode(prefs.getString('user')!);
+
+                                    Booking myBooking = Booking(
+                                        title: '',
+                                        id: booking.id,
+                                        time: selectedTime,
+                                        date: serviceSelectedDay,
+                                        serviceType: serviceSelected);
+                                    print(myBooking);
+                                    BlocProvider.of<BookingBloc>(context)
+                                        .add(UpdateBooking(myBooking));
+
+                                    print("Added");
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Color(0xff404E65)),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Update Booking",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontFamily: 'Raleway',
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                
                         ],
                       ),
                     );
                   }
                   return Container();
                 }),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          // final prefs = await SharedPreferences.getInstance();
-                          // var fetchedUser =
-                          //     json.decode(prefs.getString('user')!);
-
-                          if (selectedTime == '') {
-                            showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                      title: const Text('Time Not Set'),
-                                      content: const Text(
-                                          'Please select prefered time.'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    ));
-                          }
-
-                          // Booking myBooking = Booking(
-                          //     title: fetchedUser['name'],
-                          //     email: fetchedUser['email'],
-                          //     phoneNo: fetchedUser['phoneNumber'],
-                          //     time: selectedTime,
-                          //     date: serviceSelectedDay,
-                          //     serviceType: serviceSelected);
-
-                          // BlocProvider.of<BookingBloc>(context)
-                          //     .add(Book(myBooking));
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xff404E65)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          "Update Booking",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontFamily: 'Raleway',
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                
+                SizedBox(
+                  height: 20,
+                )
               ],
             ),
           ),

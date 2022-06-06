@@ -63,7 +63,10 @@ class _BookingPageState extends State<BookingPage>
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             color: Color(0xff404E65),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              RouteGenerator.homeScreenName,
+            ),
           ),
           backgroundColor: Colors.white,
           title: Text(
@@ -150,8 +153,6 @@ class _BookingPageState extends State<BookingPage>
                                                   ? serviceSelected
                                                   : selectedServiceIndex;
 
-                                          
-                                          
                                           bookingbloc.add(ServiceBookingLoad(
                                               serviceSelected,
                                               serviceSelectedDay,
@@ -351,7 +352,6 @@ class _BookingPageState extends State<BookingPage>
                             ));
                   }
                 }, builder: (_, bookingState) {
-              
                   if (bookingState is LoadingBooking) {
                     return SizedBox(
                       height: MediaQuery.of(context).size.height / 1.3,
@@ -542,14 +542,16 @@ class _BookingPageState extends State<BookingPage>
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  timeslot.toString(),
-                                                  style: TextStyle(
-                                                    color:
-                                                        selectedTime == timeslot
-                                                            ? Colors.white
-                                                            : Color(0xff5D7498),
-                                                    fontSize: 14,
+                                                child: Center(
+                                                  child: Text(
+                                                    timeslot.toString(),
+                                                    style: TextStyle(
+                                                      color: selectedTime ==
+                                                              timeslot
+                                                          ? Colors.white
+                                                          : Color(0xff5D7498),
+                                                      fontSize: 14,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
