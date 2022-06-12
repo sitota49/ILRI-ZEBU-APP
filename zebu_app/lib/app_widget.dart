@@ -12,6 +12,7 @@ import 'package:zebu_app/bloc/menu/menu_event.dart';
 import 'package:zebu_app/bloc/menu/recent_bloc.dart';
 import 'package:zebu_app/bloc/service/service_bloc.dart';
 import 'package:zebu_app/bloc/service/service_event.dart';
+import 'package:zebu_app/bloc/user/user_bloc.dart';
 
 import 'package:zebu_app/data_provider/announcement_data.dart';
 import 'package:zebu_app/data_provider/booking_data.dart';
@@ -134,6 +135,10 @@ class _AppWidgetState extends State<AppWidget> {
           )..add(
               AppStarted(),
             ),
+        ),
+        BlocProvider(
+          create: (context) =>
+              UserBloc( userInfoRepository: userRepository),
         ),
         BlocProvider(
           create: (context) =>

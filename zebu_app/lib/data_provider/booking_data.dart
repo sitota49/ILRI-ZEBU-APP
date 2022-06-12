@@ -115,7 +115,7 @@ class BookingDataProvider {
       var phoneNo = fetchedUser['phoneNumber'];
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/booking/member?_format=json&phone=$phoneNo'),
+            'http://45.79.249.127/zebuapi/jsonapi/node/booking/member?_format=json&phoneNo=$phoneNo'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
@@ -125,13 +125,16 @@ class BookingDataProvider {
       );
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
+        if(json.length == 0){
+          return ["No Booking Items Found"];
+        }
         var booking = json
             .map<Booking>((bookingData) => Booking.fromJson(bookingData))
             .toList();
 
         return booking;
       } else {
-        return ["No Booking Items Found"];
+        return ["Failed loading"];
       }
     } catch (e) {
       throw Exception(e.toString());
@@ -147,17 +150,7 @@ class BookingDataProvider {
         'Authorization': 'Basic QWRtaW46QWRtaW5AMTIzNDU2'
       },
       body: jsonEncode(<String, dynamic>{
-        // 'data': {
-        //   "type": "node--booking",
-        //   "attributes": {
-        //     "title": booking.title,
-        //     "field_date": booking.date,
-        //     "field_booking_email": booking.email,
-        //     "field_phone_number": booking.phoneNo,
-        //     "field_service_type": booking.serviceType,
-        //     "field_time": booking.time
-        //   }
-        // }
+     
       }),
     );
 

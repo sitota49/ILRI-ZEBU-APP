@@ -211,7 +211,9 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 20),
-                                  SizedBox(child: RecentlyViewed()),
+                                  SizedBox(
+                                      child: RecentlyViewed(
+                                          parentId: singleMenu.id)),
                                   SizedBox(height: 20),
                                 ],
                               ),
@@ -228,11 +230,18 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
   }
 }
 
-class RecentlyViewed extends StatelessWidget {
-  const RecentlyViewed({
-    Key? key,
-  }) : super(key: key);
+class RecentlyViewed extends StatefulWidget {
+  final String parentId;
+  const RecentlyViewed({Key? key, required this.parentId}) : super(key: key);
 
+  @override
+  State<RecentlyViewed> createState() =>
+      _RecentlyViewedState(parentId: parentId);
+}
+
+class _RecentlyViewedState extends State<RecentlyViewed> {
+  final String parentId;
+  _RecentlyViewedState({required this.parentId});
   @override
   Widget build(BuildContext context) {
     final recentBloc = BlocProvider.of<RecentMenuBloc>(context);
@@ -258,7 +267,10 @@ class RecentlyViewed extends StatelessWidget {
 
         if (recentlyViewedState is RecentlyViewedLoadSuccess) {
           final recentlyViewed = recentlyViewedState.recentlyviewed;
-          if (recentlyViewed.length < 2) {
+          // if (recentlyViewed.isNotEmpty) {
+          //   recentlyViewed.removeLast();
+          // }
+          if (recentlyViewed.length < 3) {
             return Container();
           }
           return Material(
@@ -287,63 +299,69 @@ class RecentlyViewed extends StatelessWidget {
                         itemBuilder: (BuildContext context, int index) {
                           var currentItem = recentlyViewed[index];
                           var decoded = jsonDecode(currentItem);
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              width: 210,
-                              height: 50,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  final SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                  var prefObj = {
-                                    'id': decoded['id'],
-                                    'image': decoded['image']
-                                  };
-                                  var prefObjEncoded = jsonEncode(prefObj);
+                          return decoded['id'] != parentId
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    width: 210,
+                                    height: 50,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        final SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        var prefObj = {
+                                          'id': decoded['id'],
+                                          'image': decoded['image']
+                                        };
+                                        var prefObjEncoded =
+                                            jsonEncode(prefObj);
 
-                                  var recentlyViewedList =
-                                      prefs.getStringList('recentlyViewed') ??
-                                          [];
-                                  if (!recentlyViewedList
-                                      .contains(prefObjEncoded)) {
-                                    if (recentlyViewedList.length > 5) {
-                                      recentlyViewedList
-                                          .remove(recentlyViewedList[4]);
-                                      recentlyViewedList.insert(
-                                          0, prefObjEncoded);
-                                    } else {
-                                      recentlyViewedList.add(prefObjEncoded);
-                                    }
-                                  }
+                                        var recentlyViewedList =
+                                            prefs.getStringList(
+                                                    'recentlyViewed') ??
+                                                [];
+                                        if (!recentlyViewedList
+                                            .contains(prefObjEncoded)) {
+                                          if (recentlyViewedList.length > 5) {
+                                            recentlyViewedList
+                                                .remove(recentlyViewedList[4]);
+                                            recentlyViewedList.insert(
+                                                0, prefObjEncoded);
+                                          } else {
+                                            recentlyViewedList
+                                                .add(prefObjEncoded);
+                                          }
+                                        }
 
-                                  prefs.setStringList(
-                                      ('recentlyViewed'), recentlyViewedList);
+                                        prefs.setStringList(('recentlyViewed'),
+                                            recentlyViewedList);
 
-                                  Navigator.pushNamed(
-                                    context,
-                                    RouteGenerator.menuDetailScreenName,
-                                    arguments:
-                                        ScreenArguments({'id': decoded['id']}),
-                                  );
-                                },
-                                child: Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(25)),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          "http://45.79.249.127" +
-                                              decoded['image']),
-                                      fit: BoxFit.cover,
-                                      alignment: Alignment.topCenter,
+                                        Navigator.pushNamed(
+                                          context,
+                                          RouteGenerator.menuDetailScreenName,
+                                          arguments: ScreenArguments(
+                                              {'id': decoded['id']}),
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25)),
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                                "http://45.79.249.127" +
+                                                    decoded['image']),
+                                            fit: BoxFit.cover,
+                                            alignment: Alignment.topCenter,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          );
+                                )
+                              : Container();
                         }),
                   ),
                 ],

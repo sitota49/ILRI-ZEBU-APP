@@ -6,8 +6,7 @@ class FeedbackRepository {
 
   FeedbackRepository({required this.dataProvider});
 
-  Future<List<dynamic>> createFeedback(MyFeedBack feedback) async {
+  Future<dynamic> createFeedback(MyFeedBack feedback) async {
     return await dataProvider.createFeedback(feedback);
   }
-
 }

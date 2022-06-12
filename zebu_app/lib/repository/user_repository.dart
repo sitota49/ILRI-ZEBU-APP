@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import "package:firebase_auth/firebase_auth.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
   final FirebaseAuth _firebaseAuth;
@@ -42,5 +45,11 @@ class UserRepository {
 
   Future<void> logOut() async {
     await _firebaseAuth.signOut();
+  }
+
+    Future<dynamic> getUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+     var fetchedUser = json.decode(prefs.getString('user')!);
+    return fetchedUser;
   }
 }

@@ -11,21 +11,17 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
 
   @override
   Stream<FeedbackState> mapEventToState(FeedbackEvent event) async* {
-  
     if (event is Post) {
       yield LoadingFeedback();
       try {
         final status = await feedbackRepository.createFeedback(event.feedback);
-        if (status == 'Feedback created') {
-          yield FeedbackSuccess();
-        }
+
+        yield FeedbackSuccess();
       } catch (error) {
         print(error);
 
         yield FeedbackFailure();
       }
     }
-
-    
   }
 }

@@ -200,7 +200,7 @@ class MenuItem extends StatelessWidget {
               if (!recentlyViewedList.contains(prefObjEncoded)) {
                 if (recentlyViewedList.length > 5) {
                   recentlyViewedList.remove(recentlyViewedList[4]);
-                  recentlyViewedList.insert(0, prefObjEncoded);
+                  recentlyViewedList.add(prefObjEncoded);
                 } else {
                   recentlyViewedList.add(prefObjEncoded);
                 }
@@ -300,7 +300,7 @@ class MenuItem extends StatelessWidget {
                       ),
                       Expanded(
                         child: Container(
-                          margin: EdgeInsets.only(right: 15),
+                          // margin: EdgeInsets.only(right: 10),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.center,
