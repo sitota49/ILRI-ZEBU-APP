@@ -25,6 +25,7 @@ class _MenuPageState extends State<MenuPage>
   late TabController _tabController;
   TextEditingController searchController = TextEditingController();
   String queryParam = '';
+  bool isSearchPage = false;
 
   @override
   void initState() {
@@ -78,9 +79,15 @@ class _MenuPageState extends State<MenuPage>
                 padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                 child: TextField(
                   onChanged: (value) {
-                    Timer(const Duration(milliseconds: 500), () {
+                    Timer(const Duration(milliseconds: 1500), () {
                       setState(() {
-                        _tabController.index = 0;
+                        final menuBloc = BlocProvider.of<MenuBloc>(context);
+                        if (_tabController.index == 0) {
+                          isSearchPage = true;
+                          menuBloc.add(AllMenuLoad(value));
+                        } else {
+                          _tabController.index = 0;
+                        }
                       });
                     });
                   },
@@ -154,6 +161,7 @@ class _MenuPageState extends State<MenuPage>
                             children: [
                               AllMenu(
                                 queryParam: queryParam,
+                                isSearch: isSearchPage,
                               ),
                               CategoryMenu(category: 'breakfast'),
                               CategoryMenu(category: 'lunch&dinner'),
@@ -259,7 +267,9 @@ class MenuItem extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              menu.title,
+                              menu.title.length > 20
+                                  ? menu.title.substring(0, 14) + '...'
+                                  : menu.title,
                               style: TextStyle(
                                 color: Color(0xff404E65),
                                 fontWeight: FontWeight.w700,
@@ -332,24 +342,31 @@ class MenuItem extends StatelessWidget {
 
 class AllMenu extends StatefulWidget {
   final String queryParam;
-  const AllMenu({
-    Key? key,
-    required this.queryParam,
-  }) : super(key: key);
+
+  final bool isSearch;
+  const AllMenu({Key? key, required this.queryParam, required this.isSearch})
+      : super(key: key);
 
   @override
-  State<AllMenu> createState() => _AllMenuState(queryParam: queryParam);
+  State<AllMenu> createState() =>
+      _AllMenuState(queryParam: queryParam, isSearch: isSearch);
 }
 
 class _AllMenuState extends State<AllMenu> {
   final String queryParam;
-  _AllMenuState({required this.queryParam});
+  final bool isSearch;
+  _AllMenuState({required this.queryParam, required this.isSearch});
   @override
   Widget build(BuildContext context) {
     final menuBloc = BlocProvider.of<MenuBloc>(context);
-    Timer(Duration(seconds: 1), () => menuBloc.add(AllMenuLoad(queryParam)));
+    // if (!isSearch) {
+    //   // Timer(Duration(seconds: 1), () => menuBloc.add(AllMenuLoad(queryParam)));
+    //   menuBloc.add(AllMenuLoad(queryParam));
+    // }
     return BlocConsumer<MenuBloc, MenuState>(
-      listener: (_, menuState) {},
+      listener: (_, menuState) {
+        print(menuState);
+      },
       builder: (_, menuState) {
         if (menuState is LoadingMenu) {
           return SizedBox(

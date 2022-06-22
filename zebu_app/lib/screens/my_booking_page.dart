@@ -69,7 +69,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
                           // title: const Text('Time Not Set'),
-                          content: const Text('Booked Deleted Succefully'),
+                          content: const Text('Booking Deleted Succefully'),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () => {

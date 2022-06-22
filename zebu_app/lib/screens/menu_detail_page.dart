@@ -248,8 +248,6 @@ class _RecentlyViewedState extends State<RecentlyViewed> {
     recentBloc.add(RecentlyViewedLoad());
     return BlocBuilder<RecentMenuBloc, RecentMenuState>(
       builder: (_, recentlyViewedState) {
-        print("rState::::::::::::::::");
-        print(recentlyViewedState);
         if (recentlyViewedState is LoadingRecentMenu) {
           return SizedBox(
             height: MediaQuery.of(context).size.height / 1.3,
@@ -266,7 +264,8 @@ class _RecentlyViewedState extends State<RecentlyViewed> {
         }
 
         if (recentlyViewedState is RecentlyViewedLoadSuccess) {
-          final recentlyViewed = recentlyViewedState.recentlyviewed;
+          final list = recentlyViewedState.recentlyviewed;
+          final recentlyViewed = list.reversed.toList();
           // if (recentlyViewed.isNotEmpty) {
           //   recentlyViewed.removeLast();
           // }
