@@ -8,6 +8,8 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
     return DefaultTextStyle(
       style: TextStyle(decoration: TextDecoration.none),
       child: Container(
@@ -32,14 +34,14 @@ class SplashPage extends StatelessWidget {
                           margin: EdgeInsets.only(top: 100),
                           child: Image.asset(
                             'assets/images/zebu.png',
-                            width: 300,
-                            height: 180,
+                            width: pageWidth * 0.7,
+                            height: pageHeight * 0.22,
                           ),
                         ),
                       ),
                     ],
                   )),
-              SizedBox(height: 5),
+
               FadeAnimation(
                 2,
                 false,
@@ -55,13 +57,13 @@ class SplashPage extends StatelessWidget {
                   softWrap: false,
                 ),
               ),
-              SizedBox(height: 15),
+              // SizedBox(height: 15),
               Expanded(flex: 1, child: SizedBox()),
               Expanded(
                 flex: 0,
                 child: Column(
                   children: [
-                    SizedBox(height: 30),
+                    // SizedBox(height: 30),
                     FadeAnimation(
                       3,
                       false,
@@ -71,8 +73,8 @@ class SplashPage extends StatelessWidget {
                           padding:
                               const EdgeInsets.only(left: 16.0, right: 16.0),
                           child: SizedBox(
-                            width: double.infinity,
-                            height: 50,
+                            width: pageWidth * 0.8,
+                            height: pageHeight * 0.06,
                             child: ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context)
@@ -104,7 +106,7 @@ class SplashPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: pageHeight * 0.04,
                     ),
                     FadeAnimation(
                       3,
@@ -114,7 +116,8 @@ class SplashPage extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 20),
                         child: Image.asset(
                           'assets/images/ilri.png',
-                          height: 25,
+                          width: pageWidth * 0.24,
+                          height: pageHeight * 0.03,
                         ),
                       ),
                     ),

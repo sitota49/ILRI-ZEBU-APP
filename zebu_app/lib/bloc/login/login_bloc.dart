@@ -26,6 +26,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
+    print(event);
     if (event is VerifyPhoneEvent) {
       yield LoadingState(message: 'Verifiying phone number ...');
       try {
@@ -100,34 +101,43 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     StreamController<LoginEvent> eventStream = StreamController();
     final PhoneVerificationCompleted = (AuthCredential authCredential) {
       userRepository.getUser();
+      print("1111111");
       userRepository.getUser().catchError((onError) {
         print(onError);
       }).then((user) {
+        print("verification complete ...");
         eventStream.add(LoginCompleteEvent(user));
         eventStream.close();
       });
     };
     final PhoneVerificationFailed = (FirebaseAuthException authException) {
       print(authException.message);
+      print("verification failed ...");
       eventStream.add(LoginExceptionEvent(onError.toString()));
       eventStream.close();
     };
     final PhoneCodeSent = (String verId, [int? forceResent]) {
+      print("verId");
+      print(verId);
       this.verID = verId;
+      print("sent ...");
       eventStream.add(OtpSendEvent(phoneNumber: phoneNumber));
     };
     final PhoneCodeAutoRetrievalTimeout = (String verid) {
       this.verID = verid;
+      print("timeout ...");
       eventStream.close();
     };
 
     await userRepository.sendOtp(
         phoneNumber,
-        Duration(seconds: 1),
+        Duration(seconds: 30),
         PhoneVerificationFailed,
         PhoneVerificationCompleted,
         PhoneCodeSent,
         PhoneCodeAutoRetrievalTimeout);
+
+    print("res");
 
     yield* eventStream.stream;
   }

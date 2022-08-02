@@ -146,6 +146,8 @@ class _CredentialInputState extends State<CredentialInput> {
 
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
     Widget countryDropDown = Container(
       decoration: new BoxDecoration(
         // color: Colors.white,
@@ -153,7 +155,7 @@ class _CredentialInputState extends State<CredentialInput> {
           right: BorderSide(width: 0.5, color: Color(0xff404E65)),
         ),
       ),
-      height: 45.0,
+      height: pageHeight * 0.04,
       margin: const EdgeInsets.all(3.0),
       //width: 300.0,
       child: DropdownButtonHideUnderline(
@@ -173,14 +175,16 @@ class _CredentialInputState extends State<CredentialInput> {
                               ? Image.asset(
                                   'icons/flags/png/et.png',
                                   package: 'country_icons',
-                                  height: 15,
+                                  height: pageHeight * 0.03,
+                                  width: pageWidth * 0.07,
                                 )
                               : Image.asset(
                                   'icons/flags/png/ke.png',
                                   package: 'country_icons',
-                                  height: 15,
+                                  height: pageHeight * 0.03,
+                                  width: pageWidth * 0.07,
                                 )),
-                      SizedBox(width: 5),
+                      SizedBox(width: pageWidth * 0.01),
                       Text(
                         value,
                         style: TextStyle(fontSize: 12.0),
@@ -210,7 +214,8 @@ class _CredentialInputState extends State<CredentialInput> {
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 30, left: 25),
+                    margin: EdgeInsets.only(
+                        top: pageHeight * 0.07, left: pageWidth * 0.06),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text('Login Account',
@@ -222,10 +227,10 @@ class _CredentialInputState extends State<CredentialInput> {
                           )),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: pageHeight * 0.017),
                   Container(
                     child: Text(
-                      'Hello, welcome to zebu club. Please login to continue',
+                      'Hello, welcome to Zebu Club. Please login to continue',
                       style: TextStyle(
                         fontFamily: 'Raleway',
                         fontSize: 13,
@@ -235,14 +240,14 @@ class _CredentialInputState extends State<CredentialInput> {
                       softWrap: false,
                     ),
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: pageHeight * 0.02),
                 ],
               )),
           Expanded(
             flex: 0,
             child: Column(
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: pageHeight * 0.025),
                 Container(
                     margin: EdgeInsets.only(left: 25),
                     child: Column(
@@ -263,7 +268,7 @@ class _CredentialInputState extends State<CredentialInput> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: pageHeight * 0.015),
                         Form(
                           key: _formKey,
                           child: EditTextUtils().getCustomEditTextArea(
@@ -276,14 +281,14 @@ class _CredentialInputState extends State<CredentialInput> {
                                 return validateMobile(value!);
                               }),
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: pageHeight * 0.035),
                         Container(
                           child: Padding(
                             padding:
                                 const EdgeInsets.only(left: 16.0, right: 16.0),
                             child: SizedBox(
-                              width: double.infinity,
-                              height: 50,
+                              width: pageWidth * 0.8,
+                              height: pageHeight * 0.062,
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
@@ -320,7 +325,7 @@ class _CredentialInputState extends State<CredentialInput> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: pageHeight * 0.025,
                         ),
                       ],
                     ))
@@ -361,6 +366,8 @@ class _OtpInputState extends State<OtpInput> {
 
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: DefaultTextStyle(
           style: TextStyle(decoration: TextDecoration.none),
@@ -379,24 +386,25 @@ class _OtpInputState extends State<OtpInput> {
                       child: Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 10),
+                            margin: EdgeInsets.only(top: pageHeight * 0.094),
                             child: Image.asset(
                               'assets/images/otp.png',
-                              height: 300,
+                              height: pageHeight * 0.278,
+                              width: pageWidth * 0.485,
                             ),
                           ),
-                          SizedBox(height: 20),
+                          SizedBox(height: pageHeight * 0.04),
                           Text(
                             'Verification Code',
                             style: TextStyle(
                               fontFamily: 'Raleway',
-                              fontSize: 31,
-                              fontWeight: FontWeight.w700,
+                              fontSize: 26,
+                              fontWeight: FontWeight.w900,
                               color: Colors.black,
                             ),
                             softWrap: false,
                           ),
-                          SizedBox(height: 15),
+                          SizedBox(height: pageHeight * 0.03),
                           Text(
                             'We have sent a verification code to\n your number',
                             style: TextStyle(
@@ -408,7 +416,7 @@ class _OtpInputState extends State<OtpInput> {
                             textAlign: TextAlign.center,
                             softWrap: false,
                           ),
-                          SizedBox(height: 5),
+                          SizedBox(height: pageHeight * 0.03),
                           Text(
                             phoneNo ?? '',
                             style: TextStyle(
@@ -420,7 +428,7 @@ class _OtpInputState extends State<OtpInput> {
                             textAlign: TextAlign.center,
                             softWrap: false,
                           ),
-                          SizedBox(height: 20),
+                          SizedBox(height: pageHeight * 0.03),
                         ],
                       )),
                   PinEntryTextField(
@@ -429,7 +437,7 @@ class _OtpInputState extends State<OtpInput> {
                         BlocProvider.of<LoginBloc>(context)
                             .add(VerifyOtpEvent(otp: pin));
                       }),
-                  SizedBox(height: 20),
+                  SizedBox(height: pageHeight * 0.03),
                   FadeAnimation(
                     30,
                     true,
@@ -440,7 +448,7 @@ class _OtpInputState extends State<OtpInput> {
                           'Didn\'t get code?',
                           style: TextStyle(
                             fontFamily: 'Raleway',
-                            fontSize: 15,
+                            fontSize: 12,
                             color: const Color(0xff000000),
                             fontWeight: FontWeight.w500,
                           ),
@@ -450,7 +458,7 @@ class _OtpInputState extends State<OtpInput> {
                         GestureDetector(
                           child: Text("Resend Code",
                               style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 12,
                                   fontFamily: 'Raleway',
                                   fontWeight: FontWeight.w700,
                                   color: Color(0xffFF9E16))),
@@ -462,13 +470,13 @@ class _OtpInputState extends State<OtpInput> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: pageHeight * 0.03),
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                       child: SizedBox(
-                        width: double.infinity,
-                        height: 50,
+                        width: pageWidth * 0.8,
+                        height: pageHeight * 0.062,
                         child: ElevatedButton(
                           onPressed: () {},
                           style: ButtonStyle(

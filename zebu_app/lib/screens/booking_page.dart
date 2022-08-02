@@ -134,12 +134,12 @@ class _BookingPageState extends State<BookingPage>
                                                   ' ' +
                                                   currentService.options[0];
 
-                                          listScrollController.jumpTo(
-                                              (index / services.length) *
-                                                  5 *
-                                                  MediaQuery.of(context)
-                                                      .size
-                                                      .width);
+                                          // listScrollController.jumpTo(
+                                          //     (index / services.length) *
+                                          //         5 *
+                                          //         MediaQuery.of(context)
+                                          //             .size
+                                          //             .width);
 
                                           var serviceDetailPhrase =
                                               serviceSelected ==

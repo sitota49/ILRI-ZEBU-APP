@@ -45,14 +45,20 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     );
   }
 
-  Widget _buildImage(String assetName, [double width = 350]) {
-    return Image.asset('assets/images/$assetName', width: width);
-  }
+  // Widget _buildImage(String assetName, [double width = 350, doubl]) {
+  //   return Image.asset(
+  //     'assets/images/$assetName',
+  //     width: width,
+  //     height: height,
+  //   );
+  // }
 
   final user = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
     const bodyStyle = TextStyle(
       fontFamily: 'Raleway',
       fontSize: 15,
@@ -70,9 +76,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     const pageDecoration = const PageDecoration(
         titleTextStyle: titleStyle,
         bodyTextStyle: bodyStyle,
-        bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+        // bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
         pageColor: Colors.white,
-        imagePadding: EdgeInsets.fromLTRB(16.0, 60.0, 16.0, 0.0),
+        // imagePadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
         imageAlignment: Alignment.bottomCenter,
         // imagePadding: EdgeInsets.only(top: 100.0),
         bodyAlignment: Alignment.center);
@@ -109,7 +115,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 30),
+                  margin: EdgeInsets.only(top: pageHeight * 0.07),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Text('Personal Information',
@@ -121,7 +127,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         )),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: pageHeight * 0.017),
                 Container(
                   child: Text(
                     'Please register to continue',
@@ -134,7 +140,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     softWrap: false,
                   ),
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: pageHeight * 0.04),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -164,7 +170,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         icon: Icon(Icons.account_circle,
                             color: Color(0xff404E65)),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: pageHeight * 0.02),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -191,7 +197,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           validator: (value) {
                             return validateEmail(value!);
                           }),
-                      SizedBox(height: 15),
+                      SizedBox(height: pageHeight * 0.02),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -217,7 +223,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         icon:
                             Icon(Icons.location_city, color: Color(0xff404E65)),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: pageHeight * 0.02),
                     ],
                   ),
                 ),
@@ -226,8 +232,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                     child: SizedBox(
-                      width: double.infinity,
-                      height: 50,
+                      width: pageWidth * 0.8,
+                      height: pageHeight * 0.062,
                       child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
@@ -291,49 +297,189 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             isBottomSafeArea: true,
             key: introKey,
             globalBackgroundColor: Colors.white,
-            globalHeader: Padding(
-              padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Welcome',
-                  style: TextStyle(
-                    fontFamily: 'Raleway',
-                    fontSize: 26,
-                    color: const Color(0xff000000),
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
+            // globalHeader: Padding(
+            //   padding: EdgeInsets.only(top: pageHeight * 0.08),
+            //   child: Align(
+            //     alignment: Alignment.center,
+            //     child: Text(
+            //       'Welcome',
+            //       style: TextStyle(
+            //         fontFamily: 'Raleway',
+            //         fontSize: 26,
+            //         color: const Color(0xff000000),
+            //         fontWeight: FontWeight.w900,
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
             pages: [
               PageViewModel(
-                title: "Membership Managment",
-                body:
-                    "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
-                image: _buildImage('membership.png'),
+                title: "Welcome",
+                bodyWidget: Column(
+                  children: [
+                    // SizedBox(
+                    //   height: pageHeight * 0.22,
+                    // ),
+                    Image.asset('assets/images/membership.png',
+                        width: pageWidth * 0.519, height: pageHeight * 0.325),
+                    SizedBox(
+                      height: pageHeight * 0.064,
+                    ),
+                    Text(
+                      'Membership Management',
+                      style: TextStyle(
+                        fontFamily: 'Raleway',
+                        fontSize: 26,
+                        color: const Color(0xff000000),
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    SizedBox(
+                      height: pageHeight * 0.03,
+                    ),
+                    Container(
+                      width: pageWidth * 0.74,
+                      child: Text(
+                        "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
+                        style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontSize: 15,
+                          color: const Color(0xff000000),
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
                 decoration: pageDecoration,
               ),
               PageViewModel(
-                title: "Menu at your hand",
-                body:
-                    "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
-                image: _buildImage('menu.png'),
+                title: "Welcome",
+                bodyWidget: Column(
+                  children: [
+                    // SizedBox(
+                    //   height: pageHeight * 0.22,
+                    // ),
+                    Image.asset('assets/images/menu.png',
+                        width: pageWidth * 0.519, height: pageHeight * 0.325),
+                    SizedBox(
+                      height: pageHeight * 0.064,
+                    ),
+                    Text(
+                      'Menu at your hand',
+                      style: TextStyle(
+                        fontFamily: 'Raleway',
+                        fontSize: 26,
+                        color: const Color(0xff000000),
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    SizedBox(
+                      height: pageHeight * 0.03,
+                    ),
+                    Container(
+                      width: pageWidth * 0.74,
+                      child: Text(
+                        "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
+                        style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontSize: 15,
+                          color: const Color(0xff000000),
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
                 decoration: pageDecoration,
               ),
               PageViewModel(
-                title: "Book your stay ahead",
-                body:
-                    "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
-                image: _buildImage('booking.png'),
+                title: "Welcome",
+                bodyWidget: Column(
+                  children: [
+                    // SizedBox(
+                    //   height: pageHeight * 0.22,
+                    // ),
+                    Image.asset('assets/images/booking.png',
+                        width: pageWidth * 0.519, height: pageHeight * 0.325),
+                    SizedBox(
+                      height: pageHeight * 0.064,
+                    ),
+                    Text(
+                      'Book your stay ahead',
+                      style: TextStyle(
+                        fontFamily: 'Raleway',
+                        fontSize: 26,
+                        color: const Color(0xff000000),
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    SizedBox(
+                      height: pageHeight * 0.03,
+                    ),
+                    Container(
+                      width: pageWidth * 0.74,
+                      child: Text(
+                        "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
+                        style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontSize: 15,
+                          color: const Color(0xff000000),
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
                 decoration: pageDecoration,
               ),
               PageViewModel(
-                title: "Let us know what you think",
-                body:
-                    "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
-                image: _buildImage('feedback.png'),
+                title: "Welcome",
+                bodyWidget: Column(
+                  children: [
+                    // SizedBox(
+                    //   height: pageHeight * 0.22,
+                    // ),
+                    Image.asset('assets/images/feedback.png',
+                        width: pageWidth * 0.519, height: pageHeight * 0.325),
+                    SizedBox(
+                      height: pageHeight * 0.064,
+                    ),
+                    Text(
+                      'Let us know what you think',
+                      style: TextStyle(
+                        fontFamily: 'Raleway',
+                        fontSize: 26,
+                        color: const Color(0xff000000),
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    SizedBox(
+                      height: pageHeight * 0.03,
+                    ),
+                    Container(
+                      width: pageWidth * 0.74,
+                      child: Text(
+                        "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
+                        style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontSize: 15,
+                          color: const Color(0xff000000),
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
                 decoration: pageDecoration,
               ),
             ],

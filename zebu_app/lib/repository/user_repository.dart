@@ -16,6 +16,7 @@ class UserRepository {
       PhoneVerificationCompleted phoneVerificationCompleted,
       PhoneCodeSent phoneCodeSent,
       PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout) async {
+    print("before call");
     _firebaseAuth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         timeout: timeOut,
@@ -23,6 +24,7 @@ class UserRepository {
         verificationFailed: phoneVerificationFailed,
         codeSent: phoneCodeSent,
         codeAutoRetrievalTimeout: autoRetrievalTimeout);
+    print("after call");
   }
 
   Future<UserCredential> verifyAndLogin(
@@ -47,9 +49,9 @@ class UserRepository {
     await _firebaseAuth.signOut();
   }
 
-    Future<dynamic> getUserInfo() async {
+  Future<dynamic> getUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-     var fetchedUser = json.decode(prefs.getString('user')!);
+    var fetchedUser = json.decode(prefs.getString('user')!);
     return fetchedUser;
   }
 }
