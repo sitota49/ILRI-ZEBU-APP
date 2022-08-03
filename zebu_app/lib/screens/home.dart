@@ -25,8 +25,18 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
+  double pgHeight = 0;
+  double pgWidth = 0;
+
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
+
+    setState(() {
+      pgHeight = pageHeight;
+      pgWidth = pageWidth;
+    });
     return WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
@@ -74,10 +84,10 @@ class _HomeState extends State<Home> {
                                       fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: pageHeight * 0.011,
                                 ),
                                 Container(
-                                  width: 230,
+                                  width: pageWidth * 0.52,
                                   child: Text(
                                     'Zebu Club Mobile App',
                                     style: TextStyle(
@@ -89,10 +99,10 @@ class _HomeState extends State<Home> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: pageHeight * 0.011,
                                 ),
                                 Container(
-                                  width: 260,
+                                  width: pageWidth * 0.52,
                                   child: Text(
                                     'Feel free to browse through our different services and book your stay!',
                                     style: TextStyle(
@@ -104,7 +114,7 @@ class _HomeState extends State<Home> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: pageHeight * 0.011,
                                 ),
                               ],
                             );
@@ -125,12 +135,16 @@ class _HomeState extends State<Home> {
                                       fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: pageHeight * 0.011,
                                 ),
                                 Container(
-                                  width: 230,
+                                  width: pageWidth * 0.52,
                                   child: Text(
-                                    newAnnouncement.title!,
+                                    newAnnouncement.title.length > 45
+                                        ? newAnnouncement.title
+                                                .substring(0, 45) +
+                                            '...'
+                                        : newAnnouncement.title,
                                     style: TextStyle(
                                         fontFamily: 'Raleway',
                                         fontSize: 15,
@@ -140,15 +154,15 @@ class _HomeState extends State<Home> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: pageHeight * 0.011,
                                 ),
                                 Container(
-                                  width: 260,
+                                  width: pageWidth * 0.52,
                                   child: Text(
                                     newAnnouncement.description.length > 100
                                         ? newAnnouncement.description
                                                 .substring(0, 100) +
-                                            ' ...'
+                                            '...'
                                         : newAnnouncement.description,
                                     style: TextStyle(
                                         fontFamily: 'Raleway',
@@ -159,7 +173,7 @@ class _HomeState extends State<Home> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: pageHeight * 0.011,
                                 ),
                                 GestureDetector(
                                   child: Text("Learn More >>",
@@ -219,8 +233,8 @@ class _HomeState extends State<Home> {
                                       margin: EdgeInsets.only(top: 100),
                                       child: Image.asset(
                                         'assets/images/zebuFaded.png',
-                                        width: 100,
-                                        height: 60,
+                                        width: pageWidth * 0.235,
+                                        height: pageHeight * 0.07,
                                       ),
                                     ),
                                     SizedBox(
@@ -230,7 +244,8 @@ class _HomeState extends State<Home> {
                                         margin: EdgeInsets.only(bottom: 20),
                                         child: Image.asset(
                                           'assets/images/ilriFaded.png',
-                                          height: 20,
+                                          width: pageWidth * 0.245,
+                                          height: pageHeight * 0.03,
                                         )),
                                   ]),
                             ),
@@ -239,15 +254,17 @@ class _HomeState extends State<Home> {
                       ),
                     ]),
                     Container(
+                      // color: Colors.red,
+                      // height: pageHeight * 0.4,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GridView.count(
                           primary: false,
-                          padding: const EdgeInsets.all(20),
-                          crossAxisSpacing: 20,
-                          mainAxisSpacing: 20,
+                          padding: EdgeInsets.all(pgHeight * 0.02),
+                          crossAxisSpacing: pgWidth * 0.039,
+                          mainAxisSpacing: pgHeight * 0.039,
                           crossAxisCount: 2,
-                          childAspectRatio: (80 / 60),
+                          childAspectRatio: (pgWidth / (pgHeight / 2.48)),
                           children: <Widget>[
                             HomeButtons("bookinghome", "Booking", () {
                               Navigator.pushNamed(
@@ -320,22 +337,22 @@ class _HomeState extends State<Home> {
               child: Container(
                 child: Image.asset(
                   'assets/images/$icon.png',
-                  width: 100,
-                  height: 60,
+                  width: pgWidth * 0.179,
+                  height: pgHeight * 0.09,
                 ),
               ),
             ),
             SizedBox(
-              height: 5,
+              height: pgHeight * 0.006,
             ),
             Text(
               text,
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 14,
+                  fontSize: 12,
                   color: textColor,
-                  fontWeight: FontWeight.w900),
+                  fontWeight: FontWeight.w700),
             ),
           ],
         ),

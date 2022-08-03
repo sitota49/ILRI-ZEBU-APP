@@ -130,7 +130,16 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                                 margin:
                                                     EdgeInsets.only(left: 10),
                                                 child: Text(
-                                                  currentAnnouncement.title,
+                                                  currentAnnouncement
+                                                              .title.length >
+                                                          90
+                                                      ? currentAnnouncement
+                                                              .title
+                                                              .substring(
+                                                                  0, 90) +
+                                                          '...'
+                                                      : currentAnnouncement
+                                                          .title,
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w500),

@@ -13,6 +13,9 @@ import 'package:zebu_app/routeGenerator.dart';
 import 'package:zebu_app/screens/utils/EditTextUtils.dart';
 import 'package:zebu_app/screens/utils/NavigationDrawer.dart';
 
+double pgHeight = 0;
+double pgWidth = 0;
+
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
 
@@ -50,6 +53,13 @@ class _MenuPageState extends State<MenuPage>
 
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
+
+    setState(() {
+      pgHeight = pageHeight;
+      pgWidth = pageWidth;
+    });
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -76,18 +86,22 @@ class _MenuPageState extends State<MenuPage>
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(
+                    left: pgWidth * 0.05, right: pgWidth * 0.05),
                 child: TextField(
                   onChanged: (value) {
-                    Timer(const Duration(milliseconds: 1500), () {
-                      setState(() {
-                        final menuBloc = BlocProvider.of<MenuBloc>(context);
-                        if (_tabController.index == 0) {
-                          isSearchPage = true;
-                          menuBloc.add(AllMenuLoad(value));
-                        } else {
-                          _tabController.index = 0;
-                        }
+                    setState(() {
+                      final menuBloc = BlocProvider.of<MenuBloc>(context);
+                      queryParam = value;
+                      isSearchPage = true;
+                      // if (_tabController.index == 0) {
+                      //   menuBloc.add(AllMenuLoad(queryParam));
+                      // } else {
+                      //   _tabController.index = 0;
+                      // }
+                      Timer(const Duration(milliseconds: 1000), () {
+                        _tabController.index = 0;
+                        menuBloc.add(AllMenuLoad(queryParam));
                       });
                     });
                   },
@@ -223,7 +237,8 @@ class MenuItem extends StatelessWidget {
             );
           },
           child: Container(
-            height: 200,
+            width: pgWidth * 0.43,
+            height: pgHeight * 0.25,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(15),
@@ -233,7 +248,7 @@ class MenuItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  height: 100,
+                  height: pgHeight * 0.16,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
@@ -254,9 +269,9 @@ class MenuItem extends StatelessWidget {
                           ),
                   ),
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: pgHeight * 0.01),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(left: pgWidth * 0.02),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -271,12 +286,13 @@ class MenuItem extends StatelessWidget {
                                   ? menu.title.substring(0, 14) + '...'
                                   : menu.title,
                               style: TextStyle(
+                                fontSize: 15,
                                 color: Color(0xff404E65),
                                 fontWeight: FontWeight.w700,
                               ),
                               softWrap: true,
                             ),
-                            SizedBox(height: 3),
+                            SizedBox(height: pgHeight * 0.0075),
                             Container(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -286,20 +302,20 @@ class MenuItem extends StatelessWidget {
                                     child: menu.type.contains("Spicy/hot")
                                         ? Image.asset(
                                             'assets/images/spicy.png',
-                                            width: 20,
+                                            width: pgWidth * 0.03,
                                           )
                                         : Container(),
                                   ),
                                   menu.type.contains("Vegetarian")
                                       ? Image.asset(
                                           'assets/images/vegeterian.png',
-                                          width: 20,
+                                          width: pgWidth * 0.03,
                                         )
                                       : Container(),
                                   menu.type.contains("Vegan/fasting")
                                       ? Image.asset(
                                           'assets/images/vegan.png',
-                                          width: 20,
+                                          width: pgWidth * 0.03,
                                         )
                                       : Container(),
                                 ],
@@ -363,9 +379,19 @@ class _AllMenuState extends State<AllMenu> {
     //   // Timer(Duration(seconds: 1), () => menuBloc.add(AllMenuLoad(queryParam)));
     //   menuBloc.add(AllMenuLoad(queryParam));
     // }
+
+    // Timer(const Duration(milliseconds: 1000), () {
+    menuBloc.add(AllMenuLoad(queryParam));
+    //   print("searching : --- ");
+    //   print(isSearch);
+    // if (!isSearch) {
+    //   menuBloc.add(AllMenuLoad(queryParam));
+    // }
+    // });
+
     return BlocConsumer<MenuBloc, MenuState>(
       listener: (_, menuState) {
-        print(menuState);
+        // print(menuState);
       },
       builder: (_, menuState) {
         if (menuState is LoadingMenu) {

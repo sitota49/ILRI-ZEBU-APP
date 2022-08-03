@@ -137,8 +137,7 @@ class _AppWidgetState extends State<AppWidget> {
             ),
         ),
         BlocProvider(
-          create: (context) =>
-              UserBloc( userInfoRepository: userRepository),
+          create: (context) => UserBloc(userInfoRepository: userRepository),
         ),
         BlocProvider(
           create: (context) =>
@@ -158,7 +157,6 @@ class _AppWidgetState extends State<AppWidget> {
             // Home(),
             BlocConsumer<AuthenticationBloc, AuthenticationState>(
                 listener: (context, state) {
-        
           if (state is Unauthenticated) {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => const SplashPage()),
@@ -176,16 +174,16 @@ class _AppWidgetState extends State<AppWidget> {
           }
         }, builder: (context, state) {
           handleClickNotification(context);
-         
-          if (state is Unauthenticated) {
-            return SplashPage();
-          } else if (state is Initializing || state is Registering) {
-            return OnBoardingPage();
-          } else if (state is Inside) {
-            return HomePage();
-          } else {
-            return const SplashPage();
-          }
+          return HomePage();
+          // if (state is Unauthenticated) {
+          //   return SplashPage();
+          // } else if (state is Initializing || state is Registering) {
+          //   return OnBoardingPage();
+          // } else if (state is Inside) {
+          //   return HomePage();
+          // } else {
+          //   return const SplashPage();
+          // }
         }),
         debugShowCheckedModeBanner: false,
         onGenerateRoute: RouteGenerator.generateRoute,

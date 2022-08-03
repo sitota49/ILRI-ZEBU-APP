@@ -12,6 +12,9 @@ import 'package:zebu_app/bloc/menu/recent_bloc.dart';
 import 'package:zebu_app/bloc/menu/recent_state.dart';
 import 'package:zebu_app/routeGenerator.dart';
 
+double pgHeight = 0;
+double pgWidth = 0;
+
 class MenuDetailPage extends StatefulWidget {
   final Map argObj;
 
@@ -33,6 +36,13 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
+
+    setState(() {
+      pgHeight = pageHeight;
+      pgWidth = pageWidth;
+    });
     var id = argObj['id'];
     final menuBloc = BlocProvider.of<MenuBloc>(context);
     menuBloc.add(SingleMenuLoad(id));
@@ -83,11 +93,11 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
-                                height: 300,
+                                height: pgHeight * 0.33,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(15),
-                                      topRight: Radius.circular(15)),
+                                  // borderRadius: BorderRadius.only(
+                                  //     topLeft: Radius.circular(15),
+                                  //     topRight: Radius.circular(15)),
                                   image: singleMenu.image != null
                                       ? DecorationImage(
                                           image: NetworkImage(
@@ -106,7 +116,9 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(16.0),
+                                padding: EdgeInsets.only(
+                                    top: pageHeight * 0.03,
+                                    left: pgWidth * 0.05),
                                 child: Container(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -119,15 +131,18 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            singleMenu.title,
-                                            style: TextStyle(
-                                                color: Color(0xff404E65),
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 20),
-                                            softWrap: true,
+                                          Container(
+                                            width: pgWidth * 0.57,
+                                            child: Text(
+                                              singleMenu.title,
+                                              style: TextStyle(
+                                                  color: Color(0xff404E65),
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 18),
+                                              softWrap: true,
+                                            ),
                                           ),
-                                          SizedBox(height: 5),
+                                          SizedBox(height: pgHeight * 0.016),
                                           Container(
                                             child: Row(
                                               mainAxisAlignment:
@@ -140,7 +155,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                                           .contains("Spicy/hot")
                                                       ? Image.asset(
                                                           'assets/images/spicy.png',
-                                                          width: 20,
+                                                          width: pgWidth * 0.04,
                                                         )
                                                       : Container(),
                                                 ),
@@ -148,14 +163,14 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                                         .contains("Vegetarian")
                                                     ? Image.asset(
                                                         'assets/images/vegeterian.png',
-                                                        width: 20,
+                                                        width: pgWidth * 0.04,
                                                       )
                                                     : Container(),
                                                 singleMenu.type.contains(
                                                         "Vegan/fasting")
                                                     ? Image.asset(
                                                         'assets/images/vegan.png',
-                                                        width: 20,
+                                                        width: pgWidth * 0.04,
                                                       )
                                                     : Container(),
                                               ],
@@ -165,7 +180,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                       ),
                                       Expanded(
                                         child: Container(
-                                          margin: EdgeInsets.only(right: 15),
+                                          // margin: EdgeInsets.only(right: 0),
                                           child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.end,
@@ -194,7 +209,10 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(16.0),
+                                padding: EdgeInsets.only(
+                                    top: pgHeight * 0.04,
+                                    left: pgWidth * 0.05,
+                                    right: pgWidth * 0.1),
                                 child: Text(
                                   singleMenu.description,
                                   style: TextStyle(color: Color(0xff404E65)),
@@ -210,11 +228,11 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(height: 20),
+                                  SizedBox(height: pgHeight * 0.04),
                                   SizedBox(
                                       child: RecentlyViewed(
                                           parentId: singleMenu.id)),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: pgHeight * 0.04),
                                 ],
                               ),
                             ),
@@ -274,23 +292,25 @@ class _RecentlyViewedState extends State<RecentlyViewed> {
           }
           return Material(
             child: Container(
-              padding: EdgeInsets.all(8.0),
               color: Colors.white,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Recently Viewed',
-                    style: TextStyle(
-                        color: Color(0xff404E65),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14),
-                    softWrap: true,
+                  Padding(
+                    padding: EdgeInsets.only(left: pgWidth * 0.04),
+                    child: Text(
+                      'Recently Viewed',
+                      style: TextStyle(
+                          color: Color(0xff404E65),
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16),
+                      softWrap: true,
+                    ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: pgHeight * 0.02),
                   SizedBox(
-                    height: 150,
+                    height: pgHeight * 0.18,
                     child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
@@ -300,10 +320,10 @@ class _RecentlyViewedState extends State<RecentlyViewed> {
                           var decoded = jsonDecode(currentItem);
                           return decoded['id'] != parentId
                               ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: EdgeInsets.all(pgWidth * 0.013),
                                   child: SizedBox(
-                                    width: 210,
-                                    height: 50,
+                                    width: pgWidth * 0.37,
+                                    height: pgHeight * 0.12,
                                     child: GestureDetector(
                                       onTap: () async {
                                         final SharedPreferences prefs =
@@ -344,10 +364,10 @@ class _RecentlyViewedState extends State<RecentlyViewed> {
                                         );
                                       },
                                       child: Container(
-                                        height: 50,
+                                        height: pgHeight * 0.12,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(25)),
+                                              Radius.circular(15)),
                                           image: DecorationImage(
                                             image: NetworkImage(
                                                 "http://45.79.249.127" +

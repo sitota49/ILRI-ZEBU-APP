@@ -16,7 +16,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       try {
         final allMenu = await menuRepository.getAllMenu(event.queryparam);
         if (allMenu.isEmpty) {
-          yield const AllMenuEmpltyFailure(message: "No Menu Items Found");
+          yield const AllMenuEmpltyFailure(message: "No Items Found");
         } else {
           yield AllMenuLoadSuccess(allMenu);
         }
@@ -31,7 +31,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         final categoryMenu = await menuRepository.getCategoryMenu(event.id);
 
         if (categoryMenu.isEmpty) {
-          yield const CategoryMenuEmpltyFailure(message: "No Menu Items Found");
+          yield const CategoryMenuEmpltyFailure(message: "No Items Found");
         } else {
           yield CategoryMenuLoadSuccess(categoryMenu);
         }
