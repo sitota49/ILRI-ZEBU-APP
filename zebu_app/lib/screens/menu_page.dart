@@ -238,10 +238,10 @@ class MenuItem extends StatelessWidget {
           },
           child: Container(
             width: pgWidth * 0.43,
-            height: pgHeight * 0.25,
+            height: pgHeight * 0.7,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(17),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -269,7 +269,7 @@ class MenuItem extends StatelessWidget {
                           ),
                   ),
                 ),
-                SizedBox(height: pgHeight * 0.01),
+                // SizedBox(height: pgHeight * 0.003),
                 Padding(
                   padding: EdgeInsets.only(left: pgWidth * 0.02),
                   child: Row(
@@ -282,11 +282,11 @@ class MenuItem extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              menu.title.length > 20
+                              menu.title.length > 15
                                   ? menu.title.substring(0, 14) + '...'
                                   : menu.title,
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 13,
                                 color: Color(0xff404E65),
                                 fontWeight: FontWeight.w700,
                               ),
@@ -438,7 +438,7 @@ class _AllMenuState extends State<AllMenu> {
                     maxCrossAxisExtent: 200,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    childAspectRatio: 2.25 / 2,
+                    childAspectRatio: 1.0,
                   ),
                   itemCount: allMenus.length,
                   itemBuilder: (BuildContext ctx, index) {
@@ -510,7 +510,7 @@ class CategoryMenu extends StatelessWidget {
                     maxCrossAxisExtent: 200,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    childAspectRatio: 2.25 / 2,
+                    childAspectRatio: 1.0,
                   ),
                   itemCount: categoryMenus.length,
                   itemBuilder: (BuildContext ctx, index) {

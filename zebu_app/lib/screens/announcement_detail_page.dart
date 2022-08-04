@@ -6,6 +6,9 @@ import 'package:zebu_app/bloc/announcement/announcement_event.dart';
 import 'package:zebu_app/bloc/announcement/announcement_state.dart';
 import 'package:zebu_app/routeGenerator.dart';
 
+double pgHeight = 0;
+double pgWidth = 0;
+
 class AnnouncementDetailPage extends StatefulWidget {
   final Map argObj;
 
@@ -22,6 +25,13 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
   _AnnouncementDetailPageState({required this.argObj});
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
+
+    setState(() {
+      pgHeight = pageHeight;
+      pgWidth = pageWidth;
+    });
     var id = argObj['id'];
     final announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
     announcementBloc.add(AnnouncementLoad(id));
@@ -78,13 +88,14 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                     var parsed = DateTime.parse(date);
                     var output = DateFormat.yMMMMd().format(parsed);
                     return Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.only(
+                          left: pgWidth * 0.05, right: pgWidth * 0.09),
                       child: Container(
                         color: Colors.white,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 40),
+                            SizedBox(height: pgHeight * 0.08),
                             Text(
                               announcement.title,
                               style: TextStyle(
@@ -94,7 +105,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                               softWrap: true,
                             ),
                             SizedBox(
-                              height: 15,
+                              height: pgHeight * 0.02,
                             ),
                             Text(
                               output.toString(),
@@ -104,7 +115,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                                   fontSize: 14),
                             ),
                             SizedBox(
-                              height: 15,
+                              height: pgHeight * 0.02,
                             ),
                             Text(
                               announcement.description!,

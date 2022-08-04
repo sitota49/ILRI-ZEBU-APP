@@ -19,6 +19,9 @@ import 'package:zebu_app/routeGenerator.dart';
 
 import 'package:zebu_app/screens/utils/CalendarUtils.dart';
 
+double pgHeight = 0;
+double pgWidth = 0;
+
 class BookingPage extends StatefulWidget {
   const BookingPage({Key? key}) : super(key: key);
 
@@ -57,6 +60,13 @@ class _BookingPageState extends State<BookingPage>
   ScrollController listScrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
+
+    setState(() {
+      pgHeight = pageHeight;
+      pgWidth = pageWidth;
+    });
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -115,7 +125,7 @@ class _BookingPageState extends State<BookingPage>
                             children: [
                               Container(
                                 width: double.infinity,
-                                height: 180,
+                                height: pgHeight * 0.24,
                                 child: ListView.builder(
                                   controller: listScrollController,
                                   scrollDirection: Axis.horizontal,
@@ -160,15 +170,13 @@ class _BookingPageState extends State<BookingPage>
                                         });
                                       },
                                       child: Padding(
-                                        padding: const EdgeInsets.all(2.0),
+                                        padding: EdgeInsets.only(
+                                          left: pgWidth * 0.03,
+                                          // right: pgWidth * 0.03
+                                        ),
                                         child: Container(
-                                          height: MediaQuery.of(context)
-                                              .size
-                                              .height,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.4,
+                                          height: pgHeight * 0.2625,
+                                          width: pgWidth * 0.45,
                                           decoration: new BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(25),
@@ -193,45 +201,54 @@ class _BookingPageState extends State<BookingPage>
                                           child: Card(
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(25)),
+                                                    BorderRadius.circular(17)),
                                             color: selectedServiceIndex ==
                                                     currentService.title
                                                 ? Color(0xffFF9E16)
                                                 : Color(0xff404E65),
                                             child: SafeArea(
                                               child: Column(children: <Widget>[
-                                                SizedBox(height: 10),
+                                                SizedBox(
+                                                    height: pgHeight * 0.03),
                                                 Image.network(
                                                   "http://45.79.249.127" +
                                                       currentService.image,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.1,
+                                                  height: pgHeight * 0.07,
                                                 ),
-                                                SizedBox(height: 5),
+                                                SizedBox(
+                                                    height: pgHeight * 0.003),
                                                 Text(
                                                   currentService.title,
+                                                  textAlign: TextAlign.center,
                                                   style: TextStyle(
-                                                      color:
-                                                          selectedServiceIndex ==
-                                                                  currentService
-                                                                      .title
-                                                              ? Colors.black
-                                                              : Color(
-                                                                  0xffFF9E16),
-                                                      fontSize: 16.0,
+                                                      color: selectedServiceIndex ==
+                                                              currentService
+                                                                  .title
+                                                          ? Colors.black
+                                                          : Color(0xffFF9E16),
+                                                      fontSize: currentService
+                                                                  .title
+                                                                  .length >
+                                                              20
+                                                          ? 12.0
+                                                          : 14.0,
                                                       fontWeight:
                                                           FontWeight.w700),
                                                 ),
-                                                SizedBox(height: 5),
+                                                SizedBox(
+                                                    height: pgHeight * 0.003),
                                                 Text(
                                                   currentService.description!,
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 12.0),
+                                                      fontSize: 11.0),
                                                 ),
-                                                SizedBox(height: 5),
+                                                SizedBox(
+                                                    height: currentService
+                                                                .title.length >
+                                                            20
+                                                        ? pgHeight * 0.003
+                                                        : pgHeight * 0.02),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -244,10 +261,12 @@ class _BookingPageState extends State<BookingPage>
                                                                 2
                                                             ? FlutterToggleTab(
                                                                 // width in percent, to set full width just set to 100
-                                                                width: 50,
+                                                                width: 40,
                                                                 borderRadius:
-                                                                    30,
-                                                                height: 20,
+                                                                    16,
+                                                                height:
+                                                                    pgHeight *
+                                                                        0.02,
                                                                 // initialIndex: 0,
                                                                 selectedBackgroundColors: [
                                                                   Colors.white
@@ -255,16 +274,14 @@ class _BookingPageState extends State<BookingPage>
                                                                 selectedTextStyle: TextStyle(
                                                                     color: Color(
                                                                         0xff7D7D7D),
-                                                                    fontSize:
-                                                                        12,
+                                                                    fontSize: 8,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w700),
                                                                 unSelectedTextStyle: TextStyle(
                                                                     color: Color(
                                                                         0xff7D7D7D),
-                                                                    fontSize:
-                                                                        12,
+                                                                    fontSize: 8,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500),
@@ -308,7 +325,8 @@ class _BookingPageState extends State<BookingPage>
                                                             : Container(),
                                                   ),
                                                 ),
-                                                SizedBox(height: 5),
+                                                SizedBox(
+                                                    height: pgHeight * 0.01),
                                               ]),
                                             ),
                                           ),
@@ -318,12 +336,12 @@ class _BookingPageState extends State<BookingPage>
                                   },
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
+                              // SizedBox(
+                              //   height: 10,
+                              // ),
+                              // SizedBox(
+                              //   height: 10,
+                              // ),
                             ],
                           ),
                         );
@@ -389,47 +407,50 @@ class _BookingPageState extends State<BookingPage>
 
                     return Column(
                       children: [
-                        SizedBox(
-                          height: 10,
-                        ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.only(
+                              left: pgWidth * 0.08, right: pgWidth * 0.08),
                           child: TableCalendar(
-                            rowHeight: 45.0,
+                            rowHeight: pgHeight * 0.05,
                             sixWeekMonthsEnforced: false,
-                            headerStyle: const HeaderStyle(
-                              headerPadding:
-                                  EdgeInsets.only(left: 16.0, bottom: 12.0),
+                            headerStyle: HeaderStyle(
+                              headerPadding: EdgeInsets.only(
+                                  top: pgHeight * 0.06,
+                                  left: pgWidth * 0.03,
+                                  bottom: pgHeight * 0.02),
                               leftChevronVisible: false,
                               rightChevronVisible: false,
                               formatButtonVisible: false,
                               titleCentered: false,
                               titleTextStyle:
-                                  TextStyle(color: Colors.black, fontSize: 22),
+                                  TextStyle(color: Colors.black, fontSize: 28),
                               formatButtonTextStyle:
                                   TextStyle(color: Colors.white),
                               formatButtonShowsNext: false,
                             ),
-                            calendarStyle: const CalendarStyle(
-                              cellMargin: EdgeInsets.all(0.0),
+                            calendarStyle: CalendarStyle(
+                              cellMargin:
+                                  EdgeInsets.only(top: pgHeight * 0.005),
+                              cellPadding: EdgeInsets.symmetric(
+                                  vertical: pgHeight * 0.01,
+                                  horizontal: pgWidth * 0.02),
                               weekendTextStyle: TextStyle(
                                   color: Color(0xff3D3D3D),
                                   fontWeight: FontWeight.w700),
                               disabledTextStyle: TextStyle(
                                 color: Color(0xffFFDEDE),
                                 fontWeight: FontWeight.w500,
-                                fontSize: 14.0,
+                                fontSize: 13.0,
                               ),
                               defaultTextStyle: TextStyle(
                                   color: Color(0xff3D3D3D),
                                   fontWeight: FontWeight.w700),
-                              cellPadding: EdgeInsets.all(0.0),
                               selectedDecoration: BoxDecoration(
                                   color: const Color(0xFFFF9E16),
                                   shape: BoxShape.rectangle),
                               selectedTextStyle: TextStyle(
                                 fontWeight: FontWeight.w700,
-                                fontSize: 14.0,
+                                fontSize: 13.0,
                               ),
                               todayDecoration: BoxDecoration(
                                   color: Colors.white,
@@ -437,7 +458,7 @@ class _BookingPageState extends State<BookingPage>
                               todayTextStyle: TextStyle(
                                 color: Color(0xFFFF9E16),
                                 fontWeight: FontWeight.w700,
-                                fontSize: 14.0,
+                                fontSize: 13.0,
                               ),
                             ),
                             firstDay: kFirstDay,
@@ -484,10 +505,11 @@ class _BookingPageState extends State<BookingPage>
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: pgHeight * 0.06,
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(15.0),
+                          padding: EdgeInsets.only(
+                              left: pgWidth * 0.08, right: pgWidth * 0.08),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -528,7 +550,7 @@ class _BookingPageState extends State<BookingPage>
                                                 ? Color(0xFFFF9E16)
                                                 : Colors.white,
                                             borderRadius: BorderRadius.all(
-                                              Radius.circular(10.0),
+                                              Radius.circular(17.0),
                                             ),
                                           ),
                                           child: GestureDetector(
@@ -544,12 +566,13 @@ class _BookingPageState extends State<BookingPage>
                                                 child: Text(
                                                   timeslot.toString(),
                                                   style: TextStyle(
-                                                    color:
-                                                        selectedTime == timeslot
-                                                            ? Colors.white
-                                                            : Color(0xff5D7498),
-                                                    fontSize: 14,
-                                                  ),
+                                                      color: selectedTime ==
+                                                              timeslot
+                                                          ? Colors.white
+                                                          : Color(0xff5D7498),
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w700),
                                                 ),
                                               ),
                                             ),
@@ -559,6 +582,9 @@ class _BookingPageState extends State<BookingPage>
                                     ),
                             ],
                           ),
+                        ),
+                        SizedBox(
+                          height: pgHeight * 0.06,
                         ),
                       ],
                     );
@@ -570,7 +596,7 @@ class _BookingPageState extends State<BookingPage>
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                     child: SizedBox(
                       width: double.infinity,
-                      height: 50,
+                      height: pgHeight * 0.06,
                       child: ElevatedButton(
                         onPressed: () async {
                           final prefs = await SharedPreferences.getInstance();

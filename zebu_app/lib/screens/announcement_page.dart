@@ -7,6 +7,10 @@ import 'package:zebu_app/bloc/announcement/announcement_state.dart';
 import 'package:zebu_app/bloc/authentication/authentication_state.dart';
 import 'package:zebu_app/models/announcement.dart';
 import 'package:zebu_app/routeGenerator.dart';
+import 'package:zebu_app/screens/booking_page.dart';
+
+double pgHeight = 0;
+double pgWidth = 0;
 
 class AnnouncementPage extends StatefulWidget {
   const AnnouncementPage({Key? key}) : super(key: key);
@@ -26,6 +30,13 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
+
+    setState(() {
+      pgHeight = pageHeight;
+      pgWidth = pageWidth;
+    });
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -109,14 +120,16 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                     );
                                   },
                                   child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, right: 8.0),
+                                    padding: EdgeInsets.only(
+                                        left: 8.0,
+                                        right: 8.0,
+                                        top: pgHeight * 0.01),
                                     child: Container(
-                                      height: 100,
+                                      height: pgHeight * 0.15,
                                       decoration: new BoxDecoration(
                                           color: Color(0xff404E65),
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(25))),
+                                              Radius.circular(9))),
                                       child: Padding(
                                         padding: const EdgeInsets.all(16.0),
                                         child: Row(
@@ -126,9 +139,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                                 CrossAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width: 230,
-                                                margin:
-                                                    EdgeInsets.only(left: 10),
+                                                width: pgWidth * 0.53,
+                                                margin: EdgeInsets.only(
+                                                    left: pgWidth * 0.03),
                                                 child: Text(
                                                   currentAnnouncement
                                                               .title.length >
@@ -150,8 +163,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                                 child: Container(),
                                               ),
                                               Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 40),
+                                                margin: EdgeInsets.only(
+                                                    right: pgWidth * 0.1),
                                                 child: Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
@@ -167,7 +180,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                                           fontWeight:
                                                               FontWeight.w500),
                                                     ),
-                                                    SizedBox(height: 2),
+                                                    SizedBox(
+                                                        height:
+                                                            pgHeight * 0.003),
                                                     Text(
                                                       day.length == 1
                                                           ? "0" + day
@@ -175,7 +190,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                                       style: TextStyle(
                                                           fontSize: 22),
                                                     ),
-                                                    SizedBox(height: 2),
+                                                    SizedBox(
+                                                        height:
+                                                            pgHeight * 0.003),
                                                     Text(
                                                       year,
                                                       style: TextStyle(

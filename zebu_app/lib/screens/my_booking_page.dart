@@ -10,6 +10,9 @@ import 'package:zebu_app/bloc/booking/booking_state.dart';
 
 import 'package:zebu_app/routeGenerator.dart';
 
+double pgHeight = 0;
+double pgWidth = 0;
+
 class MyBookingPage extends StatefulWidget {
   const MyBookingPage({Key? key}) : super(key: key);
 
@@ -33,6 +36,13 @@ class _MyBookingPageState extends State<MyBookingPage> {
 
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
+
+    setState(() {
+      pgHeight = pageHeight;
+      pgWidth = pageWidth;
+    });
     var fetched = loadUser();
 
     bookingBloc = BlocProvider.of<BookingBloc>(context);
@@ -145,15 +155,15 @@ class _MyBookingPageState extends State<MyBookingPage> {
                       var day = DateFormat.d().format(parsed);
 
                       return Padding(
-                        padding: const EdgeInsets.all(2.0),
+                        padding: const EdgeInsets.all(12.0),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                           child: Container(
-                            height: 105,
+                            height: pgHeight * 0.15,
                             decoration: new BoxDecoration(
                                 color: Color(0xff404E65),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(25))),
+                                    BorderRadius.all(Radius.circular(9))),
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Row(
@@ -161,8 +171,9 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      width: 230,
-                                      margin: EdgeInsets.only(left: 10),
+                                      width: pgWidth * 0.53,
+                                      margin:
+                                          EdgeInsets.only(left: pgWidth * 0.03),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -176,7 +187,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                             softWrap: true,
                                           ),
                                           SizedBox(
-                                            height: 3,
+                                            height: pgHeight * 0.003,
                                           ),
                                           Text(
                                             month +
@@ -192,7 +203,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                             softWrap: true,
                                           ),
                                           SizedBox(
-                                            height: 3,
+                                            height: pgHeight * 0.003,
                                           ),
                                           Text(
                                             currentBooking.time,
@@ -207,7 +218,8 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                       child: Container(),
                                     ),
                                     Container(
-                                        margin: EdgeInsets.only(right: 40),
+                                        margin: EdgeInsets.only(
+                                            right: pgWidth * 0.1),
                                         child: (parsed.isAfter(DateTime.now()))
                                             ? Column(
                                                 mainAxisAlignment:
@@ -232,13 +244,15 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                                       child: Container(
                                                         child: Image.asset(
                                                           'assets/images/edit.png',
-                                                          width: 20,
-                                                          height: 20,
+                                                          width: pgWidth * 0.04,
+                                                          height:
+                                                              pgWidth * 0.04,
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(height: 15),
+                                                  SizedBox(
+                                                      height: pgHeight * 0.015),
                                                   GestureDetector(
                                                     onTap: () => {
                                                       BlocProvider.of<
@@ -257,8 +271,9 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                                       child: Container(
                                                         child: Image.asset(
                                                           'assets/images/delete.png',
-                                                          width: 20,
-                                                          height: 20,
+                                                          width: pgWidth * 0.04,
+                                                          height:
+                                                              pgWidth * 0.04,
                                                         ),
                                                       ),
                                                     ),
@@ -269,7 +284,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                                 child: Icon(
                                                   Icons.schedule,
                                                   color: Colors.white,
-                                                  size: 30,
+                                                  size: pgWidth * 0.06,
                                                 ),
                                               )),
                                   ]),

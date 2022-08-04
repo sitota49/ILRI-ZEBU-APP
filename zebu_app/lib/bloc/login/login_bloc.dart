@@ -100,15 +100,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginEvent> sendOtp(String phoneNumber) async* {
     StreamController<LoginEvent> eventStream = StreamController();
     final PhoneVerificationCompleted = (AuthCredential authCredential) {
-      userRepository.getUser();
-      print("1111111");
-      userRepository.getUser().catchError((onError) {
-        print(onError);
-      }).then((user) {
-        print("verification complete ...");
-        eventStream.add(LoginCompleteEvent(user));
-        eventStream.close();
-      });
+      // userRepository.getUser();
+      // print("1111111");
+      // userRepository.getUser().catchError((onError) {
+      //   print(onError);
+      // }).then((user) {
+      //   print("verification complete ...");
+      //   eventStream.add(LoginCompleteEvent(user));
+      //   eventStream.close();
+      // });
+      eventStream.add(OtpSendEvent(phoneNumber: phoneNumber));
     };
     final PhoneVerificationFailed = (FirebaseAuthException authException) {
       print(authException.message);
@@ -131,7 +132,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     await userRepository.sendOtp(
         phoneNumber,
-        Duration(seconds: 30),
+        Duration(seconds: 60),
         PhoneVerificationFailed,
         PhoneVerificationCompleted,
         PhoneCodeSent,

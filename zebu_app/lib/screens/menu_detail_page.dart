@@ -287,7 +287,7 @@ class _RecentlyViewedState extends State<RecentlyViewed> {
           // if (recentlyViewed.isNotEmpty) {
           //   recentlyViewed.removeLast();
           // }
-          if (recentlyViewed.length < 3) {
+          if (recentlyViewed.length < 4) {
             return Container();
           }
           return Material(
@@ -367,7 +367,7 @@ class _RecentlyViewedState extends State<RecentlyViewed> {
                                         height: pgHeight * 0.12,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
+                                              Radius.circular(12)),
                                           image: DecorationImage(
                                             image: NetworkImage(
                                                 "http://45.79.249.127" +
