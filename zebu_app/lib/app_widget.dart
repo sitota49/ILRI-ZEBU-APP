@@ -1,3 +1,4 @@
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:zebu_app/bloc/announcement/announcement_bloc.dart';
 import 'package:zebu_app/bloc/announcement/announcement_event.dart';
@@ -171,10 +172,13 @@ class _AppWidgetState extends State<AppWidget> {
               context,
               RouteGenerator.homeScreenName,
             );
+          } else if (state is LoggedOutState) {
+            Phoenix.rebirth(context);
           }
         }, builder: (context, state) {
           handleClickNotification(context);
           // return HomePage();
+
           if (state is Unauthenticated) {
             return SplashPage();
           } else if (state is Initializing || state is Registering) {

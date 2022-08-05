@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zebu_app/routeGenerator.dart';
 import 'package:zebu_app/screens/utils/fadeAnimation.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
 
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     double pageWidth = MediaQuery.of(context).size.width;
@@ -77,6 +83,7 @@ class SplashPage extends StatelessWidget {
                             height: pageHeight * 0.06,
                             child: ElevatedButton(
                               onPressed: () {
+                              
                                 Navigator.of(context)
                                     .pushNamed(RouteGenerator.loginScreenName);
                               },

@@ -65,8 +65,8 @@ class AuthenticationBloc
       if (appDocDir.existsSync()) {
         appDocDir.deleteSync(recursive: true);
       }
-      yield Unauthenticated();
-      add(AppStarted());
+      yield LoggedOutState();
+      // add(AppStarted());
     }
 
     if (event is StartInitializing) {
