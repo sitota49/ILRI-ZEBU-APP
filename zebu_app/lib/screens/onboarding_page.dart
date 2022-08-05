@@ -99,8 +99,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         );
       }
     }, builder: (_, authentiationState) {
-      print("boardingScreenBuilder");
-      print(authentiationState);
+      
       if (authentiationState is Authenticated) {
         authenticationBloc.add(StartRegistering());
       }

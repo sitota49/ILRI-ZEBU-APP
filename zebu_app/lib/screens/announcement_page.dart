@@ -20,11 +20,8 @@ class AnnouncementPage extends StatefulWidget {
 }
 
 class _AnnouncementPageState extends State<AnnouncementPage> {
-  late AnnouncementBloc announcementBloc;
   @override
   void initState() {
-    announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
-    announcementBloc.add(AnnouncementsLoad());
     super.initState();
   }
 
@@ -37,189 +34,205 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
     });
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            color: Color(0xff404E65),
-            onPressed: () => Navigator.pushNamed(
-              context,
-              RouteGenerator.homeScreenName,
+    final announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
+    announcementBloc.add(const AnnouncementsLoad());
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamed(
+          context,
+          RouteGenerator.homeScreenName,
+        );
+        return false;
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              color: Color(0xff404E65),
+              onPressed: () => Navigator.pushNamed(
+                context,
+                RouteGenerator.homeScreenName,
+              ),
+            ),
+            backgroundColor: Colors.white,
+            title: Text(
+              'ANNOUNCEMENTS',
+              style: TextStyle(
+                  fontFamily: 'Raleway',
+                  fontSize: 18,
+                  color: Color(0xff404E65),
+                  fontWeight: FontWeight.w500),
             ),
           ),
-          backgroundColor: Colors.white,
-          title: Text(
-            'ANNOUNCEMENTS',
-            style: TextStyle(
-                fontFamily: 'Raleway',
-                fontSize: 18,
-                color: Color(0xff404E65),
-                fontWeight: FontWeight.w500),
-          ),
-        ),
-        body: DefaultTextStyle(
-          style: TextStyle(decoration: TextDecoration.none),
-          child: SingleChildScrollView(
-            child: Center(
-              child: BlocConsumer<AnnouncementBloc, AnnouncementState>(
-                  listener: (ctx, announcementListState) {},
-                  builder: (_, announcementListState) {
-                    print(announcementListState);
-                    if (announcementListState is LoadingAnnouncement) {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.3,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Color(0xff5D7498),
-                          ),
-                        ),
-                      );
-                    }
+          body: DefaultTextStyle(
+            style: TextStyle(decoration: TextDecoration.none),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  BlocConsumer<AnnouncementBloc, AnnouncementState>(
+                      listener: (ctx, announcementListState) {},
+                      builder: (_, announcementListState) {
+                        if (announcementListState is LoadingAnnouncement) {
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height / 1.3,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xff5D7498),
+                              ),
+                            ),
+                          );
+                        }
 
-                    if (announcementListState is AnnouncementsLoadFailure ||
-                        announcementListState is AnnouncementsEmpltyFailure) {
-                      return const Text(
-                        "Failed Loading",
-                        style: TextStyle(
-                          color: Color(0xff404E65),
-                          fontSize: 14,
-                        ),
-                      );
-                    }
+                        if (announcementListState is AnnouncementsLoadFailure ||
+                            announcementListState
+                                is AnnouncementsEmpltyFailure) {
+                          return const Text(
+                            "Failed Loading",
+                            style: TextStyle(
+                              color: Color(0xff404E65),
+                              fontSize: 14,
+                            ),
+                          );
+                        }
 
-                    if (announcementListState is AnnouncementsLoadSuccess) {
-                      final announcements = announcementListState.announcements;
-                      return Expanded(
-                        child: SingleChildScrollView(
-                          physics: ScrollPhysics(),
-                          child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: announcements.length,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              final currentAnnouncement = announcements[index];
-                              var date =
-                                  currentAnnouncement.date.substring(0, 10);
-                              var parsed = DateTime.parse(date);
-                              var year = DateFormat.y().format(parsed);
-                              var month = DateFormat.MMM().format(parsed);
-                              var day = DateFormat.d().format(parsed);
+                        if (announcementListState is AnnouncementsLoadSuccess) {
+                          final announcements =
+                              announcementListState.announcements;
+                          return SingleChildScrollView(
+                            physics: ScrollPhysics(),
+                            child: ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: announcements.length,
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                final currentAnnouncement =
+                                    announcements[index];
+                                var date =
+                                    currentAnnouncement.date.substring(0, 10);
+                                var parsed = DateTime.parse(date);
+                                var year = DateFormat.y().format(parsed);
+                                var month = DateFormat.MMM().format(parsed);
+                                var day = DateFormat.d().format(parsed);
 
-                              return Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      RouteGenerator
-                                          .announcementDetailScreenName,
-                                      arguments: ScreenArguments(
-                                          {'id': currentAnnouncement.id}),
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 8.0,
-                                        right: 8.0,
-                                        top: pgHeight * 0.01),
-                                    child: Container(
-                                      height: pgHeight * 0.15,
-                                      decoration: new BoxDecoration(
-                                          color: Color(0xff404E65),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(9))),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: pgWidth * 0.53,
-                                                margin: EdgeInsets.only(
-                                                    left: pgWidth * 0.03),
-                                                child: Text(
-                                                  currentAnnouncement
-                                                              .title.length >
-                                                          90
-                                                      ? currentAnnouncement
-                                                              .title
-                                                              .substring(
-                                                                  0, 90) +
-                                                          '...'
-                                                      : currentAnnouncement
-                                                          .title,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                  softWrap: true,
+                                return Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        RouteGenerator
+                                            .announcementDetailScreenName,
+                                        arguments: ScreenArguments(
+                                            {'id': currentAnnouncement.id}),
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 8.0,
+                                          right: 8.0,
+                                          top: pgHeight * 0.01),
+                                      child: Container(
+                                        height: pgHeight * 0.15,
+                                        decoration: new BoxDecoration(
+                                            color: Color(0xff404E65),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(9))),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: pgWidth * 0.53,
+                                                  margin: EdgeInsets.only(
+                                                      left: pgWidth * 0.03),
+                                                  child: Text(
+                                                    currentAnnouncement.title.length >
+                                                            90
+                                                        ? currentAnnouncement
+                                                                .title
+                                                                .substring(
+                                                                    0, 90) +
+                                                            '...'
+                                                        : currentAnnouncement
+                                                            .title,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                    softWrap: true,
+                                                  ),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                child: Container(),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    right: pgWidth * 0.1),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      month.toUpperCase(),
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xffFF9E16),
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                    SizedBox(
-                                                        height:
-                                                            pgHeight * 0.003),
-                                                    Text(
-                                                      day.length == 1
-                                                          ? "0" + day
-                                                          : day,
-                                                      style: TextStyle(
-                                                          fontSize: 22),
-                                                    ),
-                                                    SizedBox(
-                                                        height:
-                                                            pgHeight * 0.003),
-                                                    Text(
-                                                      year,
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xffFF9E16),
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    )
-                                                  ],
+                                                Expanded(
+                                                  child: Container(),
                                                 ),
-                                              )
-                                            ]),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      right: pgWidth * 0.1),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        month.toUpperCase(),
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFF9E16),
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      SizedBox(
+                                                          height:
+                                                              pgHeight * 0.003),
+                                                      Text(
+                                                        day.length == 1
+                                                            ? "0" + day
+                                                            : day,
+                                                        style: TextStyle(
+                                                            fontSize: 22),
+                                                      ),
+                                                      SizedBox(
+                                                          height:
+                                                              pgHeight * 0.003),
+                                                      Text(
+                                                        year,
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFF9E16),
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ]),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    }
-                    return Container();
-                  }),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                        return Container();
+                      }),
+                ],
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 }

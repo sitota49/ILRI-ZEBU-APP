@@ -183,7 +183,6 @@ class BookingDataProvider {
 
   Future<dynamic> updateBooking(Booking booking) async {
     var id = booking.id;
-    print(id);
     final response = await httpClient.patch(
       Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/booking/$id'),
       headers: <String, String>{

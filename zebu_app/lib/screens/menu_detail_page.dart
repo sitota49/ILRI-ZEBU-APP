@@ -46,205 +46,220 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
     var id = argObj['id'];
     final menuBloc = BlocProvider.of<MenuBloc>(context);
     menuBloc.add(SingleMenuLoad(id));
-    return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            color: Colors.white,
-            onPressed: () => Navigator.pushNamed(
-              context,
-              RouteGenerator.mainFlowName,
-              arguments: ScreenArguments({'index': 0}),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamed(
+          context,
+          RouteGenerator.mainFlowName,
+          arguments: ScreenArguments({'index': 0}),
+        );
+        return false;
+      },
+      child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              color: Colors.white,
+              onPressed: () => Navigator.pushNamed(
+                context,
+                RouteGenerator.mainFlowName,
+                arguments: ScreenArguments({'index': 0}),
+              ),
             ),
+            backgroundColor: Colors.transparent,
           ),
-          backgroundColor: Colors.transparent,
-        ),
-        body: DefaultTextStyle(
-          style: TextStyle(decoration: TextDecoration.none),
-          child: SingleChildScrollView(
-            child: BlocConsumer<MenuBloc, MenuState>(
-                listener: (ctx, singleMenuState) {},
-                builder: (_, singleMenuState) {
-                  if (singleMenuState is LoadingMenu) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height / 1.3,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Color(0xff5D7498),
+          body: DefaultTextStyle(
+            style: TextStyle(decoration: TextDecoration.none),
+            child: SingleChildScrollView(
+              child: BlocConsumer<MenuBloc, MenuState>(
+                  listener: (ctx, singleMenuState) {},
+                  builder: (_, singleMenuState) {
+                    if (singleMenuState is LoadingMenu) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height / 1.3,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: Color(0xff5D7498),
+                          ),
                         ),
-                      ),
-                    );
-                  }
+                      );
+                    }
 
-                  if (singleMenuState is SingleMenuLoadFailure) {
-                    return const Text("Loading Failed");
-                  }
+                    if (singleMenuState is SingleMenuLoadFailure) {
+                      return const Text("Loading Failed");
+                    }
 
-                  if (singleMenuState is SingleMenuLoadSuccess) {
-                    var singleMenu = singleMenuState.singleMenu;
-                    return Container(
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: pgHeight * 0.33,
-                                decoration: BoxDecoration(
-                                  // borderRadius: BorderRadius.only(
-                                  //     topLeft: Radius.circular(15),
-                                  //     topRight: Radius.circular(15)),
-                                  image: singleMenu.image != null
-                                      ? DecorationImage(
-                                          image: NetworkImage(
-                                            "http://45.79.249.127" +
-                                                singleMenu.image,
-                                          ),
-                                          fit: BoxFit.fitWidth,
-                                          alignment: Alignment.topCenter,
-                                        )
-                                      : DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/menu_placeholder.png'),
-                                          fit: BoxFit.fitWidth,
-                                          alignment: Alignment.topCenter,
-                                        ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: pageHeight * 0.03,
-                                    left: pgWidth * 0.05),
-                                child: Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: pgWidth * 0.57,
-                                            child: Text(
-                                              singleMenu.title,
-                                              style: TextStyle(
-                                                  color: Color(0xff404E65),
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 18),
-                                              softWrap: true,
+                    if (singleMenuState is SingleMenuLoadSuccess) {
+                      var singleMenu = singleMenuState.singleMenu;
+                      return Container(
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: pgHeight * 0.33,
+                                  decoration: BoxDecoration(
+                                    // borderRadius: BorderRadius.only(
+                                    //     topLeft: Radius.circular(15),
+                                    //     topRight: Radius.circular(15)),
+                                    image: singleMenu.image != null
+                                        ? DecorationImage(
+                                            image: NetworkImage(
+                                              "http://45.79.249.127" +
+                                                  singleMenu.image,
                                             ),
+                                            fit: BoxFit.fitWidth,
+                                            alignment: Alignment.topCenter,
+                                          )
+                                        : DecorationImage(
+                                            image: AssetImage(
+                                                'assets/images/menu_placeholder.png'),
+                                            fit: BoxFit.fitWidth,
+                                            alignment: Alignment.topCenter,
                                           ),
-                                          SizedBox(height: pgHeight * 0.016),
-                                          Container(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  child: singleMenu.type
-                                                          .contains("Spicy/hot")
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: pageHeight * 0.03,
+                                      left: pgWidth * 0.05),
+                                  child: Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: pgWidth * 0.57,
+                                              child: Text(
+                                                singleMenu.title,
+                                                style: TextStyle(
+                                                    color: Color(0xff404E65),
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 18),
+                                                softWrap: true,
+                                              ),
+                                            ),
+                                            SizedBox(height: pgHeight * 0.016),
+                                            Container(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    child: singleMenu.type
+                                                            .contains(
+                                                                "Spicy/hot")
+                                                        ? Image.asset(
+                                                            'assets/images/spicy.png',
+                                                            width:
+                                                                pgWidth * 0.04,
+                                                          )
+                                                        : Container(),
+                                                  ),
+                                                  singleMenu.type.contains(
+                                                          "Vegetarian")
                                                       ? Image.asset(
-                                                          'assets/images/spicy.png',
+                                                          'assets/images/vegeterian.png',
                                                           width: pgWidth * 0.04,
                                                         )
                                                       : Container(),
-                                                ),
-                                                singleMenu.type
-                                                        .contains("Vegetarian")
-                                                    ? Image.asset(
-                                                        'assets/images/vegeterian.png',
-                                                        width: pgWidth * 0.04,
-                                                      )
-                                                    : Container(),
-                                                singleMenu.type.contains(
-                                                        "Vegan/fasting")
-                                                    ? Image.asset(
-                                                        'assets/images/vegan.png',
-                                                        width: pgWidth * 0.04,
-                                                      )
-                                                    : Container(),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          // margin: EdgeInsets.only(right: 0),
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  singleMenu.memberPrice,
-                                                  style: TextStyle(
-                                                      color: Color(0xffFF9E16),
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 24),
-                                                ),
-                                                Text(
-                                                  'Birr',
-                                                  style: TextStyle(
-                                                      color: Color(0xffFF9E16),
-                                                      fontSize: 14),
-                                                ),
-                                              ]),
+                                                  singleMenu.type.contains(
+                                                          "Vegan/fasting")
+                                                      ? Image.asset(
+                                                          'assets/images/vegan.png',
+                                                          width: pgWidth * 0.04,
+                                                        )
+                                                      : Container(),
+                                                ],
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                      )
-                                    ],
+                                        Expanded(
+                                          child: Container(
+                                            // margin: EdgeInsets.only(right: 0),
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    singleMenu.memberPrice,
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xffFF9E16),
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontSize: 24),
+                                                  ),
+                                                  Text(
+                                                    'Birr',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xffFF9E16),
+                                                        fontSize: 14),
+                                                  ),
+                                                ]),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: pgHeight * 0.04,
-                                    left: pgWidth * 0.05,
-                                    right: pgWidth * 0.1),
-                                child: Text(
-                                  singleMenu.description,
-                                  style: TextStyle(color: Color(0xff404E65)),
-                                  softWrap: true,
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: pgHeight * 0.04,
+                                      left: pgWidth * 0.05,
+                                      right: pgWidth * 0.1),
+                                  child: Text(
+                                    singleMenu.description,
+                                    style: TextStyle(color: Color(0xff404E65)),
+                                    softWrap: true,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: pgHeight * 0.04),
+                                    SizedBox(
+                                        child: RecentlyViewed(
+                                            parentId: singleMenu.id)),
+                                    SizedBox(height: pgHeight * 0.04),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                          Container(
-                            color: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: pgHeight * 0.04),
-                                  SizedBox(
-                                      child: RecentlyViewed(
-                                          parentId: singleMenu.id)),
-                                  SizedBox(height: pgHeight * 0.04),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  }
-                  return Container();
-                }),
-          ),
-        ));
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                    return Container();
+                  }),
+            ),
+          )),
+    );
   }
 }
 

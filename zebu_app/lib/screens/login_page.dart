@@ -50,6 +50,11 @@ class _LoginPageState extends State<LoginPage> {
               duration: Duration(seconds: 3),
             ),
           );
+        } else if (loginState is OtpSentState) {
+          Navigator.pushNamed(
+            context,
+            RouteGenerator.loginScreenName,
+          );
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -61,8 +66,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   getViewAsPerState(LoginState state) {
-    print("loginPageBuilder");
-    print(state);
+
     if (state is Unauthenticated) {
       return CredentialInput();
     } else if (state is OtpSentState) {

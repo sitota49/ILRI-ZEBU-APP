@@ -23,8 +23,6 @@ class BookingRepository {
   }
 
   Future<dynamic> updateBooking(Booking booking) async {
-    print("repo");
-    print(booking);
     return await dataProvider.updateBooking(booking);
   }
 

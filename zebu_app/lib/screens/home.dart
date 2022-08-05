@@ -20,8 +20,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
-    announcementBloc.add(NewAnnouncementLoad());
     super.initState();
   }
 
@@ -30,6 +28,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
+    announcementBloc.add(NewAnnouncementLoad());
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
 
@@ -137,21 +137,32 @@ class _HomeState extends State<Home> {
                                 SizedBox(
                                   height: pageHeight * 0.011,
                                 ),
-                                Container(
-                                  width: pageWidth * 0.52,
-                                  child: Text(
-                                    newAnnouncement.title.length > 45
-                                        ? newAnnouncement.title
-                                                .substring(0, 45) +
-                                            '...'
-                                        : newAnnouncement.title,
-                                    style: TextStyle(
-                                        fontFamily: 'Raleway',
-                                        fontSize: 15,
-                                        color: Color(0xff404E65),
-                                        fontWeight: FontWeight.w700),
-                                    softWrap: true,
+                                GestureDetector(
+                                  child: Container(
+                                    width: pageWidth * 0.52,
+                                    child: Text(
+                                      newAnnouncement.title.length > 45
+                                          ? newAnnouncement.title
+                                                  .substring(0, 45) +
+                                              '...'
+                                          : newAnnouncement.title,
+                                      style: TextStyle(
+                                          fontFamily: 'Raleway',
+                                          fontSize: 15,
+                                          color: Color(0xff404E65),
+                                          fontWeight: FontWeight.w700),
+                                      softWrap: true,
+                                    ),
                                   ),
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteGenerator
+                                          .announcementDetailScreenName,
+                                      arguments: ScreenArguments(
+                                          {'id': newAnnouncement.id}),
+                                    );
+                                  },
                                 ),
                                 SizedBox(
                                   height: pageHeight * 0.011,

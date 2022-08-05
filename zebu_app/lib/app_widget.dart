@@ -208,6 +208,7 @@ class _AppWidgetState extends State<AppWidget> {
           arguments: ScreenArguments({'id': id}),
         );
       } catch (e) {
+        // ignore: avoid_print
         print(e);
       }
     });

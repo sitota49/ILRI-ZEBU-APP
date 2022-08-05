@@ -60,137 +60,146 @@ class _MenuPageState extends State<MenuPage>
       pgHeight = pageHeight;
       pgWidth = pageWidth;
     });
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            color: Color(0xff404E65),
-            onPressed: () => Navigator.pushNamed(
-              context,
-              RouteGenerator.homeScreenName,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamed(
+          context,
+          RouteGenerator.homeScreenName,
+        );
+        return false;
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              color: Color(0xff404E65),
+              onPressed: () => Navigator.pushNamed(
+                context,
+                RouteGenerator.homeScreenName,
+              ),
+            ),
+            backgroundColor: Colors.white,
+            title: Text(
+              'MENU',
+              style: TextStyle(
+                  fontFamily: 'Raleway',
+                  fontSize: 18,
+                  color: Color(0xff404E65),
+                  fontWeight: FontWeight.w500),
             ),
           ),
-          backgroundColor: Colors.white,
-          title: Text(
-            'MENU',
-            style: TextStyle(
-                fontFamily: 'Raleway',
-                fontSize: 18,
-                color: Color(0xff404E65),
-                fontWeight: FontWeight.w500),
-          ),
-        ),
-        body: Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    left: pgWidth * 0.05, right: pgWidth * 0.05),
-                child: TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      final menuBloc = BlocProvider.of<MenuBloc>(context);
-                      queryParam = value;
-                      isSearchPage = true;
-                      // if (_tabController.index == 0) {
-                      //   menuBloc.add(AllMenuLoad(queryParam));
-                      // } else {
-                      //   _tabController.index = 0;
-                      // }
-                      Timer(const Duration(milliseconds: 1000), () {
-                        _tabController.index = 0;
-                        menuBloc.add(AllMenuLoad(queryParam));
+          body: Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: pgWidth * 0.05, right: pgWidth * 0.05),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        final menuBloc = BlocProvider.of<MenuBloc>(context);
+                        queryParam = value;
+                        isSearchPage = true;
+                        // if (_tabController.index == 0) {
+                        //   menuBloc.add(AllMenuLoad(queryParam));
+                        // } else {
+                        //   _tabController.index = 0;
+                        // }
+                        Timer(const Duration(milliseconds: 1000), () {
+                          _tabController.index = 0;
+                          menuBloc.add(AllMenuLoad(queryParam));
+                        });
                       });
-                    });
-                  },
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    focusColor: Color(0xff404E65),
-                    prefixIcon: Icon(
-                      Icons.search,
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xff404E65),
-                        width: 1.0,
+                    },
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      focusColor: Color(0xff404E65),
+                      prefixIcon: Icon(
+                        Icons.search,
                       ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xff404E65),
+                          width: 1.0,
+                        ),
+                      ),
+                      hintText: 'Search',
                     ),
-                    hintText: 'Search',
                   ),
                 ),
-              ),
-              Expanded(
-                  child: Container(
-                      width: double.infinity,
-                      decoration: new BoxDecoration(
-                        color: Color(0xff5D7498),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(25),
-                            topRight: Radius.circular(25)),
-                      ),
-                      margin: EdgeInsets.only(top: 10),
-                      child: Column(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TabBar(
-                            indicatorColor: Colors.transparent,
-                            unselectedLabelColor: Colors.white,
-                            unselectedLabelStyle: TextStyle(
-                                fontWeight: FontWeight.w300, fontSize: 14),
-                            isScrollable: true,
-                            labelColor: Colors.white,
-                            labelStyle: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 19),
-                            tabs: [
-                              Tab(
-                                text: 'All',
-                              ),
-                              Tab(
-                                text: 'Breakfast',
-                              ),
-                              Tab(
-                                text: 'Lunch & Dinner',
-                              ),
-                              Tab(
-                                text: 'Pizza',
-                              ),
-                              Tab(
-                                text: 'Snack',
-                              ),
-                              Tab(
-                                text: 'Cake',
-                              ),
-                              Tab(
-                                text: 'Bakery',
-                              ),
-                            ],
-                            controller: _tabController,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                          ),
+                Expanded(
+                    child: Container(
+                        width: double.infinity,
+                        decoration: new BoxDecoration(
+                          color: Color(0xff5D7498),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(25),
+                              topRight: Radius.circular(25)),
                         ),
-                        Expanded(
-                          child: TabBarView(
-                            children: [
-                              AllMenu(
-                                queryParam: queryParam,
-                                isSearch: isSearchPage,
-                              ),
-                              CategoryMenu(category: 'breakfast'),
-                              CategoryMenu(category: 'lunch&dinner'),
-                              CategoryMenu(category: 'pizza'),
-                              CategoryMenu(category: 'snack'),
-                              CategoryMenu(category: 'cake'),
-                              CategoryMenu(category: 'bakery'),
-                            ],
-                            controller: _tabController,
+                        margin: EdgeInsets.only(top: 10),
+                        child: Column(children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TabBar(
+                              indicatorColor: Colors.transparent,
+                              unselectedLabelColor: Colors.white,
+                              unselectedLabelStyle: TextStyle(
+                                  fontWeight: FontWeight.w300, fontSize: 14),
+                              isScrollable: true,
+                              labelColor: Colors.white,
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 19),
+                              tabs: [
+                                Tab(
+                                  text: 'All',
+                                ),
+                                Tab(
+                                  text: 'Breakfast',
+                                ),
+                                Tab(
+                                  text: 'Lunch & Dinner',
+                                ),
+                                Tab(
+                                  text: 'Pizza',
+                                ),
+                                Tab(
+                                  text: 'Snack',
+                                ),
+                                Tab(
+                                  text: 'Cake',
+                                ),
+                                Tab(
+                                  text: 'Bakery',
+                                ),
+                              ],
+                              controller: _tabController,
+                              indicatorSize: TabBarIndicatorSize.tab,
+                            ),
                           ),
-                        ),
-                      ]))),
-            ],
-          ),
-        ));
+                          Expanded(
+                            child: TabBarView(
+                              children: [
+                                AllMenu(
+                                  queryParam: queryParam,
+                                  isSearch: isSearchPage,
+                                ),
+                                CategoryMenu(category: 'breakfast'),
+                                CategoryMenu(category: 'lunch&dinner'),
+                                CategoryMenu(category: 'pizza'),
+                                CategoryMenu(category: 'snack'),
+                                CategoryMenu(category: 'cake'),
+                                CategoryMenu(category: 'bakery'),
+                              ],
+                              controller: _tabController,
+                            ),
+                          ),
+                        ]))),
+              ],
+            ),
+          )),
+    );
   }
 }
 
