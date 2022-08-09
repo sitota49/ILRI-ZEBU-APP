@@ -57,8 +57,8 @@ class _SplashPageState extends State<SplashPage> {
                   style: TextStyle(
                     fontFamily: 'Raleway',
                     fontStyle: FontStyle.italic,
-                    fontSize: 18,
-                    color: const Color(0xffff9e16),
+                    fontSize: 16,
+                    color: Colors.white,
                   ),
                   softWrap: false,
                 ),
@@ -83,14 +83,13 @@ class _SplashPageState extends State<SplashPage> {
                             height: pageHeight * 0.06,
                             child: ElevatedButton(
                               onPressed: () {
-                              
                                 Navigator.of(context)
                                     .pushNamed(RouteGenerator.loginScreenName);
                               },
                               style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color(0xffFF9E16)),
+                                        Color(0xff641E0D)),
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -122,7 +121,7 @@ class _SplashPageState extends State<SplashPage> {
                       Container(
                         margin: EdgeInsets.only(bottom: 20),
                         child: Image.asset(
-                          'assets/images/ilri.png',
+                          'assets/images/Ilri_cgiar_logo.png',
                           width: pageWidth * 0.24,
                           height: pageHeight * 0.03,
                         ),

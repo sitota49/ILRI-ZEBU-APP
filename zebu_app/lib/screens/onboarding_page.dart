@@ -99,7 +99,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         );
       }
     }, builder: (_, authentiationState) {
-      
       if (authentiationState is Authenticated) {
         authenticationBloc.add(StartRegistering());
       }
@@ -326,7 +325,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       height: pageHeight * 0.064,
                     ),
                     Text(
-                      'Membership Management',
+                      'Announcement Notification',
                       style: TextStyle(
                         fontFamily: 'Raleway',
                         fontSize: 26,
@@ -340,7 +339,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     Container(
                       width: pageWidth * 0.74,
                       child: Text(
-                        "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
+                        "Stay up to date on announcements and Zebu Club activities directly through your smart device.",
                         style: TextStyle(
                           fontFamily: 'Raleway',
                           fontSize: 15,
@@ -382,7 +381,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     Container(
                       width: pageWidth * 0.74,
                       child: Text(
-                        "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
+                        "Explore the latest food items made with fresh produce from the Zebu Club's kitchen.",
                         style: TextStyle(
                           fontFamily: 'Raleway',
                           fontSize: 15,
@@ -424,7 +423,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     Container(
                       width: pageWidth * 0.74,
                       child: Text(
-                        "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
+                        "Secure time slots and make multiple appointments up to two weeks in advance to use Zebu Club facilities.",
                         style: TextStyle(
                           fontFamily: 'Raleway',
                           fontSize: 15,
@@ -466,7 +465,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     Container(
                       width: pageWidth * 0.74,
                       child: Text(
-                        "We have sent a verification code verification code to your number We have sent a verification code verification code to your number membership managment",
+                        "Give feedback on our services, facilities and food, as well as any other suggestions to improve your comfort at Zebu Club. ",
                         style: TextStyle(
                           fontFamily: 'Raleway',
                           fontSize: 15,

@@ -70,13 +70,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: BlocConsumer<FeedbackBloc, FeedbackState>(
                     listener: (ctx, feedbackState) {
-                 
                   if (feedbackState is FeedbackSuccess) {
                     showDialog<String>(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
                               // title: const Text('Time Not Set'),
-                              content: const Text('Thank you for your feedback!'),
+                              content:
+                                  const Text('Thank you for your feedback!'),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () => {
@@ -143,11 +143,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                   height: 50,
                                   width: 50,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Card(
-    
+
                                           // shape: RoundedRectangleBorder(
                                           //     borderRadius: BorderRadius.circular(25)),
                                           color: _FoodIndex ==
@@ -214,7 +215,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  _ServiceIndex = ratings.indexOf(currentRating);
+                                  _ServiceIndex =
+                                      ratings.indexOf(currentRating);
                                 });
                               },
                               child: Padding(
@@ -223,11 +225,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                   height: 50,
                                   width: 50,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Card(
-    
+
                                           // shape: RoundedRectangleBorder(
                                           //     borderRadius: BorderRadius.circular(25)),
                                           color: _ServiceIndex ==
@@ -294,7 +297,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  _FacilityIndex = ratings.indexOf(currentRating);
+                                  _FacilityIndex =
+                                      ratings.indexOf(currentRating);
                                 });
                               },
                               child: Padding(
@@ -303,11 +307,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                   height: 50,
                                   width: 50,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Card(
-    
+
                                           // shape: RoundedRectangleBorder(
                                           //     borderRadius: BorderRadius.circular(25)),
                                           color: _FacilityIndex ==
@@ -643,7 +648,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       ),
                       Container(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 16.0),
                           child: SizedBox(
                             width: double.infinity,
                             height: 50,
@@ -661,8 +667,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                                 'Please give your rating.'),
                                             actions: <Widget>[
                                               TextButton(
-                                                onPressed: () =>
-                                                    Navigator.pop(context, 'OK'),
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'OK'),
                                                 child: const Text('OK'),
                                               ),
                                             ],
@@ -672,7 +678,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                       await SharedPreferences.getInstance();
                                   var fetchedUser =
                                       json.decode(prefs.getString('user')!);
-    
+
                                   MyFeedBack myFeedback = MyFeedBack(
                                       title: fetchedUser['name'],
                                       email: fetchedUser['email'],
@@ -694,16 +700,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                           serviceOutstandingTextController
                                               .value.text,
                                       serviceRating: _ServiceIndex + 1,
-                                      otherComment:
-                                          otherCommentTextController.value.text);
-                                
+                                      otherComment: otherCommentTextController
+                                          .value.text);
+
                                   BlocProvider.of<FeedbackBloc>(context)
                                       .add(Post(myFeedback));
                                 }
                               },
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    Color(0xff404E65)),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color(0xff404E65)),
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -718,7 +725,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                     fontFamily: 'Raleway',
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xffFF9E16)),
+                                    color: Colors.white),
                               ),
                             ),
                           ),

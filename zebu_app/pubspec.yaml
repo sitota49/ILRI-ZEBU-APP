@@ -92,6 +92,7 @@ flutter:
     - assets/CountryCodes.json
     - assets/images/membership.png
     - assets/images/menu.png
+    - assets/images/announcement.png
     - assets/images/booking.png
     - assets/images/feedback.png
     - assets/images/membership.png
@@ -111,6 +112,7 @@ flutter:
     - assets/images/feedhome.png
     - assets/images/bookinghome.png
     - assets/images/Menu_ichome.png
+    - assets/images/Ilri_cgiar_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

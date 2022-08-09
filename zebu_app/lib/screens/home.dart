@@ -254,7 +254,7 @@ class _HomeState extends State<Home> {
                                     Container(
                                         margin: EdgeInsets.only(bottom: 20),
                                         child: Image.asset(
-                                          'assets/images/ilriFaded.png',
+                                          'assets/images/Ilri_cgiar_logo.png',
                                           width: pageWidth * 0.245,
                                           height: pageHeight * 0.03,
                                         )),
