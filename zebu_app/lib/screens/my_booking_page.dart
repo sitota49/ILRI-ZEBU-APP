@@ -112,7 +112,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                     ),
                   );
                 }
-    
+
                 if (myBookingsListState is MyBookingsLoadFailure) {
                   return SizedBox(
                     height: MediaQuery.of(context).size.height / 1.3,
@@ -127,7 +127,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                     ),
                   );
                 }
-    
+
                 if (myBookingsListState is MyBookingsEmpltyFailure) {
                   return SizedBox(
                     height: MediaQuery.of(context).size.height / 1.3,
@@ -142,7 +142,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                     ),
                   );
                 }
-    
+
                 if (myBookingsListState is MyBookingsLoadSuccess) {
                   final myBookings = myBookingsListState.myBookings;
                   return SingleChildScrollView(
@@ -154,20 +154,21 @@ class _MyBookingPageState extends State<MyBookingPage> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         final currentBooking = myBookings[index];
-    
+
                         var date = currentBooking.date.substring(0, 10);
                         var parsed = DateTime.parse(date);
-    
+
                         var year = DateFormat.y().format(parsed);
                         var month = DateFormat.MMM().format(parsed);
                         var day = DateFormat.d().format(parsed);
-    
+
                         return Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                            padding:
+                                const EdgeInsets.only(left: 8.0, right: 8.0),
                             child: Container(
-                              height: pgHeight * 0.15,
+                              height: pgHeight * 0.18,
                               decoration: new BoxDecoration(
                                   color: (parsed.isAfter(DateTime.now()))
                                       ? Color(0xff404E65)
@@ -178,12 +179,13 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                 padding: const EdgeInsets.all(16.0),
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         width: pgWidth * 0.53,
-                                        margin:
-                                            EdgeInsets.only(left: pgWidth * 0.03),
+                                        margin: EdgeInsets.only(
+                                            left: pgWidth * 0.03),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -221,6 +223,24 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                                   fontWeight: FontWeight.w500),
                                               softWrap: true,
                                             ),
+                                            SizedBox(
+                                              height: pgHeight * 0.003,
+                                            ),
+                                            Container(
+                                              child: currentBooking
+                                                          .staffComment !=
+                                                      null
+                                                  ? Text(
+                                                      currentBooking
+                                                          .staffComment,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.red),
+                                                      softWrap: true,
+                                                    )
+                                                  : Container(),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -230,39 +250,53 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                       Container(
                                           margin: EdgeInsets.only(
                                               right: pgWidth * 0.1),
-                                          child: (parsed.isAfter(DateTime.now()))
+                                          child: (parsed
+                                                  .isAfter(DateTime.now()))
                                               ? Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
                                                   children: [
-                                                    GestureDetector(
-                                                      onTap: () => {
-                                                        Navigator.pushNamed(
-                                                          context,
-                                                          RouteGenerator
-                                                              .editBookingScreenName,
-                                                          arguments:
-                                                              ScreenArguments({
-                                                            'booking':
-                                                                currentBooking
-                                                          }),
-                                                        ),
-                                                      },
-                                                      child: Container(
-                                                        child: Container(
-                                                          child: Image.asset(
-                                                            'assets/images/edit.png',
-                                                            width: pgWidth * 0.04,
-                                                            height:
-                                                                pgWidth * 0.04,
-                                                          ),
-                                                        ),
-                                                      ),
+                                                    Container(
+                                                      child: currentBooking
+                                                                  .staffComment ==
+                                                              null
+                                                          ? GestureDetector(
+                                                              onTap: () => {
+                                                                Navigator
+                                                                    .pushNamed(
+                                                                  context,
+                                                                  RouteGenerator
+                                                                      .editBookingScreenName,
+                                                                  arguments:
+                                                                      ScreenArguments({
+                                                                    'booking':
+                                                                        currentBooking
+                                                                  }),
+                                                                ),
+                                                              },
+                                                              child: Container(
+                                                                child:
+                                                                    Container(
+                                                                  child: Image
+                                                                      .asset(
+                                                                    'assets/images/edit.png',
+                                                                    width:
+                                                                        pgWidth *
+                                                                            0.04,
+                                                                    height:
+                                                                        pgWidth *
+                                                                            0.04,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : Container(),
                                                     ),
                                                     SizedBox(
-                                                        height: pgHeight * 0.02),
+                                                        height:
+                                                            pgHeight * 0.02),
                                                     GestureDetector(
                                                       onTap: () => {
                                                         BlocProvider.of<
@@ -281,7 +315,8 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                                         child: Container(
                                                           child: Image.asset(
                                                             'assets/images/delete.png',
-                                                            width: pgWidth * 0.04,
+                                                            width:
+                                                                pgWidth * 0.04,
                                                             height:
                                                                 pgWidth * 0.04,
                                                           ),

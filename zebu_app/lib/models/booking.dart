@@ -7,7 +7,7 @@ class Booking {
   final String? serviceType;
   final String? phoneNo;
   final String? guestNames;
-  final int? noOfGuests;
+  final String? noOfGuests;
   final String? staffComment;
 
   Booking({
@@ -52,10 +52,10 @@ class Booking {
       guestNames:
           json['field_guest_names'] == '' ? null : json['field_guest_names'],
       noOfGuests:
-          json['field_no_of_guests'] == '' ? 0 : json['field_no_of_guests'],
-      staffComment: json['field_staff_comment'] == ''
+          json['field_no_of_guests'] == '' ? null : json['field_no_of_guests'],
+      staffComment: json['field_staffreview'] == ''
           ? null
-          : json['field_staff_comment'],
+          : json['field_staffreview'],
     );
 
     return booking;

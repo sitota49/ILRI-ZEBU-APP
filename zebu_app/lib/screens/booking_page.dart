@@ -35,6 +35,9 @@ class _BookingPageState extends State<BookingPage>
   late ServiceBloc servicebloc;
   late BookingBloc bookingbloc;
   late String serviceSelected;
+  late String guestNo = '2';
+  final guestNamesTextController = TextEditingController();
+
   List<dynamic> serv = [];
   var _selectedIndex = 0;
 
@@ -418,12 +421,14 @@ class _BookingPageState extends State<BookingPage>
                             if (v < quota) {availableSlots.add(k)}
                           });
 
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: pgWidth * 0.08, right: pgWidth * 0.08),
-                            child: TableCalendar(
+                      return Container(
+                        padding: EdgeInsets.only(
+                            left: pgWidth * 0.08, right: pgWidth * 0.08),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TableCalendar(
                               rowHeight: pgHeight * 0.05,
                               sixWeekMonthsEnforced: false,
                               headerStyle: HeaderStyle(
@@ -518,14 +523,10 @@ class _BookingPageState extends State<BookingPage>
                                 _focusedDay = focusedDay;
                               },
                             ),
-                          ),
-                          SizedBox(
-                            height: pgHeight * 0.06,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: pgWidth * 0.08, right: pgWidth * 0.08),
-                            child: Column(
+                            SizedBox(
+                              height: pgHeight * 0.06,
+                            ),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 10.0),
@@ -597,54 +598,108 @@ class _BookingPageState extends State<BookingPage>
                                       ),
                               ],
                             ),
-                          ),
-                          SizedBox(
-                            height: pgHeight * 0.03,
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: pgHeight * 0.01),
-                            child: Text(
-                              specDesc,
-                              style: TextStyle(color: Color(0xff641E0D)),
+                            SizedBox(
+                              height: pgHeight * 0.03,
                             ),
-                          ),
-                          SizedBox(
-                            height: pgHeight * 0.03,
-                          ),
-                          Center(
-                            child: serviceSelected == 'Group Dining Lunch' ||
-                                    serviceSelected == 'Group Dining Dinner'
-                                ? Container(
-                                    padding: EdgeInsets.only(
-                                        left: pgWidth * 0.08,
-                                        right: pgWidth * 0.08),
-                                    child: Row(
+                            Center(
+                              child: serviceSelected == 'Group Dining Lunch' ||
+                                      serviceSelected == 'Group Dining Dinner'
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "Number of Guests",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w700),
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                              top: pgHeight * 0.01),
+                                          child: Center(
+                                            child: Text(
+                                              specDesc,
+                                              style: TextStyle(
+                                                  color: Color(0xff641E0D)),
+                                            ),
+                                          ),
                                         ),
                                         SizedBox(
-                                          width: pgWidth * 0.01,
+                                          height: pgHeight * 0.03,
                                         ),
-                                        CustomNumberPicker(
-                                          initialValue: 2,
-                                          maxValue: 5,
-                                          minValue: 2,
-                                          step: 1,
-                                          enable: true,
-                                          onValue: (value) {
-                                            print(value.toString());
-                                          },
+                                        Container(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "Number of Guests",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                              SizedBox(
+                                                width: pgWidth * 0.05,
+                                              ),
+                                              CustomNumberPicker(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  side: BorderSide(
+                                                      color: Colors.grey),
+                                                ),
+                                                initialValue: 2,
+                                                maxValue: 5,
+                                                minValue: 2,
+                                                step: 1,
+                                                enable: true,
+                                                onValue: (value) {
+                                                  setState(() {
+                                                    guestNo = value.toString();
+                                                  });
+                                                  print(guestNo);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: pgHeight * 0.02,
+                                        ),
+                                        Text(
+                                          'Guest Names',
+                                          style: TextStyle(
+                                              color: Color(0xff404E65),
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 12,
+                                              fontFamily: 'Raleway'),
+                                          softWrap: true,
+                                        ),
+                                        SizedBox(
+                                          height: pgHeight * 0.01,
+                                        ),
+                                        TextFormField(
+                                          minLines: 4,
+                                          maxLines: null,
+                                          keyboardType: TextInputType.multiline,
+                                          decoration: InputDecoration(
+                                            // hintText: "Input your opinion",
+                                            // hintStyle: TextStyle(color: Colors.white30),
+                                            border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    new Radius.circular(10.0))),
+                                            // labelStyle: TextStyle(color: Colors.white)
+                                          ),
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12.0,
+                                          ),
+                                          controller: guestNamesTextController,
+                                        ),
+                                        SizedBox(
+                                          height: pgHeight * 0.02,
                                         ),
                                       ],
-                                    ),
-                                  )
-                                : Container(),
-                          ),
-                        ],
+                                    )
+                                  : Container(),
+                            ),
+                          ],
+                        ),
                       );
                     }
                     return Container();
@@ -677,6 +732,24 @@ class _BookingPageState extends State<BookingPage>
                                           ),
                                         ],
                                       ));
+                            } else if (guestNamesTextController.value.text ==
+                                '') {
+                              showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        title:
+                                            const Text('Guest names required'),
+                                        content: const Text(
+                                            'Please enter guest names.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'OK'),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ));
                             } else {
                               Booking myBooking = Booking(
                                   title: fetchedUser['name'],
@@ -684,7 +757,10 @@ class _BookingPageState extends State<BookingPage>
                                   phoneNo: fetchedUser['phoneNumber'],
                                   time: selectedTime,
                                   date: serviceSelectedDay,
-                                  serviceType: serviceSelected);
+                                  serviceType: serviceSelected,
+                                  noOfGuests: guestNo,
+                                  guestNames:
+                                      guestNamesTextController.value.text);
 
                               BlocProvider.of<BookingBloc>(context)
                                   .add(Book(myBooking));

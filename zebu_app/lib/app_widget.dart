@@ -2,6 +2,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:zebu_app/bloc/announcement/announcement_bloc.dart';
 import 'package:zebu_app/bloc/announcement/announcement_event.dart';
+import 'package:zebu_app/bloc/announcementComment/announcement_comment_bloc.dart';
 import 'package:zebu_app/bloc/authentication/authentication_bloc.dart';
 import 'package:zebu_app/bloc/authentication/authentication_event.dart';
 import 'package:zebu_app/bloc/authentication/authentication_state.dart';
@@ -14,6 +15,7 @@ import 'package:zebu_app/bloc/menu/recent_bloc.dart';
 import 'package:zebu_app/bloc/service/service_bloc.dart';
 import 'package:zebu_app/bloc/service/service_event.dart';
 import 'package:zebu_app/bloc/user/user_bloc.dart';
+import 'package:zebu_app/data_provider/announcement_comment_data.dart';
 
 import 'package:zebu_app/data_provider/announcement_data.dart';
 import 'package:zebu_app/data_provider/booking_data.dart';
@@ -21,6 +23,7 @@ import 'package:zebu_app/data_provider/feedback_data.dart';
 import 'package:zebu_app/data_provider/login_data.dart';
 import 'package:zebu_app/data_provider/menu_data.dart';
 import 'package:zebu_app/data_provider/service_data.dart';
+import 'package:zebu_app/repository/announcement_comment_repository.dart';
 import 'package:zebu_app/repository/announcement_repositiory.dart';
 import 'package:zebu_app/repository/booking_repository.dart';
 import 'package:zebu_app/repository/feedback_repository.dart';
@@ -87,6 +90,10 @@ class _AppWidgetState extends State<AppWidget> {
       dataProvider: FeedbackDataProvider(
     httpClient: AppWidget.httpClient,
   ));
+  final announcementCommentRepository = AnnouncementCommentRepository(
+      dataProvider: AnnouncementCommentDataProvider(
+    httpClient: AppWidget.httpClient,
+  ));
   final loginRepository = LoginRepository(
       dataProvider: LoginDataProvider(
     httpClient: AppWidget.httpClient,
@@ -119,6 +126,10 @@ class _AppWidgetState extends State<AppWidget> {
         BlocProvider(
           create: (context) =>
               BookingBloc(bookingRepository: bookingRepository),
+        ),
+        BlocProvider(
+          create: (context) => AnnouncementCommentBloc(
+              announcementCommentRepository: announcementCommentRepository),
         ),
         BlocProvider(
           create: (context) =>
