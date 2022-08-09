@@ -6,6 +6,9 @@ class Booking {
   final String? time;
   final String? serviceType;
   final String? phoneNo;
+  final String? guestNames;
+  final int? noOfGuests;
+  final String? staffComment;
 
   Booking({
     this.id,
@@ -15,11 +18,24 @@ class Booking {
     this.time,
     this.serviceType,
     this.phoneNo,
+    this.guestNames,
+    this.noOfGuests,
+    this.staffComment,
   });
 
   @override
-  List<Object?> get props =>
-      [id, title, date, email, phoneNo, serviceType, time];
+  List<Object?> get props => [
+        id,
+        title,
+        date,
+        email,
+        phoneNo,
+        serviceType,
+        time,
+        guestNames,
+        noOfGuests,
+        staffComment
+      ];
   factory Booking.fromJson(Map<String, dynamic> json) {
     var booking = Booking(
       title: json['title'],
@@ -33,6 +49,13 @@ class Booking {
       serviceType:
           json['field_service_type'] == '' ? null : json['field_service_type'],
       time: json['field_time'] == '' ? null : json['field_time'],
+      guestNames:
+          json['field_guest_names'] == '' ? null : json['field_guest_names'],
+      noOfGuests:
+          json['field_no_of_guests'] == '' ? 0 : json['field_no_of_guests'],
+      staffComment: json['field_staff_comment'] == ''
+          ? null
+          : json['field_staff_comment'],
     );
 
     return booking;
@@ -40,5 +63,5 @@ class Booking {
 
   @override
   String toString() =>
-      'Booking {id: $id , title: $title, email: $email, phoneNo:$phoneNo, date:$date, time: $time, serviceType:$serviceType}';
+      'Booking {id: $id , title: $title, email: $email, phoneNo:$phoneNo, date:$date, time: $time, serviceType:$serviceType, guestNames:$guestNames, noOfguests:$noOfGuests, staffComment:$staffComment}';
 }

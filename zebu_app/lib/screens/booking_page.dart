@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_number_picker/flutter_number_picker.dart';
 
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:intl/intl.dart';
@@ -406,6 +407,7 @@ class _BookingPageState extends State<BookingPage>
                       final bookings = bookingState.serviceBookings;
                       final slots = bookingState.serviceDetail.slots;
                       final quota = int.parse(bookingState.serviceDetail.quota);
+                      final specDesc = bookingState.serviceDetail.specDesc;
 
                       bookings.forEach((booking) {
                         slots[booking.time]++;
@@ -426,7 +428,7 @@ class _BookingPageState extends State<BookingPage>
                               sixWeekMonthsEnforced: false,
                               headerStyle: HeaderStyle(
                                 headerPadding: EdgeInsets.only(
-                                    top: pgHeight * 0.06,
+                                    top: pgHeight * 0.05,
                                     left: pgWidth * 0.03,
                                     bottom: pgHeight * 0.02),
                                 leftChevronVisible: false,
@@ -597,7 +599,50 @@ class _BookingPageState extends State<BookingPage>
                             ),
                           ),
                           SizedBox(
-                            height: pgHeight * 0.06,
+                            height: pgHeight * 0.03,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: pgHeight * 0.01),
+                            child: Text(
+                              specDesc,
+                              style: TextStyle(color: Color(0xff641E0D)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: pgHeight * 0.03,
+                          ),
+                          Center(
+                            child: serviceSelected == 'Group Dining Lunch' ||
+                                    serviceSelected == 'Group Dining Dinner'
+                                ? Container(
+                                    padding: EdgeInsets.only(
+                                        left: pgWidth * 0.08,
+                                        right: pgWidth * 0.08),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Number of Guests",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                        SizedBox(
+                                          width: pgWidth * 0.01,
+                                        ),
+                                        CustomNumberPicker(
+                                          initialValue: 2,
+                                          maxValue: 5,
+                                          minValue: 2,
+                                          step: 1,
+                                          enable: true,
+                                          onValue: (value) {
+                                            print(value.toString());
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Container(),
                           ),
                         ],
                       );
