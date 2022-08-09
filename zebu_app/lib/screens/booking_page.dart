@@ -48,7 +48,7 @@ class _BookingPageState extends State<BookingPage>
   void initState() {
     servicebloc = BlocProvider.of<ServiceBloc>(context);
     servicebloc.add(AllServiceLoad());
-    serviceSelected = "Dining Lunch";
+    serviceSelected = "Group Dining Lunch";
     bookingbloc = BlocProvider.of<BookingBloc>(context);
     bookingbloc.add(ServiceBookingLoad(
         serviceSelected, serviceSelectedDay, serviceSelected));
@@ -56,7 +56,7 @@ class _BookingPageState extends State<BookingPage>
   }
 
   GlobalKey<_BookingPageState> _sliderKey = GlobalKey();
-  late String selectedServiceIndex = "Dining";
+  late String selectedServiceIndex = "Group Dining";
   ScrollController listScrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -161,9 +161,9 @@ class _BookingPageState extends State<BookingPage>
 
                                             var serviceDetailPhrase =
                                                 serviceSelected ==
-                                                            'Dining Lunch' ||
+                                                            'Group Dining Lunch' ||
                                                         serviceSelected ==
-                                                            'Dining Dinner' ||
+                                                            'Group Dining Dinner' ||
                                                         serviceSelected ==
                                                             'Steam Sauna Men' ||
                                                         serviceSelected ==
@@ -314,9 +314,9 @@ class _BookingPageState extends State<BookingPage>
                                                                           currentService
                                                                               .options[labelIndex];
 
-                                                                  var serviceDetailPhrase = serviceSelected == 'Dining Lunch' ||
+                                                                  var serviceDetailPhrase = serviceSelected == 'Group Dining Lunch' ||
                                                                           serviceSelected ==
-                                                                              'Dining Dinner' ||
+                                                                              'Group Dining Dinner' ||
                                                                           serviceSelected ==
                                                                               'Steam Sauna Men' ||
                                                                           serviceSelected ==
@@ -496,8 +496,9 @@ class _BookingPageState extends State<BookingPage>
                                       .format(_selectedDay);
 
                                   var serviceDetailPhrase = serviceSelected ==
-                                              'Dining Lunch' ||
-                                          serviceSelected == 'Dining Dinner' ||
+                                              'Group Dining Lunch' ||
+                                          serviceSelected ==
+                                              'Group Dining Dinner' ||
                                           serviceSelected ==
                                               'Steam Sauna Men' ||
                                           serviceSelected == 'Steam Sauna Women'
