@@ -4,13 +4,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_number_picker/flutter_number_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zebu_app/bloc/menu/menu_bloc.dart';
 import 'package:zebu_app/bloc/menu/menu_event.dart';
 import 'package:zebu_app/bloc/menu/menu_state.dart';
 import 'package:zebu_app/bloc/menu/recent_bloc.dart';
 import 'package:zebu_app/bloc/menu/recent_state.dart';
+import 'package:zebu_app/bloc/order/order_bloc.dart';
+import 'package:zebu_app/bloc/order/order_event.dart';
+import 'package:zebu_app/bloc/order/order_state.dart';
+import 'package:zebu_app/models/order.dart';
 import 'package:zebu_app/routeGenerator.dart';
+import 'package:intl/intl.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
@@ -44,8 +50,10 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
       pgWidth = pageWidth;
     });
     var id = argObj['id'];
+    late String qty = '1';
     final menuBloc = BlocProvider.of<MenuBloc>(context);
     menuBloc.add(SingleMenuLoad(id));
+
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushNamed(
@@ -93,6 +101,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
 
                     if (singleMenuState is SingleMenuLoadSuccess) {
                       var singleMenu = singleMenuState.singleMenu;
+                      print(singleMenu);
                       return Container(
                         color: Colors.white,
                         child: Column(
@@ -232,6 +241,152 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                     style: TextStyle(color: Color(0xff404E65)),
                                     softWrap: true,
                                   ),
+                                ),
+                                Container(
+                                  child: singleMenu.category.contains("Pizza")
+                                      ? BlocConsumer<OrderBloc, OrderState>(
+                                          listener: (ctx, orderState) {
+                                          if (orderState is OrderSuccess) {
+                                            showDialog<String>(
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    AlertDialog(
+                                                      // title: const Text('Time Not Set'),
+                                                      content: const Text(
+                                                          'Your order has been placed!'),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () => {
+                                                            Navigator.pushNamed(
+                                                              context,
+                                                              RouteGenerator
+                                                                  .homeScreenName,
+                                                            )
+                                                          },
+                                                          child:
+                                                              const Text('OK'),
+                                                        ),
+                                                      ],
+                                                    ));
+                                          }
+                                        }, builder: (_, orderState) {
+                                          return Column(
+                                            children: [
+                                              CustomNumberPicker(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  side: BorderSide(
+                                                      color: Colors.grey),
+                                                ),
+                                                initialValue: 1,
+                                                maxValue: 10,
+                                                minValue: 1,
+                                                step: 1,
+                                                enable: true,
+                                                onValue: (value) {
+                                                  setState(() {
+                                                    qty = value.toString();
+                                                  });
+                                                  print(qty);
+                                                },
+                                              ),
+                                              Container(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 16.0,
+                                                          right: 16.0),
+                                                  child: SizedBox(
+                                                    width:
+                                                        double.infinity * 0.75,
+                                                    height: 50,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        final prefs =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        var fetchedUser =
+                                                            json.decode(
+                                                                prefs.getString(
+                                                                    'user')!);
+
+                                                        final DateTime now =
+                                                            DateTime.now();
+                                                        final DateFormat
+                                                            formatter1 =
+                                                            DateFormat(
+                                                                'yyyy-MM-dd');
+                                                        final String
+                                                            formattedDate =
+                                                            formatter1
+                                                                .format(now);
+
+                                                        final DateFormat
+                                                            formatter2 =
+                                                            DateFormat('jms');
+                                                        final String
+                                                            formattedTime =
+                                                            formatter2
+                                                                .format(now);
+
+                                                        Order myOrder = Order(
+                                                            title: fetchedUser[
+                                                                'name'],
+                                                            email: fetchedUser[
+                                                                'email'],
+                                                            phoneNo: fetchedUser[
+                                                                'phoneNumber'],
+                                                            qty: qty,
+                                                            item: id,
+                                                            date: formattedDate,
+                                                            time:
+                                                                formattedTime);
+
+                                                        BlocProvider.of<
+                                                                    OrderBloc>(
+                                                                context)
+                                                            .add(PlaceOrder(
+                                                                myOrder));
+                                                      },
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(Color(
+                                                                    0xff404E65)),
+                                                        shape: MaterialStateProperty
+                                                            .all<
+                                                                RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      child: Text(
+                                                        "Place Order",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Raleway',
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        })
+                                      : Container(),
                                 ),
                               ],
                             ),
