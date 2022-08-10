@@ -21,6 +21,10 @@ class NavDrawerBloc extends Bloc<NavDrawerEvent, NavDrawerState> {
       yield LoggedOutNavState();
     } else if (event is MyBookingPageEvent) {
       yield MyBooking();
+    } else if (event is MyOrderPageEvent) {
+      yield MyOrder();
     }
+    
+    
   }
 }

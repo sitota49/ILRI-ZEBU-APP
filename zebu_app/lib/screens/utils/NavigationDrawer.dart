@@ -20,6 +20,7 @@ import 'package:zebu_app/screens/feedback_page.dart';
 import 'package:zebu_app/screens/membership_page.dart';
 import 'package:zebu_app/screens/menu_page.dart';
 import 'package:zebu_app/screens/my_booking_page.dart';
+import 'package:zebu_app/screens/my_order_page.dart';
 
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
@@ -110,6 +111,11 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => MyBookingPage()));
+                    } else if (navState is MyOrder) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyOrderPage()));
                     }
                   },
                   builder: (context, navState) {
@@ -123,6 +129,16 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             final navBloc =
                                 BlocProvider.of<NavDrawerBloc>(context);
                             navBloc.add(MyBookingPageEvent());
+                          },
+                        ),
+                        const SizedBox(height: 24),
+                        ListTile(
+                          leading: Icon(Icons.local_pizza),
+                          title: Text("My Orders"),
+                          onTap: () {
+                            final navBloc =
+                                BlocProvider.of<NavDrawerBloc>(context);
+                            navBloc.add(MyOrderPageEvent());
                           },
                         ),
                         const SizedBox(height: 24),
