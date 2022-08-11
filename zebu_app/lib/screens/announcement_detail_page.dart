@@ -15,6 +15,7 @@ import 'package:zebu_app/routeGenerator.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
+var commentTextController;
 
 class AnnouncementDetailPage extends StatefulWidget {
   final Map argObj;
@@ -30,7 +31,18 @@ class AnnouncementDetailPage extends StatefulWidget {
 class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
   final Map argObj;
   _AnnouncementDetailPageState({required this.argObj});
-  final commentTextController = TextEditingController();
+
+  var id;
+  @override
+  void initState() {
+    super.initState();
+    id = argObj['id'];
+    commentTextController = TextEditingController();
+
+    final announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
+    announcementBloc.add(AnnouncementLoad(id));
+  }
+
   @override
   Widget build(BuildContext context) {
     double pageWidth = MediaQuery.of(context).size.width;
@@ -40,9 +52,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
     });
-    var id = argObj['id'];
-    final announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
-    announcementBloc.add(AnnouncementLoad(id));
+
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushNamed(
@@ -96,7 +106,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                         }
 
                         if (announcementState is AnnouncementLoadFailure) {
-                          return const Text("Loading Failed",
+                          return const Text("Please check your internet connection and try again.",
                               style: TextStyle(
                                 color: Color(0xff404E65),
                               ));
@@ -309,6 +319,9 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                                 ),
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 15,
                           ),
                         ],
                       ),

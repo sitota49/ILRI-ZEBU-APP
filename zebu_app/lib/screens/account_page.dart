@@ -37,7 +37,6 @@ class _AccountPageState extends State<AccountPage> {
             );
           }
         }, builder: (_, authentiationState) {
-          
           if (authentiationState is Loading) {
             return const CircularProgressIndicator(color: Color(0xff404E65));
           }

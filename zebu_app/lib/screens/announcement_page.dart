@@ -88,7 +88,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                             announcementListState
                                 is AnnouncementsEmpltyFailure) {
                           return const Text(
-                            "Failed Loading",
+                            "Please check your internet connection and try again.",
                             style: TextStyle(
                               color: Color(0xff404E65),
                               fontSize: 14,

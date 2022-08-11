@@ -116,7 +116,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                     }
 
                     if (singleMenuState is SingleMenuLoadFailure) {
-                      return const Text("Loading Failed");
+                      return const Text("Please check your internet connection and try again.");
                     }
 
                     if (singleMenuState is SingleMenuLoadSuccess) {

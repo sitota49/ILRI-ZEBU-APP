@@ -319,18 +319,20 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     // SizedBox(
                     //   height: pageHeight * 0.22,
                     // ),
-                    Image.asset('assets/images/membership.png',
+                    Image.asset('assets/images/announcement.png',
                         width: pageWidth * 0.519, height: pageHeight * 0.325),
                     SizedBox(
                       height: pageHeight * 0.064,
                     ),
-                    Text(
-                      'Announcement Notification',
-                      style: TextStyle(
-                        fontFamily: 'Raleway',
-                        fontSize: 26,
-                        color: const Color(0xff000000),
-                        fontWeight: FontWeight.w900,
+                    Center(
+                      child: Text(
+                        'Announcement Notification',
+                        style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontSize: 26,
+                          color: const Color(0xff000000),
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -366,13 +368,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     SizedBox(
                       height: pageHeight * 0.064,
                     ),
-                    Text(
-                      'Menu at your hand',
-                      style: TextStyle(
-                        fontFamily: 'Raleway',
-                        fontSize: 26,
-                        color: const Color(0xff000000),
-                        fontWeight: FontWeight.w900,
+                    Center(
+                      child: Text(
+                        'Menu at your hand',
+                        style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontSize: 26,
+                          color: const Color(0xff000000),
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -408,13 +412,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     SizedBox(
                       height: pageHeight * 0.064,
                     ),
-                    Text(
-                      'Book your stay ahead',
-                      style: TextStyle(
-                        fontFamily: 'Raleway',
-                        fontSize: 26,
-                        color: const Color(0xff000000),
-                        fontWeight: FontWeight.w900,
+                    Center(
+                      child: Text(
+                        'Book your stay ahead',
+                        style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontSize: 26,
+                          color: const Color(0xff000000),
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -450,13 +456,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     SizedBox(
                       height: pageHeight * 0.064,
                     ),
-                    Text(
-                      'Let us know what you think',
-                      style: TextStyle(
-                        fontFamily: 'Raleway',
-                        fontSize: 26,
-                        color: const Color(0xff000000),
-                        fontWeight: FontWeight.w900,
+                    Center(
+                      child: Text(
+                        'Let us know what you think',
+                        style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontSize: 26,
+                          color: const Color(0xff000000),
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
                     SizedBox(

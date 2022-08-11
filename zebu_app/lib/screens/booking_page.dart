@@ -122,7 +122,7 @@ class _BookingPageState extends State<BookingPage>
                         if (serviceListState is AllServiceLoadFailure ||
                             serviceListState is AllServiceEmpltyFailure) {
                           return const Text(
-                            "Failed Loading",
+                            "Please check your internet connection and try again.",
                             style: TextStyle(
                               color: Color(0xff404E65),
                               fontSize: 14,
@@ -398,7 +398,7 @@ class _BookingPageState extends State<BookingPage>
 
                     if (bookingState is ServiceBookingLoadFailure) {
                       return const Text(
-                        "Failed Loading",
+                        "Please check your internet connection and try again.",
                         style: TextStyle(
                           color: Color(0xff404E65),
                           fontSize: 14,

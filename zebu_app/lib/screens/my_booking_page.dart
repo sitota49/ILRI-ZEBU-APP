@@ -118,7 +118,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                     height: MediaQuery.of(context).size.height / 1.3,
                     child: Center(
                       child: Text(
-                        "Failed Loading",
+                        "Please check your internet connection and try again.",
                         style: TextStyle(
                           color: Color(0xff404E65),
                           fontSize: 14,
@@ -133,7 +133,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                     height: MediaQuery.of(context).size.height / 1.3,
                     child: Center(
                       child: Text(
-                        "No Booking Items yet",
+                        "No items yet",
                         style: TextStyle(
                           color: Color(0xff404E65),
                           fontSize: 14,
@@ -168,7 +168,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                             padding:
                                 const EdgeInsets.only(left: 8.0, right: 8.0),
                             child: Container(
-                              height: pgHeight * 0.18,
+                              height: pgHeight * 0.2,
                               decoration: new BoxDecoration(
                                   color: (parsed.isAfter(DateTime.now()))
                                       ? Color(0xff404E65)

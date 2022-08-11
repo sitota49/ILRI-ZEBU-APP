@@ -73,7 +73,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                     }),
             backgroundColor: Colors.white,
             title: Text(
-              'BOOKINGS',
+              'ORDERS',
               style: TextStyle(
                   fontFamily: 'Raleway',
                   fontSize: 18,
@@ -122,7 +122,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                     height: MediaQuery.of(context).size.height / 1.3,
                     child: Center(
                       child: Text(
-                        "Failed Loading",
+                        "Please check your internet connection and try again.",
                         style: TextStyle(
                           color: Color(0xff404E65),
                           fontSize: 14,
@@ -172,7 +172,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                             padding:
                                 const EdgeInsets.only(left: 8.0, right: 8.0),
                             child: Container(
-                              height: pgHeight * 0.18,
+                              height: pgHeight * 0.2,
                               decoration: new BoxDecoration(
                                   color: (currentOrder.isDelivered ==
                                           'Undelivered')
