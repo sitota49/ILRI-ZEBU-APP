@@ -412,6 +412,8 @@ class _BookingPageState extends State<BookingPage>
                       final quota = int.parse(bookingState.serviceDetail.quota);
                       final specDesc = bookingState.serviceDetail.specDesc;
 
+                      slots.forEach((k, v) => {slots[k] = 0});
+
                       bookings.forEach((booking) {
                         slots[booking.time]++;
                       });
@@ -732,8 +734,10 @@ class _BookingPageState extends State<BookingPage>
                                           ),
                                         ],
                                       ));
-                            } else if (guestNamesTextController.value.text ==
-                                '') {
+                            } else if ((serviceSelected ==
+                                        'Group Dining Lunch' ||
+                                    serviceSelected == 'Group Dining Dinner') &&
+                                guestNamesTextController.value.text == '') {
                               showDialog<String>(
                                   context: context,
                                   builder: (BuildContext context) =>

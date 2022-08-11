@@ -215,15 +215,18 @@ class _EditBookingPageState extends State<EditBookingPage> {
                       }
 
                       if (bookingState is ServiceBookingLoadSuccess) {
+                        
                         final bookings = bookingState.serviceBookings;
                         final slots = bookingState.serviceDetail.slots;
                         final quota =
                             int.parse(bookingState.serviceDetail.quota);
+                        slots.forEach((k, v) => {slots[k] = 0});
 
+                        
                         bookings.forEach((booking) {
                           slots[booking.time]++;
                         });
-
+                       
                         var availableSlots = [];
                         slots.forEach((k, v) => {
                               if (v < quota) {availableSlots.add(k)}
@@ -523,84 +526,67 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                                 SizedBox(
                                                   height: pgHeight * 0.06,
                                                 ),
-                                                Container(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 16.0,
-                                                            right: 16.0),
-                                                    child: SizedBox(
-                                                      width: double.infinity,
-                                                      height: pgHeight * 0.06,
-                                                      child: ElevatedButton(
-                                                        onPressed: () {
-                                                          // final prefs = await SharedPreferences.getInstance();
-                                                          // var fetchedUser =
-                                                          //     json.decode(prefs.getString('user')!);
-
-                                                          Booking myBooking = Booking(
-                                                              title: '',
-                                                              id: booking.id,
-                                                              time:
-                                                                  selectedTime,
-                                                              date:
-                                                                  serviceSelectedDay,
-                                                              serviceType:
-                                                                  serviceSelected,
-                                                              guestNames:
-                                                                  guestNamesTextController
-                                                                      .value
-                                                                      .text,
-                                                              noOfGuests:
-                                                                  guestNo);
-
-                                                          BlocProvider.of<
-                                                                      BookingBloc>(
-                                                                  context)
-                                                              .add(UpdateBooking(
-                                                                  myBooking));
-                                                        },
-                                                        style: ButtonStyle(
-                                                          backgroundColor:
-                                                              MaterialStateProperty
-                                                                  .all<Color>(Color(
-                                                                      0xff404E65)),
-                                                          shape: MaterialStateProperty
-                                                              .all<
-                                                                  RoundedRectangleBorder>(
-                                                            RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        child: Text(
-                                                          "Update Booking",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'Raleway',
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 20,
-                                                )
                                               ],
                                             )
                                           : Container(),
                                     ),
+                                    Container(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0, right: 16.0),
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          height: pgHeight * 0.06,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              // final prefs = await SharedPreferences.getInstance();
+                                              // var fetchedUser =
+                                              //     json.decode(prefs.getString('user')!);
+
+                                              Booking myBooking = Booking(
+                                                  title: '',
+                                                  id: booking.id,
+                                                  time: selectedTime,
+                                                  date: serviceSelectedDay,
+                                                  serviceType: serviceSelected,
+                                                  guestNames:
+                                                      guestNamesTextController
+                                                          .value.text,
+                                                  noOfGuests: guestNo);
+
+                                              BlocProvider.of<BookingBloc>(
+                                                      context)
+                                                  .add(
+                                                      UpdateBooking(myBooking));
+                                            },
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(Color(0xff404E65)),
+                                              shape: MaterialStateProperty.all<
+                                                  RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              "Update Booking",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontFamily: 'Raleway',
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    )
                                   ],
                                 ),
                               ],
