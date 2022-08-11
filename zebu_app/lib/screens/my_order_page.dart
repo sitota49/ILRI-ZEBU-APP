@@ -225,7 +225,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                               height: pgHeight * 0.003,
                                             ),
                                             Text(
-                                              'Qty -' + currentOrder.qty,
+                                              'Qty - ' + currentOrder.qty,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w500),
                                               softWrap: true,
