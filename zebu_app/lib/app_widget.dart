@@ -7,6 +7,7 @@ import 'package:zebu_app/bloc/authentication/authentication_bloc.dart';
 import 'package:zebu_app/bloc/authentication/authentication_event.dart';
 import 'package:zebu_app/bloc/authentication/authentication_state.dart';
 import 'package:zebu_app/bloc/booking/booking_bloc.dart';
+import 'package:zebu_app/bloc/dining_booking/dining_booking_bloc.dart';
 import 'package:zebu_app/bloc/feedback/feedback_bloc.dart';
 import 'package:zebu_app/bloc/login/login_bloc.dart';
 import 'package:zebu_app/bloc/menu/menu_bloc.dart';
@@ -133,6 +134,10 @@ class _AppWidgetState extends State<AppWidget> {
         BlocProvider(
           create: (context) =>
               BookingBloc(bookingRepository: bookingRepository),
+        ),
+         BlocProvider(
+          create: (context) =>
+              DiningBookingBloc(bookingRepository: bookingRepository),
         ),
           BlocProvider(
           create: (context) =>

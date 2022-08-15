@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
-
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:table_calendar/table_calendar.dart';
 import 'package:zebu_app/bloc/dining_booking/dining_booking_bloc.dart';
 import 'package:zebu_app/bloc/dining_booking/dining_booking_event.dart';
@@ -17,23 +15,21 @@ import 'package:zebu_app/bloc/service/service_event.dart';
 import 'package:zebu_app/bloc/service/service_state.dart';
 import 'package:zebu_app/models/booking.dart';
 import 'package:zebu_app/routeGenerator.dart';
-
 import 'package:zebu_app/screens/utils/CalendarUtils.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
 
-class BookingPage extends StatefulWidget {
-  const BookingPage({Key? key}) : super(key: key);
+class DinningBooking extends StatefulWidget {
+  const DinningBooking({Key? key}) : super(key: key);
 
   @override
-  State<BookingPage> createState() => _BookingPageState();
+  State<DinningBooking> createState() => _DinningBookingState();
 }
 
-class _BookingPageState extends State<BookingPage>
-    with TickerProviderStateMixin {
+class _DinningBookingState extends State<DinningBooking> {
   late ServiceBloc servicebloc;
-  late DiningBookingBloc bookingbloc;
+  late DiningBookingBloc diningbookingbloc;
   late String serviceSelected;
   late String guestNo = '2';
   final guestNamesTextController = TextEditingController();
@@ -49,24 +45,25 @@ class _BookingPageState extends State<BookingPage>
       DateFormat('yyyy-MM-dd').format(_selectedDay);
   String selectedTime = '';
 
-  @override
+   @override
   void initState() {
     servicebloc = BlocProvider.of<ServiceBloc>(context);
     servicebloc.add(AllServiceLoad());
     serviceSelected = "Group Dining Lunch";
-    bookingbloc = BlocProvider.of<DiningBookingBloc>(context);
-    bookingbloc.add(ServiceBookingLoad(
+    diningbookingbloc = BlocProvider.of<DiningBookingBloc>(context);
+    diningbookingbloc.add(ServiceBookingLoad(
         serviceSelected, serviceSelectedDay, serviceSelected));
     super.initState();
   }
 
-  GlobalKey<_BookingPageState> _sliderKey = GlobalKey();
+  var _sliderKey = GlobalKey();
   // static final _formKey = new GlobalKey<FormState>();
   late String selectedServiceIndex = "Group Dining";
   ScrollController listScrollController = ScrollController();
+ 
   @override
   Widget build(BuildContext context) {
-    double pageWidth = MediaQuery.of(context).size.width;
+     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
 
     setState(() {
@@ -177,7 +174,7 @@ class _BookingPageState extends State<BookingPage>
                                                     ? serviceSelected
                                                     : selectedServiceIndex;
 
-                                            bookingbloc.add(ServiceBookingLoad(
+                                            diningbookingbloc.add(ServiceBookingLoad(
                                                 serviceSelected,
                                                 serviceSelectedDay,
                                                 serviceDetailPhrase));
@@ -330,7 +327,7 @@ class _BookingPageState extends State<BookingPage>
                                                                       ? serviceSelected
                                                                       : selectedServiceIndex;
 
-                                                                  bookingbloc.add(ServiceBookingLoad(
+                                                                  diningbookingbloc.add(ServiceBookingLoad(
                                                                       serviceSelected,
                                                                       serviceSelectedDay,
                                                                       serviceDetailPhrase));
@@ -516,7 +513,7 @@ class _BookingPageState extends State<BookingPage>
                                       ? serviceSelected
                                       : selectedServiceIndex;
 
-                                  bookingbloc.add(ServiceBookingLoad(
+                                  diningbookingbloc.add(ServiceBookingLoad(
                                       serviceSelected,
                                       serviceSelectedDay,
                                       serviceDetailPhrase));
@@ -773,11 +770,7 @@ class _BookingPageState extends State<BookingPage>
                                   time: selectedTime,
                                   date: serviceSelectedDay,
                                   serviceType: serviceSelected,
-                                  noOfGuests: (serv == 'Group Dining Lunch' ||
-                                          serviceSelected ==
-                                              'Group Dining Dinner')
-                                      ? guestNo
-                                      : null,
+                                  noOfGuests: guestNo,
                                   guestNames:
                                       guestNamesTextController.value.text);
 
@@ -813,5 +806,6 @@ class _BookingPageState extends State<BookingPage>
             ),
           )),
     );
+ 
   }
 }

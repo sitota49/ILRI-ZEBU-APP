@@ -325,6 +325,16 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
+                    // GestureDetector(
+                    //     onTap: () {
+                    //       Navigator.pushNamed(
+                    //         context,
+                    //         RouteGenerator.diningBookingScreenName,
+                    //       );
+                    //     },
+                    //     child: Container(
+                    //       child: Text("Dining Booking"),
+                    //     )),
                   ],
                 )),
               ],
