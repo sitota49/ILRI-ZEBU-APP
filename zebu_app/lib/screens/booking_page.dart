@@ -773,7 +773,8 @@ class _BookingPageState extends State<BookingPage>
                                   time: selectedTime,
                                   date: serviceSelectedDay,
                                   serviceType: serviceSelected,
-                                  noOfGuests: (serv == 'Group Dining Lunch' ||
+                                  noOfGuests: (serviceSelected ==
+                                              'Group Dining Lunch' ||
                                           serviceSelected ==
                                               'Group Dining Dinner')
                                       ? guestNo

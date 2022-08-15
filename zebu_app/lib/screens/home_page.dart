@@ -32,32 +32,33 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff404E65),
-      body: Home(),
+      body: 
+      // Home(),
 
-      //     BlocConsumer<AuthenticationBloc, AuthenticationState>(
-      //         listener: (context, state) {
-      //   if (state is UninitializedAuth) {
-      //     Navigator.pushNamed(
-      //       context,
-      //       RouteGenerator.splashScreenName,
-      //     );
-      //   } else if (state is Inside) {
-      //     Navigator.pushNamed(
-      //       context,
-      //       RouteGenerator.homeScreenName,
-      //     );
-      //   }
-      // }, builder: (_, authentiationState) {
-      //   if (authentiationState is Loading) {
-      //     return const CircularProgressIndicator(color: Color(0xff404E65));
-      //   }
-      //   if (authentiationState is Inside) {
-      //     //main home page goes here
-      //     return Home();
-      //   }
+          BlocConsumer<AuthenticationBloc, AuthenticationState>(
+              listener: (context, state) {
+        if (state is UninitializedAuth) {
+          Navigator.pushNamed(
+            context,
+            RouteGenerator.splashScreenName,
+          );
+        } else if (state is Inside) {
+          Navigator.pushNamed(
+            context,
+            RouteGenerator.homeScreenName,
+          );
+        }
+      }, builder: (_, authentiationState) {
+        if (authentiationState is Loading) {
+          return const CircularProgressIndicator(color: Color(0xff404E65));
+        }
+        if (authentiationState is Inside) {
+          //main home page goes here
+          return Home();
+        }
 
-      //   return Container();
-      // })
+        return Container();
+      })
     );
   }
 }
