@@ -11,6 +11,9 @@ import 'package:zebu_app/bloc/menu/menu_event.dart';
 import 'package:zebu_app/bloc/menu/menu_state.dart';
 import 'package:zebu_app/bloc/menu/recent_bloc.dart';
 import 'package:zebu_app/bloc/menu/recent_state.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_bloc.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_event.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_state.dart';
 import 'package:zebu_app/bloc/order/order_bloc.dart';
 import 'package:zebu_app/bloc/order/order_event.dart';
 import 'package:zebu_app/bloc/order/order_state.dart';
@@ -22,6 +25,7 @@ double pgHeight = 0;
 double pgWidth = 0;
 var noPicker;
 var qty = '1';
+NetworkConnectivityBloc? _networkConnectivityBloc;
 
 class MenuDetailPage extends StatefulWidget {
   final Map argObj;
@@ -40,6 +44,11 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
   @override
   void initState() {
     super.initState();
+    _networkConnectivityBloc =
+        BlocProvider.of<NetworkConnectivityBloc>(context);
+    _networkConnectivityBloc!.add(InitNetworkConnectivity());
+    _networkConnectivityBloc!.add(ListenNetworkConnectivity());
+
     id = argObj['id'];
     final menuBloc = BlocProvider.of<MenuBloc>(context);
     menuBloc.add(SingleMenuLoad(id));
@@ -57,8 +66,6 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
         setState(() {
           qty = value.toString();
         });
-
-
       },
     );
   }
@@ -90,7 +97,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
             elevation: 0,
             leading: IconButton(
               icon: Icon(Icons.arrow_back_ios),
-              color: Colors.white,
+              color: Color(0xff5D7498),
               onPressed: () => Navigator.pushNamed(
                 context,
                 RouteGenerator.mainFlowName,
@@ -117,13 +124,27 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                     }
 
                     if (singleMenuState is SingleMenuLoadFailure) {
-                      return const Text("Please check your internet connection and try again.");
+                      return Center(
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height / 1.3,
+                          width: pgWidth * 0.7,
+                          child: Center(
+                            child: Text(
+                              "Please check your internet connection and try again.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xff404E65),
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
                     }
 
                     if (singleMenuState is SingleMenuLoadSuccess) {
                       var singleMenu = singleMenuState.singleMenu;
-                  
-                  
+
                       return Container(
                         color: Colors.white,
                         child: Column(
@@ -266,116 +287,200 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                 ),
                               ],
                             ),
-                            Container(
-                              child: singleMenu.category.contains("Pizza")
-                                  ? BlocConsumer<OrderBloc, OrderState>(
-                                      listener: (ctx, orderState) {
-                                      if (orderState is OrderSuccess) {
-                                        showDialog<String>(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                AlertDialog(
-                                                  // title: const Text('Time Not Set'),
-                                                  content: const Text(
-                                                      'Your order has been placed!'),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () => {
-                                                        Navigator.pushNamed(
-                                                          context,
-                                                          RouteGenerator
-                                                              .homeScreenName,
-                                                        )
-                                                      },
-                                                      child: const Text('OK'),
-                                                    ),
-                                                  ],
-                                                ));
-                                      }
-                                    }, builder: (_, orderState) {
-                                      return Column(
-                                        children: [
-                                          noPicker,
-                                          Container(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0, right: 16.0),
-                                              child: SizedBox(
-                                                width: double.infinity * 0.75,
-                                                height: 50,
-                                                child: ElevatedButton(
-                                                  onPressed: () async {
-                                                    final prefs =
-                                                        await SharedPreferences
-                                                            .getInstance();
-                                                    var fetchedUser = json
-                                                        .decode(prefs.getString(
-                                                            'user')!);
+                            BlocBuilder(
+                              bloc: _networkConnectivityBloc,
+                              builder: (BuildContext context,
+                                  NetworkConnectivityState state) {
+                                if (state is NetworkOnline) {
+                                  return Container(
+                                    child: singleMenu.category.contains("Pizza")
+                                        ? BlocConsumer<OrderBloc, OrderState>(
+                                            listener: (ctx, orderState) {
+                                            if (orderState is OrderSuccess) {
+                                              showDialog<String>(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          AlertDialog(
+                                                            // title: const Text('Time Not Set'),
+                                                            content: const Text(
+                                                                'Your order has been placed!'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    {
+                                                                  Navigator
+                                                                      .pushNamed(
+                                                                    context,
+                                                                    RouteGenerator
+                                                                        .homeScreenName,
+                                                                  )
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                        'OK'),
+                                                              ),
+                                                            ],
+                                                          ));
+                                            }
+                                            if (orderState is OrderFailure) {
+                                              showDialog<String>(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          AlertDialog(
+                                                            // title: const Text('Time Not Set'),
+                                                            content: const Text(
+                                                                'Please check your internet connceetion and try again.'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    {
+                                                                  Navigator
+                                                                      .pushNamed(
+                                                                    context,
+                                                                    RouteGenerator
+                                                                        .homeScreenName,
+                                                                  )
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                        'OK'),
+                                                              ),
+                                                            ],
+                                                          ));
+                                            }
+                                          }, builder: (_, orderState) {
+                                            return Column(
+                                              children: [
+                                                noPicker,
+                                                Container(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 16.0,
+                                                            right: 16.0),
+                                                    child: SizedBox(
+                                                      width: double.infinity *
+                                                          0.75,
+                                                      height: 50,
+                                                      child: ElevatedButton(
+                                                        onPressed: () async {
+                                                          final prefs =
+                                                              await SharedPreferences
+                                                                  .getInstance();
+                                                          var fetchedUser =
+                                                              json.decode(prefs
+                                                                  .getString(
+                                                                      'user')!);
 
-                                                    final DateTime now =
-                                                        DateTime.now();
-                                                    final DateFormat
-                                                        formatter1 = DateFormat(
-                                                            'yyyy-MM-dd');
-                                                    final String formattedDate =
-                                                        formatter1.format(now);
+                                                          final DateTime now =
+                                                              DateTime.now();
+                                                          final DateFormat
+                                                              formatter1 =
+                                                              DateFormat(
+                                                                  'yyyy-MM-dd');
+                                                          final String
+                                                              formattedDate =
+                                                              formatter1
+                                                                  .format(now);
 
-                                                    final DateFormat
-                                                        formatter2 =
-                                                        DateFormat('jms');
-                                                    final String formattedTime =
-                                                        formatter2.format(now);
+                                                          final DateFormat
+                                                              formatter2 =
+                                                              DateFormat('jms');
+                                                          final String
+                                                              formattedTime =
+                                                              formatter2
+                                                                  .format(now);
 
-                                                    Order myOrder = Order(
-                                                        title:
-                                                            fetchedUser['name'],
-                                                        email: fetchedUser[
-                                                            'email'],
-                                                        phoneNo: fetchedUser[
-                                                            'phoneNumber'],
-                                                        qty: qty,
-                                                        item: id,
-                                                        date: formattedDate,
-                                                        time: formattedTime);
+                                                          Order myOrder = Order(
+                                                              title: fetchedUser[
+                                                                  'name'],
+                                                              email:
+                                                                  fetchedUser[
+                                                                      'email'],
+                                                              phoneNo: fetchedUser[
+                                                                  'phoneNumber'],
+                                                              qty: qty,
+                                                              item: id,
+                                                              date:
+                                                                  formattedDate,
+                                                              time:
+                                                                  formattedTime);
 
-                                                    BlocProvider.of<OrderBloc>(
-                                                            context)
-                                                        .add(PlaceOrder(
-                                                            myOrder));
-                                                  },
-                                                  style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all<Color>(Color(
-                                                                0xff404E65)),
-                                                    shape: MaterialStateProperty
-                                                        .all<
-                                                            RoundedRectangleBorder>(
-                                                      RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
+                                                          BlocProvider.of<
+                                                                      OrderBloc>(
+                                                                  context)
+                                                              .add(PlaceOrder(
+                                                                  myOrder));
+                                                        },
+                                                        style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all<Color>(Color(
+                                                                      0xff404E65)),
+                                                          shape: MaterialStateProperty
+                                                              .all<
+                                                                  RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          "Place Order",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Raleway',
+                                                              fontSize: 17,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                  child: Text(
-                                                    "Place Order",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontFamily: 'Raleway',
-                                                        fontSize: 17,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
-                                                  ),
                                                 ),
-                                              ),
-                                            ),
+                                              ],
+                                            );
+                                          })
+                                        : Container(),
+                                  );
+                                }
+                                if (state is NetworkOffline) {
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: pageHeight * 0.04,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: pgWidth * 0.03,
+                                            right: pgWidth * 0.03),
+                                        child: Text(
+                                          "Please check your internet connection and try again.",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Color(0xffFF9E16),
+                                            fontWeight: FontWeight.w700,
                                           ),
-                                        ],
-                                      );
-                                    })
-                                  : Container(),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: pageHeight * 0.04,
+                                      ),
+                                    ],
+                                  );
+                                }
+                                return Container();
+                              },
                             ),
                             Container(
                               color: Colors.white,

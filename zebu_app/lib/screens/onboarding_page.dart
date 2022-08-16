@@ -327,6 +327,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     Center(
                       child: Text(
                         'Announcement Notification',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Raleway',
                           fontSize: 26,
@@ -371,6 +372,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     Center(
                       child: Text(
                         'Menu at your hand',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Raleway',
                           fontSize: 26,
@@ -415,6 +417,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     Center(
                       child: Text(
                         'Book your stay ahead',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Raleway',
                           fontSize: 26,
@@ -459,6 +462,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     Center(
                       child: Text(
                         'Let us know what you think',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Raleway',
                           fontSize: 26,

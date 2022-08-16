@@ -88,14 +88,18 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         if (announcementListState is AnnouncementsLoadFailure ||
                             announcementListState
                                 is AnnouncementsEmpltyFailure) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height / 1.3,
-                            child: Center(
-                              child: Text(
-                                "Please check your internet connection and try again.",
-                                style: TextStyle(
-                                  color: Color(0xff404E65),
-                                  fontSize: 14,
+                          return Center(
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height / 1.3,
+                              width: pgWidth * 0.7,
+                              child: Center(
+                                child: Text(
+                                  "Please check your internet connection and try again.",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Color(0xff404E65),
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                             ),

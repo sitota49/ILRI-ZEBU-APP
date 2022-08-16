@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
                 ),
                 Container(
                     child: Container(
-                  margin: EdgeInsets.only(left: 15),
+                  margin: EdgeInsets.only(left: pgWidth * 0.05),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -367,6 +367,9 @@ class _HomeState extends State<Home> {
                                       color: Colors.transparent,
                                       child: _Triangle(color: Colors.black)),
                                   Container(
+                                    margin: EdgeInsets.only(
+                                        left: pgWidth * 0.05,
+                                        right: pgWidth * 0.05),
                                     alignment: Alignment.center,
                                     child: Column(
                                         crossAxisAlignment:
@@ -376,11 +379,13 @@ class _HomeState extends State<Home> {
                                         children: [
                                           Container(
                                               child: Text(
-                                            "Please check your internet connection and try again.",
+                                            "Please check your internet connection and try again",
+                                            textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: Color(0xff641E0D),
                                               fontWeight: FontWeight.w700,
                                             ),
+                                            softWrap: true,
                                           )),
                                           SizedBox(
                                             height: pageHeight * 0.04,

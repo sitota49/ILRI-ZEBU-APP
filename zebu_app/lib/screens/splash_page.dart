@@ -149,11 +149,15 @@ class _SplashPageState extends State<SplashPage> {
                     if (state is NetworkOffline) {
                       return Column(
                         children: [
-                          Text(
-                            "Please check your internet connection and try again.",
-                            style: TextStyle(
-                              color: Color(0xff641E0D),
-                              fontWeight: FontWeight.w700,
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              "Please check your internet connection and try again.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xffFF9E16),
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                           SizedBox(

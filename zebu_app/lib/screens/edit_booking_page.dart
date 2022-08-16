@@ -10,6 +10,9 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:zebu_app/bloc/dining_booking/dining_booking_bloc.dart';
 import 'package:zebu_app/bloc/dining_booking/dining_booking_event.dart';
 import 'package:zebu_app/bloc/dining_booking/dining_booking_state.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_bloc.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_event.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_state.dart';
 import 'package:zebu_app/models/booking.dart';
 import 'package:zebu_app/routeGenerator.dart';
 
@@ -17,6 +20,7 @@ import 'package:zebu_app/screens/utils/CalendarUtils.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
+NetworkConnectivityBloc? _networkConnectivityBloc;
 var guestNamesTextController;
 var _selectedDay;
 var _focusedDay;
@@ -50,6 +54,11 @@ class _EditBookingPageState extends State<EditBookingPage> {
   @override
   void initState() {
     super.initState();
+    _networkConnectivityBloc =
+        BlocProvider.of<NetworkConnectivityBloc>(context);
+    _networkConnectivityBloc!.add(InitNetworkConnectivity());
+    _networkConnectivityBloc!.add(ListenNetworkConnectivity());
+
     booking = argObj['booking'];
     _selectedDay = DateTime.parse(booking.date);
     _focusedDay = DateTime.parse(booking.date);
@@ -92,7 +101,6 @@ class _EditBookingPageState extends State<EditBookingPage> {
 
   @override
   Widget build(BuildContext context) {
-
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
 
@@ -145,181 +153,229 @@ class _EditBookingPageState extends State<EditBookingPage> {
           body: DefaultTextStyle(
             style: TextStyle(decoration: TextDecoration.none),
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Text(
-                        booking.serviceType + ' ' + 'Reservation',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color(0xff404E65),
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18),
-                        softWrap: true,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    output + ' - ' + selectedTime,
-                    style: TextStyle(
-                        color: Color(0xff404E65),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14),
-                    softWrap: true,
-                  ),
-                  _CalendarBloc,
-                  SizedBox(
-                    height: pgHeight * 0.03,
-                  ),
-                  Center(
-                    child: serviceSelected == 'Group Dining Lunch' ||
-                            serviceSelected == 'Group Dining Dinner'
-                        ? Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: pgHeight * 0.03,
-                                ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        "Number of Guests",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      SizedBox(
-                                        width: pgWidth * 0.05,
-                                      ),
-                                      CustomNumberPicker(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          side: BorderSide(color: Colors.grey),
-                                        ),
-                                        initialValue: int.parse(guestNo),
-                                        maxValue: 5,
-                                        minValue: 2,
-                                        step: 1,
-                                        enable: true,
-                                        onValue: (value) {
-                                          setState(() {
-                                            guestNo = value.toString();
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: pgHeight * 0.02,
-                                ),
-                                Text(
-                                  'Guest Names',
-                                  style: TextStyle(
-                                      color: Color(0xff404E65),
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 12,
-                                      fontFamily: 'Raleway'),
-                                  softWrap: true,
-                                ),
-                                SizedBox(
-                                  height: pgHeight * 0.01,
-                                ),
-                                TextFormField(
-                                  autofocus: false,
-                                  autovalidateMode: AutovalidateMode.disabled,
-                                  // initialValue: guestNames,
-                                  minLines: 4,
-                                  maxLines: null,
-                                  keyboardType: TextInputType.multiline,
-                                  decoration: InputDecoration(
-                                    // hintText: "Input your opinion",
-                                    // hintStyle: TextStyle(color: Colors.white30),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            new Radius.circular(10.0))),
-                                    // labelStyle: TextStyle(color: Colors.white)
-                                  ),
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12.0,
-                                  ),
-                                  controller: guestNamesTextController,
-                                ),
-                                SizedBox(
-                                  height: pgHeight * 0.02,
-                                ),
-                                SizedBox(
-                                  height: pgHeight * 0.06,
-                                ),
-                              ],
+              child: BlocBuilder(
+                bloc: _networkConnectivityBloc,
+                builder:
+                    (BuildContext context, NetworkConnectivityState state) {
+                  if (state is NetworkOnline) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Text(
+                              booking.serviceType + ' ' + 'Reservation',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xff404E65),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18),
+                              softWrap: true,
                             ),
-                          )
-                        : Container(),
-                  ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: pgHeight * 0.06,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // final prefs = await SharedPreferences.getInstance();
-                            // var fetchedUser =
-                            //     json.decode(prefs.getString('user')!);
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          output + ' - ' + selectedTime,
+                          style: TextStyle(
+                              color: Color(0xff404E65),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14),
+                          softWrap: true,
+                        ),
+                        _CalendarBloc,
+                        SizedBox(
+                          height: pgHeight * 0.03,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: pgWidth * 0.11, right: pgWidth * 0.11),
+                          child: Center(
+                            child: serviceSelected ==
+                                        'Group Dining Lunch' ||
+                                    serviceSelected == 'Group Dining Dinner'
+                                ? Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: pgHeight * 0.03,
+                                        ),
+                                        Container(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "Number of Guests",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                              SizedBox(
+                                                width: pgWidth * 0.05,
+                                              ),
+                                              CustomNumberPicker(
+                                                shape:
+                                                    RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15),
+                                                  side: BorderSide(
+                                                      color: Colors.grey),
+                                                ),
+                                                initialValue:
+                                                    int.parse(guestNo),
+                                                maxValue: 5,
+                                                minValue: 2,
+                                                step: 1,
+                                                enable: true,
+                                                onValue: (value) {
+                                                  setState(() {
+                                                    guestNo =
+                                                        value.toString();
+                                                  });
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: pgHeight * 0.02,
+                                        ),
+                                        Text(
+                                          'Guest Names',
+                                          style: TextStyle(
+                                              color: Color(0xff404E65),
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 12,
+                                              fontFamily: 'Raleway'),
+                                          softWrap: true,
+                                        ),
+                                        SizedBox(
+                                          height: pgHeight * 0.01,
+                                        ),
+                                        TextFormField(
+                                          autofocus: false,
+                                          autovalidateMode:
+                                              AutovalidateMode.disabled,
+                                          // initialValue: guestNames,
+                                          minLines: 4,
+                                          maxLines: null,
+                                          keyboardType:
+                                              TextInputType.multiline,
+                                          decoration: InputDecoration(
+                                            // hintText: "Input your opinion",
+                                            // hintStyle: TextStyle(color: Colors.white30),
+                                            border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.all(
+                                                        new Radius.circular(
+                                                            10.0))),
+                                            // labelStyle: TextStyle(color: Colors.white)
+                                          ),
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12.0,
+                                          ),
+                                          controller:
+                                              guestNamesTextController,
+                                        ),
+                                        SizedBox(
+                                          height: pgHeight * 0.06,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Container(),
+                          ),
+                        ),
+                        Container(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: pgWidth * 0.11,
+                                right: pgWidth * 0.11),
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: pgHeight * 0.06,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // final prefs = await SharedPreferences.getInstance();
+                                  // var fetchedUser =
+                                  //     json.decode(prefs.getString('user')!);
 
-                            Booking myBooking = Booking(
-                                title: '',
-                                id: booking.id,
-                                time: selectedTime,
-                                date: serviceSelectedDay,
-                                serviceType: serviceSelected,
-                                guestNames: guestNamesTextController.value.text,
-                                noOfGuests: guestNo);
+                                  Booking myBooking = Booking(
+                                      title: '',
+                                      id: booking.id,
+                                      time: selectedTime,
+                                      date: serviceSelectedDay,
+                                      serviceType: serviceSelected,
+                                      guestNames: guestNamesTextController
+                                          .value.text,
+                                      noOfGuests: guestNo);
 
-                            BlocProvider.of<DiningBookingBloc>(context)
-                                .add(UpdateBooking(myBooking));
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xff404E65)),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                                  BlocProvider.of<DiningBookingBloc>(
+                                          context)
+                                      .add(UpdateBooking(myBooking));
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color(0xff404E65)),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Update Booking",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: 'Raleway',
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
                               ),
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        )
+                      ],
+                    );
+                  }
+                  if (state is NetworkOffline) {
+                    return Center(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height / 1.3,
+                        width: pgWidth * 0.7,
+                        child: Center(
                           child: Text(
-                            "Update Booking",
+                            "Please check your internet connection and try again.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontFamily: 'Raleway',
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                              color: Color(0xff404E65),
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  )
-                ],
+                    );
+                   
+                  }
+                  return Container();
+                },
               ),
             ),
           )),
@@ -350,7 +406,8 @@ class _CalendarBlocState extends State<CalendarBloc> {
             context: context,
             builder: (BuildContext context) => AlertDialog(
                   // title: const Text('Time Not Set'),
-                  content: const Text('Booking Rescheduled Succefully'),
+                  content: const Text('Booking Rescheduled Succefully',
+                      style: TextStyle(fontSize: 16)),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () => {
@@ -365,7 +422,6 @@ class _CalendarBlocState extends State<CalendarBloc> {
                 ));
       }
     }, builder: (_, bookingState) {
-
       if (bookingState is LoadingBooking) {
         return SizedBox(
           height: MediaQuery.of(context).size.height / 1.3,
@@ -378,11 +434,20 @@ class _CalendarBlocState extends State<CalendarBloc> {
       }
 
       if (bookingState is ServiceBookingLoadFailure) {
-        return const Text(
-          "Please check your internet connection and try again.",
-          style: TextStyle(
-            color: Color(0xff404E65),
-            fontSize: 14,
+        return Center(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height / 1.3,
+            width: pgWidth * 0.7,
+            child: Center(
+              child: Text(
+                "Please check your internet connection and try again.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xff404E65),
+                  fontSize: 16,
+                ),
+              ),
+            ),
           ),
         );
       }
@@ -525,70 +590,73 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         SizedBox(
           height: 10,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 10.0),
-            availableSlots.length == 0
-                ? Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                      'No Data Available',
-                      style: TextStyle(
-                        color: Color(0xff5D7498),
-                        fontSize: 18,
-                      ),
-                    ),
-                  )
-                : GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5,
-                      childAspectRatio: 0.90 / 0.35,
-                    ),
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    itemCount: availableSlots.length,
-                    itemBuilder: (context, index) {
-                      var timeslot = availableSlots[index];
-                      return Container(
-                        height: 20.0,
-                        width: MediaQuery.of(context).size.width / 3.5,
-                        decoration: BoxDecoration(
-                          color: selectedTime == timeslot
-                              ? Color(0xFFFF9E16)
-                              : Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(17.0),
-                          ),
+        Padding(
+          padding: EdgeInsets.only(left: pgWidth * 0.03, right: pgWidth * 0.03),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 10.0),
+              availableSlots.length == 0
+                  ? Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        'No Data Available',
+                        style: TextStyle(
+                          color: Color(0xff5D7498),
+                          fontSize: 18,
                         ),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedTime = timeslot;
-                            });
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Text(
-                                timeslot.toString(),
-                                style: TextStyle(
-                                    color: selectedTime == timeslot
-                                        ? Colors.white
-                                        : Color(0xff5D7498),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700),
+                      ),
+                    )
+                  : GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 5,
+                        childAspectRatio: 0.90 / 0.35,
+                      ),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemCount: availableSlots.length,
+                      itemBuilder: (context, index) {
+                        var timeslot = availableSlots[index];
+                        return Container(
+                          height: 20.0,
+                          width: MediaQuery.of(context).size.width / 3.5,
+                          decoration: BoxDecoration(
+                            color: selectedTime == timeslot
+                                ? Color(0xFFFF9E16)
+                                : Colors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(17.0),
+                            ),
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedTime = timeslot;
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(
+                                  timeslot.toString(),
+                                  style: TextStyle(
+                                      color: selectedTime == timeslot
+                                          ? Colors.white
+                                          : Color(0xff5D7498),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-          ],
+                        );
+                      },
+                    ),
+            ],
+          ),
         ),
       ],
     );
