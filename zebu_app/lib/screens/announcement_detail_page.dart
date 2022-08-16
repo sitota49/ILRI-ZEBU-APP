@@ -93,7 +93,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                   BlocConsumer<AnnouncementBloc, AnnouncementState>(
                       listener: (ctx, announcementState) {},
                       builder: (_, announcementState) {
-                        print(announcementState);
+                      
                         if (announcementState is LoadingAnnouncement) {
                           return SizedBox(
                             height: MediaQuery.of(context).size.height / 1.3,

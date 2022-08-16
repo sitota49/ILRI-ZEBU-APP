@@ -4,9 +4,14 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:zebu_app/bloc/announcement/announcement_bloc.dart';
 import 'package:zebu_app/bloc/announcement/announcement_event.dart';
 import 'package:zebu_app/bloc/announcement/announcement_state.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_bloc.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_event.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_state.dart';
 import 'package:zebu_app/routeGenerator.dart';
 import 'package:zebu_app/screens/utils/NavigationDrawer.dart';
 import 'dart:math' as math;
+
+bool networkCheck = true;
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -18,9 +23,21 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late AnnouncementBloc announcementBloc;
 
+  NetworkConnectivityBloc? _networkConnectivityBloc;
   @override
   void initState() {
+    _networkConnectivityBloc =
+        BlocProvider.of<NetworkConnectivityBloc>(context);
+    _networkConnectivityBloc!.add(InitNetworkConnectivity());
+    _networkConnectivityBloc!.add(ListenNetworkConnectivity());
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    BlocProvider.of<NetworkConnectivityBloc>(context).dispose();
   }
 
   double pgHeight = 0;
@@ -222,130 +239,243 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                 )),
-                Expanded(
-                    child: Stack(
-                  children: [
-                    Stack(children: [
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        child: SizedBox(
-                          // height: 150,
-                          child: Stack(children: [
+                BlocBuilder(
+                  bloc: _networkConnectivityBloc,
+                  builder:
+                      (BuildContext context, NetworkConnectivityState state) {
+                    if (state is NetworkOnline) {
+                      return Expanded(
+                          child: Stack(
+                        children: [
+                          Stack(children: [
                             Container(
-                                color: Colors.transparent,
-                                child: _Triangle(color: Colors.black)),
-                            Container(
-                              alignment: Alignment.center,
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(top: 100),
-                                      child: Image.asset(
-                                        'assets/images/zebuFaded.png',
-                                        width: pageWidth * 0.235,
-                                        height: pageHeight * 0.07,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        child: Image.asset(
-                                          'assets/images/Ilri_cgiar_logo.png',
-                                          width: pageWidth * 0.245,
-                                          height: pageHeight * 0.03,
-                                        )),
-                                  ]),
+                              alignment: Alignment.bottomCenter,
+                              child: SizedBox(
+                                // height: 150,
+                                child: Stack(children: [
+                                  Container(
+                                      color: Colors.transparent,
+                                      child: _Triangle(color: Colors.black)),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                              child: Text(
+                                            " ",
+                                            style: TextStyle(
+                                              color: Color(0xff641E0D),
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          )),
+                                          SizedBox(
+                                            height: pageHeight * 0.04,
+                                          ),
+                                          Container(
+                                            // margin: EdgeInsets.only(top: 100),
+                                            child: Image.asset(
+                                              'assets/images/zebuFaded.png',
+                                              width: pageWidth * 0.235,
+                                              height: pageHeight * 0.07,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 20),
+                                              child: Image.asset(
+                                                'assets/images/Ilri_cgiar_logo.png',
+                                                width: pageWidth * 0.245,
+                                                height: pageHeight * 0.03,
+                                              )),
+                                        ]),
+                                  ),
+                                ]),
+                              ),
                             ),
                           ]),
-                        ),
-                      ),
-                    ]),
-                    Container(
-                      // color: Colors.red,
-                      // height: pageHeight * 0.4,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GridView.count(
-                          primary: false,
-                          padding: EdgeInsets.all(pgHeight * 0.02),
-                          crossAxisSpacing: pgWidth * 0.039,
-                          mainAxisSpacing: pgHeight * 0.039,
-                          crossAxisCount: 2,
-                          childAspectRatio: (pgWidth / (pgHeight / 2.48)),
-                          children: <Widget>[
-                            HomeButtons("bookinghome", "Booking", () {
-                              Navigator.pushNamed(
-                                context,
-                                RouteGenerator.mainFlowName,
-                                arguments: ScreenArguments({'index': 1}),
-                              );
-                            }, Colors.white, Color(0xff404E65),
-                                Color(0xffFF9E16)),
-                            HomeButtons(
-                              "Menu_ichome",
-                              "Menu",
-                              () {
-                                Navigator.pushNamed(
-                                  context,
-                                  RouteGenerator.mainFlowName,
-                                  arguments: ScreenArguments({'index': 0}),
-                                );
-                              },
-                              Color(0xffFF9E16),
-                              Colors.white,
-                              Color(0xff404E65),
+                          Container(
+                            // color: Colors.red,
+                            // height: pageHeight * 0.4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GridView.count(
+                                primary: false,
+                                padding: EdgeInsets.all(pgHeight * 0.02),
+                                crossAxisSpacing: pgWidth * 0.039,
+                                mainAxisSpacing: pgHeight * 0.039,
+                                crossAxisCount: 2,
+                                childAspectRatio: (pgWidth / (pgHeight / 2.48)),
+                                children: <Widget>[
+                                  HomeButtons("bookinghome", "Booking", () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteGenerator.mainFlowName,
+                                      arguments: ScreenArguments({'index': 1}),
+                                    );
+                                  }, Colors.white, Color(0xff404E65),
+                                      Color(0xffFF9E16), true),
+                                  HomeButtons("Menu_ichome", "Menu", () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteGenerator.mainFlowName,
+                                      arguments: ScreenArguments({'index': 0}),
+                                    );
+                                  }, Color(0xffFF9E16), Colors.white,
+                                      Color(0xff404E65), true),
+                                  HomeButtons("announcehome", "Announcement",
+                                      () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteGenerator.mainFlowName,
+                                      arguments: ScreenArguments({'index': 3}),
+                                    );
+                                  }, Color(0xffFF9E16), Colors.white,
+                                      Color(0xff404E65), true),
+                                  HomeButtons("feedhome", "Feedback", () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteGenerator.mainFlowName,
+                                      arguments: ScreenArguments({'index': 2}),
+                                    );
+                                  }, Colors.white, Color(0xff404E65),
+                                      Color.fromARGB(218, 255, 158, 22), true),
+                                ],
+                              ),
                             ),
-                            HomeButtons(
-                              "announcehome",
-                              "Announcement",
-                              () {
-                                Navigator.pushNamed(
-                                  context,
-                                  RouteGenerator.mainFlowName,
-                                  arguments: ScreenArguments({'index': 3}),
-                                );
-                              },
-                              Color(0xffFF9E16),
-                              Colors.white,
-                              Color(0xff404E65),
+                          ),
+                        ],
+                      ));
+                    }
+                    if (state is NetworkOffline) {
+                      return Expanded(
+                          child: Stack(
+                        children: [
+                          Stack(children: [
+                            Container(
+                              alignment: Alignment.bottomCenter,
+                              child: SizedBox(
+                                // height: 150,
+                                child: Stack(children: [
+                                  Container(
+                                      color: Colors.transparent,
+                                      child: _Triangle(color: Colors.black)),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                              child: Text(
+                                            "Please check your internet connection and try again.",
+                                            style: TextStyle(
+                                              color: Color(0xff641E0D),
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          )),
+                                          SizedBox(
+                                            height: pageHeight * 0.04,
+                                          ),
+                                          Container(
+                                            // margin: EdgeInsets.only(top: 100),
+                                            child: Image.asset(
+                                              'assets/images/zebuFaded.png',
+                                              width: pageWidth * 0.235,
+                                              height: pageHeight * 0.07,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 20),
+                                              child: Image.asset(
+                                                'assets/images/Ilri_cgiar_logo.png',
+                                                width: pageWidth * 0.245,
+                                                height: pageHeight * 0.03,
+                                              )),
+                                        ]),
+                                  ),
+                                ]),
+                              ),
                             ),
-                            HomeButtons("feedhome", "Feedback", () {
-                              Navigator.pushNamed(
-                                context,
-                                RouteGenerator.mainFlowName,
-                                arguments: ScreenArguments({'index': 2}),
-                              );
-                            }, Colors.white, Color(0xff404E65),
-                                Color.fromARGB(218, 255, 158, 22)),
-                          ],
-                        ),
-                      ),
-                    ),
-                    // GestureDetector(
-                    //     onTap: () {
-                    //       Navigator.pushNamed(
-                    //         context,
-                    //         RouteGenerator.diningBookingScreenName,
-                    //       );
-                    //     },
-                    //     child: Container(
-                    //       child: Text("Dining Booking"),
-                    //     )),
-                  ],
-                )),
+                          ]),
+                          Container(
+                            // color: Colors.red,
+                            // height: pageHeight * 0.4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GridView.count(
+                                primary: false,
+                                padding: EdgeInsets.all(pgHeight * 0.02),
+                                crossAxisSpacing: pgWidth * 0.039,
+                                mainAxisSpacing: pgHeight * 0.039,
+                                crossAxisCount: 2,
+                                childAspectRatio: (pgWidth / (pgHeight / 2.48)),
+                                children: <Widget>[
+                                  HomeButtons("bookinghome", "Booking", () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteGenerator.mainFlowName,
+                                      arguments: ScreenArguments({'index': 1}),
+                                    );
+                                  }, Colors.white, Color(0xff404E65),
+                                      Color(0xffFF9E16), false),
+                                  HomeButtons("Menu_ichome", "Menu", () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteGenerator.mainFlowName,
+                                      arguments: ScreenArguments({'index': 0}),
+                                    );
+                                  }, Color(0xffFF9E16), Colors.white,
+                                      Color(0xff404E65), false),
+                                  HomeButtons("announcehome", "Announcement",
+                                      () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteGenerator.mainFlowName,
+                                      arguments: ScreenArguments({'index': 3}),
+                                    );
+                                  }, Color(0xffFF9E16), Colors.white,
+                                      Color(0xff404E65), false),
+                                  HomeButtons("feedhome", "Feedback", () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteGenerator.mainFlowName,
+                                      arguments: ScreenArguments({'index': 2}),
+                                    );
+                                  }, Colors.white, Color(0xff404E65),
+                                      Color.fromARGB(218, 255, 158, 22), false),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ));
+                    }
+                    return Container();
+                  },
+                )
               ],
             ),
           ),
         ));
   }
 
-  Widget HomeButtons(icon, text, onPressed, iconColor, textColor, bgColor) {
+  Widget HomeButtons(
+      icon, text, onPressed, iconColor, textColor, bgColor, hasConnection) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: hasConnection ? onPressed : null,
       child: Container(
         decoration: BoxDecoration(
           color: bgColor,

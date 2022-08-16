@@ -69,6 +69,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
             style: TextStyle(decoration: TextDecoration.none),
             child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   BlocConsumer<AnnouncementBloc, AnnouncementState>(
                       listener: (ctx, announcementListState) {},
@@ -87,11 +88,16 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         if (announcementListState is AnnouncementsLoadFailure ||
                             announcementListState
                                 is AnnouncementsEmpltyFailure) {
-                          return const Text(
-                            "Please check your internet connection and try again.",
-                            style: TextStyle(
-                              color: Color(0xff404E65),
-                              fontSize: 14,
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height / 1.3,
+                            child: Center(
+                              child: Text(
+                                "Please check your internet connection and try again.",
+                                style: TextStyle(
+                                  color: Color(0xff404E65),
+                                  fontSize: 14,
+                                ),
+                              ),
                             ),
                           );
                         }

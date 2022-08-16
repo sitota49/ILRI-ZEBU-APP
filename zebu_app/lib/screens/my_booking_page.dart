@@ -102,7 +102,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                           ));
                 }
               }, builder: (_, myBookingsListState) {
-                print(myBookingsListState);
+               
                 if (myBookingsListState is LoadingBooking) {
                   return SizedBox(
                     height: MediaQuery.of(context).size.height / 1.3,

@@ -57,7 +57,8 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
         setState(() {
           qty = value.toString();
         });
-        print(qty);
+
+
       },
     );
   }
@@ -121,7 +122,8 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
 
                     if (singleMenuState is SingleMenuLoadSuccess) {
                       var singleMenu = singleMenuState.singleMenu;
-                      print(singleMenu);
+                  
+                  
                       return Container(
                         color: Colors.white,
                         child: Column(

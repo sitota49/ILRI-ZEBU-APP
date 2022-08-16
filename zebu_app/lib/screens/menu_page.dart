@@ -384,23 +384,16 @@ class _AllMenuState extends State<AllMenu> {
   @override
   Widget build(BuildContext context) {
     final menuBloc = BlocProvider.of<MenuBloc>(context);
-    // if (!isSearch) {
-    //   // Timer(Duration(seconds: 1), () => menuBloc.add(AllMenuLoad(queryParam)));
-    //   menuBloc.add(AllMenuLoad(queryParam));
-    // }
-
-    // Timer(const Duration(milliseconds: 1000), () {
+  
+  
     menuBloc.add(AllMenuLoad(queryParam));
-    //   print("searching : --- ");
-    //   print(isSearch);
-    // if (!isSearch) {
-    //   menuBloc.add(AllMenuLoad(queryParam));
-    // }
-    // });
+
+
 
     return BlocConsumer<MenuBloc, MenuState>(
       listener: (_, menuState) {
-        // print(menuState);
+     
+     
       },
       builder: (_, menuState) {
         if (menuState is LoadingMenu) {

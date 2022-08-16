@@ -17,7 +17,7 @@ import 'package:zebu_app/bloc/user/user_state.dart';
 import 'package:zebu_app/screens/announcement_page.dart';
 import 'package:zebu_app/screens/booking_page.dart';
 import 'package:zebu_app/screens/feedback_page.dart';
-import 'package:zebu_app/screens/membership_page.dart';
+
 import 'package:zebu_app/screens/menu_page.dart';
 import 'package:zebu_app/screens/my_booking_page.dart';
 import 'package:zebu_app/screens/my_order_page.dart';

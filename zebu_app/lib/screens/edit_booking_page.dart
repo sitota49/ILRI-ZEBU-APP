@@ -50,7 +50,6 @@ class _EditBookingPageState extends State<EditBookingPage> {
   @override
   void initState() {
     super.initState();
-    print("iniy");
     booking = argObj['booking'];
     _selectedDay = DateTime.parse(booking.date);
     _focusedDay = DateTime.parse(booking.date);
@@ -93,11 +92,10 @@ class _EditBookingPageState extends State<EditBookingPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("building");
+
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
-    // print(pageWidth);
-    // print(pageHeight);
+
     setState(() {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
@@ -367,8 +365,7 @@ class _CalendarBlocState extends State<CalendarBloc> {
                 ));
       }
     }, builder: (_, bookingState) {
-      print("____________________________");
-      print(bookingState);
+
       if (bookingState is LoadingBooking) {
         return SizedBox(
           height: MediaQuery.of(context).size.height / 1.3,

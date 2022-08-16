@@ -3,14 +3,14 @@ import 'package:zebu_app/screens/MainFlow.dart';
 import 'package:zebu_app/screens/announcement_detail_page.dart';
 import 'package:zebu_app/screens/announcement_page.dart';
 import 'package:zebu_app/screens/booking_page.dart';
-import 'package:zebu_app/screens/dinning_booking_page.dart';
+
 import 'package:zebu_app/screens/edit_booking_page.dart';
 import 'package:zebu_app/screens/feedback_page.dart';
 import 'package:zebu_app/screens/home_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:zebu_app/screens/login_page.dart';
-import 'package:zebu_app/screens/membership_page.dart';
+
 import 'package:zebu_app/screens/menu_detail_page.dart';
 import 'package:zebu_app/screens/menu_page.dart';
 import 'package:zebu_app/screens/my_booking_page.dart';
@@ -53,10 +53,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => MenuPage());
       case feedbackScreenName:
         return MaterialPageRoute(builder: (_) => FeedbackPage());
-      case membershipScreenName:
-        return MaterialPageRoute(builder: (_) => MembershipPage());
-       case diningBookingScreenName:
-        return MaterialPageRoute(builder: (_) => DinningBooking());
+    
       case bookingScreenName:
         return MaterialPageRoute(builder: (_) => BookingPage());
       case mybookingScreenName:

@@ -13,6 +13,7 @@ import 'package:zebu_app/bloc/login/login_bloc.dart';
 import 'package:zebu_app/bloc/menu/menu_bloc.dart';
 import 'package:zebu_app/bloc/menu/menu_event.dart';
 import 'package:zebu_app/bloc/menu/recent_bloc.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_bloc.dart';
 import 'package:zebu_app/bloc/order/order_bloc.dart';
 import 'package:zebu_app/bloc/service/service_bloc.dart';
 import 'package:zebu_app/bloc/service/service_event.dart';
@@ -134,6 +135,9 @@ class _AppWidgetState extends State<AppWidget> {
         BlocProvider(
           create: (context) =>
               BookingBloc(bookingRepository: bookingRepository),
+        ),
+        BlocProvider(
+          create: (context) => NetworkConnectivityBloc(),
         ),
         BlocProvider(
           create: (context) =>
