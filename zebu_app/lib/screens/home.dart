@@ -382,7 +382,7 @@ class _HomeState extends State<Home> {
                                             "Please check your internet connection and try again",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              color: Color(0xff641E0D),
+                                              color: Colors.red,
                                               fontWeight: FontWeight.w700,
                                             ),
                                             softWrap: true,

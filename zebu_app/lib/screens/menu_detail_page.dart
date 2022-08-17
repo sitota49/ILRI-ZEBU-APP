@@ -353,7 +353,13 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                           }, builder: (_, orderState) {
                                             return Column(
                                               children: [
+                                                SizedBox(
+                                                  height: pageHeight * 0.04,
+                                                ),
                                                 noPicker,
+                                                SizedBox(
+                                                  height: pageHeight * 0.04,
+                                                ),
                                                 Container(
                                                   child: Padding(
                                                     padding:
@@ -448,6 +454,9 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                                     ),
                                                   ),
                                                 ),
+                                                SizedBox(
+                                                  height: pageHeight * 0.04,
+                                                ),
                                               ],
                                             );
                                           })
@@ -465,7 +474,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                             left: pgWidth * 0.03,
                                             right: pgWidth * 0.03),
                                         child: Text(
-                                          "Please check your internet connection and try again.",
+                                          "Please check your internet connection to place an order.",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             color: Color(0xffFF9E16),
