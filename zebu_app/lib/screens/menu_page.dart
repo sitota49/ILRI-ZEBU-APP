@@ -384,24 +384,11 @@ class _AllMenuState extends State<AllMenu> {
   @override
   Widget build(BuildContext context) {
     final menuBloc = BlocProvider.of<MenuBloc>(context);
-    // if (!isSearch) {
-    //   // Timer(Duration(seconds: 1), () => menuBloc.add(AllMenuLoad(queryParam)));
-    //   menuBloc.add(AllMenuLoad(queryParam));
-    // }
 
-    // Timer(const Duration(milliseconds: 1000), () {
     menuBloc.add(AllMenuLoad(queryParam));
-    //   print("searching : --- ");
-    //   print(isSearch);
-    // if (!isSearch) {
-    //   menuBloc.add(AllMenuLoad(queryParam));
-    // }
-    // });
 
     return BlocConsumer<MenuBloc, MenuState>(
-      listener: (_, menuState) {
-        // print(menuState);
-      },
+      listener: (_, menuState) {},
       builder: (_, menuState) {
         if (menuState is LoadingMenu) {
           return SizedBox(
@@ -415,24 +402,40 @@ class _AllMenuState extends State<AllMenu> {
         }
 
         if (menuState is AllMenuLoadFailure) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height / 1.3,
-            child: Center(
+          return Center(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height / 1.3,
+              width: pgWidth * 0.7,
+              child: Center(
                 child: Text(
-              menuState.failureMessage,
-              style: TextStyle(color: Colors.white),
-            )),
+                  menuState.failureMessage,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
           );
         }
 
         if (menuState is AllMenuEmpltyFailure) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height / 1.3,
-            child: Center(
+          return Center(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height / 1.3,
+              width: pgWidth * 0.7,
+              child: Center(
                 child: Text(
-              menuState.message,
-              style: TextStyle(color: Colors.white),
-            )),
+                  menuState.message,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
           );
         }
 
@@ -487,24 +490,40 @@ class CategoryMenu extends StatelessWidget {
         }
 
         if (menuState is CategoryMenuLoadFailure) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height / 1.3,
-            child: Center(
+          return Center(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height / 1.3,
+              width: pgWidth * 0.7,
+              child: Center(
                 child: Text(
-              menuState.failureMessage,
-              style: TextStyle(color: Colors.white),
-            )),
+                  menuState.failureMessage,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
           );
         }
 
         if (menuState is CategoryMenuEmpltyFailure) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height / 1.3,
-            child: Center(
+          return Center(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height / 1.3,
+              width: pgWidth * 0.7,
+              child: Center(
                 child: Text(
-              menuState.message,
-              style: TextStyle(color: Colors.white),
-            )),
+                  menuState.message,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
           );
         }
 

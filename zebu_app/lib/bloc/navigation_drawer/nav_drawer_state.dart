@@ -10,5 +10,6 @@ class FeedbackState extends NavDrawerState{}
 class Announcement extends NavDrawerState{}
 
 class MyBooking extends NavDrawerState {}
+class MyOrder extends NavDrawerState {}
 
 class LoggedOutNavState extends NavDrawerState{}

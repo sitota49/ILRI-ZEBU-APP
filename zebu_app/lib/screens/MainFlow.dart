@@ -4,7 +4,7 @@ import 'package:zebu_app/screens/announcement_page.dart';
 import 'package:zebu_app/screens/booking_page.dart';
 import 'package:zebu_app/screens/feedback_page.dart';
 import 'package:zebu_app/screens/home_page.dart';
-import 'package:zebu_app/screens/membership_page.dart';
+
 import 'package:zebu_app/screens/menu_page.dart';
 import 'package:zebu_app/screens/utils/NavigationDrawer.dart';
 

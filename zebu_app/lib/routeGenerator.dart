@@ -3,22 +3,24 @@ import 'package:zebu_app/screens/MainFlow.dart';
 import 'package:zebu_app/screens/announcement_detail_page.dart';
 import 'package:zebu_app/screens/announcement_page.dart';
 import 'package:zebu_app/screens/booking_page.dart';
+
 import 'package:zebu_app/screens/edit_booking_page.dart';
 import 'package:zebu_app/screens/feedback_page.dart';
 import 'package:zebu_app/screens/home_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:zebu_app/screens/login_page.dart';
-import 'package:zebu_app/screens/membership_page.dart';
+
 import 'package:zebu_app/screens/menu_detail_page.dart';
 import 'package:zebu_app/screens/menu_page.dart';
 import 'package:zebu_app/screens/my_booking_page.dart';
+import 'package:zebu_app/screens/my_order_page.dart';
 import 'package:zebu_app/screens/onboarding_page.dart';
 import 'package:zebu_app/screens/splash_page.dart';
 
 class RouteGenerator {
   static const String homeScreenName = "/homeScreen";
-
+  static const String myorderScreenName = "/myorderScreen";
   static const String onBoardingScreenName = "/onBoardingScreen";
   static const String registrationScreenName = "/registrationScreen";
   static const String loginScreenName = "/loginScreen";
@@ -34,13 +36,15 @@ class RouteGenerator {
   static const String menuDetailScreenName = "/menuDetailScreen";
   static const String mainFlowName = "/mainFlow";
   static const String editBookingScreenName = "/editBookingScreen";
+   static const String diningBookingScreenName = "/diningBookingScreen";
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case homeScreenName:
         return MaterialPageRoute(builder: (_) => HomePage());
       case splashScreenName:
         return MaterialPageRoute(builder: (_) => SplashPage());
-
+      case myorderScreenName:
+        return MaterialPageRoute(builder: (_) => MyOrderPage());
       case onBoardingScreenName:
         return MaterialPageRoute(builder: (_) => OnBoardingPage());
       case loginScreenName:
@@ -49,8 +53,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => MenuPage());
       case feedbackScreenName:
         return MaterialPageRoute(builder: (_) => FeedbackPage());
-      case membershipScreenName:
-        return MaterialPageRoute(builder: (_) => MembershipPage());
+    
       case bookingScreenName:
         return MaterialPageRoute(builder: (_) => BookingPage());
       case mybookingScreenName:

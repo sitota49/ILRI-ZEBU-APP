@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class MenuState extends Equatable {
   const MenuState();
-  final String failureMessage = "Failed to load";
+  final String failureMessage = "Please check your internet connection and try again.";
   @override
   List<Object> get props => [];
 }

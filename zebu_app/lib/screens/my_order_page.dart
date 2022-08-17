@@ -7,21 +7,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zebu_app/bloc/booking/booking_bloc.dart';
 import 'package:zebu_app/bloc/booking/booking_event.dart';
 import 'package:zebu_app/bloc/booking/booking_state.dart';
+import 'package:zebu_app/bloc/order/order_bloc.dart';
+import 'package:zebu_app/bloc/order/order_event.dart';
+import 'package:zebu_app/bloc/order/order_state.dart';
+import 'package:zebu_app/models/order.dart';
 
 import 'package:zebu_app/routeGenerator.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
 
-class MyBookingPage extends StatefulWidget {
-  const MyBookingPage({Key? key}) : super(key: key);
+class MyOrderPage extends StatefulWidget {
+  const MyOrderPage({Key? key}) : super(key: key);
 
   @override
-  State<MyBookingPage> createState() => _MyBookingPageState();
+  State<MyOrderPage> createState() => _MyOrderPageState();
 }
 
-class _MyBookingPageState extends State<MyBookingPage> {
-  late BookingBloc bookingBloc;
+class _MyOrderPageState extends State<MyOrderPage> {
+  late OrderBloc orderBloc;
 
   @override
   void initState() {
@@ -45,8 +49,8 @@ class _MyBookingPageState extends State<MyBookingPage> {
     });
     var fetched = loadUser();
 
-    bookingBloc = BlocProvider.of<BookingBloc>(context);
-    bookingBloc.add(MyBookingsLoad());
+    orderBloc = BlocProvider.of<OrderBloc>(context);
+    orderBloc.add(MyOrdersLoad());
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushNamed(
@@ -69,7 +73,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                     }),
             backgroundColor: Colors.white,
             title: Text(
-              'BOOKINGS',
+              'ORDERS',
               style: TextStyle(
                   fontFamily: 'Raleway',
                   fontSize: 18,
@@ -80,14 +84,14 @@ class _MyBookingPageState extends State<MyBookingPage> {
           body: DefaultTextStyle(
             style: TextStyle(decoration: TextDecoration.none),
             child: SingleChildScrollView(
-              child: BlocConsumer<BookingBloc, BookingState>(
-                  listener: (ctx, myBookingsListState) {
-                if (myBookingsListState is DeleteBookingSuccess) {
+              child: BlocConsumer<OrderBloc, OrderState>(
+                  listener: (ctx, myOrdersListState) {
+                if (myOrdersListState is DeleteOrderSuccess) {
                   showDialog<String>(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
                             // title: const Text('Time Not Set'),
-                            content: const Text('Booking Deleted Succefully'),
+                            content: const Text('Order Deleted Succefully'),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () => {
@@ -101,9 +105,8 @@ class _MyBookingPageState extends State<MyBookingPage> {
                             ],
                           ));
                 }
-              }, builder: (_, myBookingsListState) {
-               
-                if (myBookingsListState is LoadingBooking) {
+              }, builder: (_, myOrdersListState) {
+                if (myOrdersListState is LoadingOrder) {
                   return SizedBox(
                     height: MediaQuery.of(context).size.height / 1.3,
                     child: Center(
@@ -114,7 +117,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                   );
                 }
 
-                if (myBookingsListState is MyBookingsLoadFailure) {
+                if (myOrdersListState is MyOrdersLoadFailure) {
                   return Center(
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height / 1.3,
@@ -133,12 +136,12 @@ class _MyBookingPageState extends State<MyBookingPage> {
                   );
                 }
 
-                if (myBookingsListState is MyBookingsEmpltyFailure) {
+                if (myOrdersListState is MyOrdersEmpltyFailure) {
                   return SizedBox(
                     height: MediaQuery.of(context).size.height / 1.3,
                     child: Center(
                       child: Text(
-                        "No items yet",
+                        "No Orders yet",
                         style: TextStyle(
                           color: Color(0xff404E65),
                           fontSize: 14,
@@ -148,19 +151,19 @@ class _MyBookingPageState extends State<MyBookingPage> {
                   );
                 }
 
-                if (myBookingsListState is MyBookingsLoadSuccess) {
-                  final myBookings = myBookingsListState.myBookings;
+                if (myOrdersListState is MyOrdersLoadSuccess) {
+                  final myOrders = myOrdersListState.myOrders;
                   return SingleChildScrollView(
                     physics: ScrollPhysics(),
                     child: ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: myBookings.length,
+                      itemCount: myOrders.length,
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        final currentBooking = myBookings[index];
+                        final currentOrder = myOrders[index];
 
-                        var date = currentBooking.date.substring(0, 10);
+                        var date = currentOrder.date;
                         var parsed = DateTime.parse(date);
 
                         var year = DateFormat.y().format(parsed);
@@ -175,7 +178,8 @@ class _MyBookingPageState extends State<MyBookingPage> {
                             child: Container(
                               height: pgHeight * 0.2,
                               decoration: new BoxDecoration(
-                                  color: (parsed.isAfter(DateTime.now()))
+                                  color: (currentOrder.isDelivered ==
+                                          'Undelivered')
                                       ? Color(0xff404E65)
                                       : Color(0xff808080),
                                   borderRadius:
@@ -198,7 +202,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              currentBooking.serviceType,
+                                              currentOrder.item,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w500),
                                               softWrap: true,
@@ -213,7 +217,9 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                                       ? "0" + day
                                                       : day) +
                                                   ' ' +
-                                                  year,
+                                                  year +
+                                                  ' - ' +
+                                                  currentOrder.time,
                                               style: TextStyle(
                                                   color: Color(0xffFF9E16),
                                                   fontWeight: FontWeight.w500),
@@ -223,28 +229,13 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                               height: pgHeight * 0.003,
                                             ),
                                             Text(
-                                              currentBooking.time,
+                                              'Qty - ' + currentOrder.qty,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w500),
                                               softWrap: true,
                                             ),
                                             SizedBox(
                                               height: pgHeight * 0.003,
-                                            ),
-                                            Container(
-                                              child: currentBooking
-                                                          .staffComment !=
-                                                      null
-                                                  ? Text(
-                                                      currentBooking
-                                                          .staffComment,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: Colors.red),
-                                                      softWrap: true,
-                                                    )
-                                                  : Container(),
                                             ),
                                           ],
                                         ),
@@ -255,60 +246,24 @@ class _MyBookingPageState extends State<MyBookingPage> {
                                       Container(
                                           margin: EdgeInsets.only(
                                               right: pgWidth * 0.1),
-                                          child: (parsed
-                                                  .isAfter(DateTime.now()))
+                                          child: (currentOrder.isDelivered ==
+                                                  'Undelivered')
                                               ? Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
                                                   children: [
-                                                    Container(
-                                                      child: currentBooking
-                                                                  .staffComment ==
-                                                              null
-                                                          ? GestureDetector(
-                                                              onTap: () => {
-                                                                Navigator
-                                                                    .pushNamed(
-                                                                  context,
-                                                                  RouteGenerator
-                                                                      .editBookingScreenName,
-                                                                  arguments:
-                                                                      ScreenArguments({
-                                                                    'booking':
-                                                                        currentBooking
-                                                                  }),
-                                                                ),
-                                                              },
-                                                              child: Container(
-                                                                child:
-                                                                    Container(
-                                                                  child: Image
-                                                                      .asset(
-                                                                    'assets/images/edit.png',
-                                                                    width:
-                                                                        pgWidth *
-                                                                            0.04,
-                                                                    height:
-                                                                        pgWidth *
-                                                                            0.04,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
-                                                          : Container(),
-                                                    ),
                                                     SizedBox(
                                                         height:
                                                             pgHeight * 0.02),
                                                     GestureDetector(
                                                       onTap: () => {
                                                         BlocProvider.of<
-                                                                    BookingBloc>(
+                                                                    OrderBloc>(
                                                                 context)
-                                                            .add(DeleteBooking(
-                                                                currentBooking
+                                                            .add(DeleteOrder(
+                                                                currentOrder
                                                                     .id)),
                                                         // BlocProvider.of<
                                                         //             BookingBloc>(

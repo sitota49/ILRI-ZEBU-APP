@@ -9,11 +9,17 @@ import 'package:zebu_app/bloc/authentication/authentication_state.dart';
 import 'package:zebu_app/bloc/login/login_bloc.dart';
 import 'package:zebu_app/bloc/login/login_event.dart';
 import 'package:zebu_app/bloc/login/login_state.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_bloc.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_event.dart';
+import 'package:zebu_app/bloc/network_connectivity/network_connectivity_state.dart';
 import 'package:zebu_app/repository/user_repository.dart';
 import 'package:country_icons/country_icons.dart';
 import 'package:zebu_app/routeGenerator.dart';
+import 'package:zebu_app/screens/announcement_detail_page.dart';
 import 'package:zebu_app/screens/utils/EditTextUtils.dart';
 import 'package:zebu_app/screens/utils/fadeAnimation.dart';
+
+NetworkConnectivityBloc? _networkConnectivityBloc;
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -27,6 +33,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    _networkConnectivityBloc =
+        BlocProvider.of<NetworkConnectivityBloc>(context);
+    _networkConnectivityBloc!.add(InitNetworkConnectivity());
+    _networkConnectivityBloc!.add(ListenNetworkConnectivity());
+
     _loginBloc = BlocProvider.of<LoginBloc>(context);
     super.initState();
   }
@@ -66,7 +77,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   getViewAsPerState(LoginState state) {
-
     if (state is Unauthenticated) {
       return CredentialInput();
     } else if (state is OtpSentState) {
@@ -215,37 +225,41 @@ class _CredentialInputState extends State<CredentialInput> {
         children: <Widget>[
           Expanded(
               flex: 0,
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                        top: pageHeight * 0.07, left: pageWidth * 0.06),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text('Login Account',
-                          style: TextStyle(
-                            fontFamily: 'Raleway',
-                            fontSize: 24,
-                            color: const Color(0xff000000),
-                            fontWeight: FontWeight.w900,
-                          )),
-                    ),
-                  ),
-                  SizedBox(height: pageHeight * 0.017),
-                  Container(
-                    child: Text(
-                      'Hello, welcome to Zebu Club. Please login to continue',
-                      style: TextStyle(
-                        fontFamily: 'Raleway',
-                        fontSize: 13,
-                        color: const Color(0xff000000),
-                        fontWeight: FontWeight.w700,
+              child: Padding(
+                padding: EdgeInsets.only(left: pageWidth * 0.06),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: pageHeight * 0.07),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text('Login ',
+                            style: TextStyle(
+                              fontFamily: 'Raleway',
+                              fontSize: 24,
+                              color: const Color(0xff000000),
+                              fontWeight: FontWeight.w900,
+                            )),
                       ),
-                      softWrap: false,
                     ),
-                  ),
-                  SizedBox(height: pageHeight * 0.02),
-                ],
+                    SizedBox(height: pageHeight * 0.017),
+                    Container(
+                      child: Text(
+                        'Hello, welcome to Zebu Club. \nPlease login to continue',
+                        style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontSize: 15,
+                          color: const Color(0xff000000),
+                          fontWeight: FontWeight.w700,
+                        ),
+                        softWrap: true,
+                      ),
+                    ),
+                    SizedBox(height: pageHeight * 0.02),
+                  ],
+                ),
               )),
           Expanded(
             flex: 0,
@@ -286,47 +300,78 @@ class _CredentialInputState extends State<CredentialInput> {
                               }),
                         ),
                         SizedBox(height: pageHeight * 0.035),
-                        Container(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 16.0, right: 16.0),
-                            child: SizedBox(
-                              width: pageWidth * 0.8,
-                              height: pageHeight * 0.062,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    BlocProvider.of<LoginBloc>(context).add(
-                                        SendOtpEvent(
-                                            phoneNumber: _selectedCountryCode
-                                                    .toString() +
-                                                _phoneTextController
-                                                    .value.text));
-                                  }
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Color(0xff404E65)),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
+                        BlocBuilder(
+                          bloc: _networkConnectivityBloc,
+                          builder: (BuildContext context,
+                              NetworkConnectivityState state) {
+                            if (state is NetworkOnline) {
+                              return Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16.0, right: 16.0),
+                                  child: SizedBox(
+                                    width: pageWidth * 0.8,
+                                    height: pageHeight * 0.062,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          BlocProvider.of<LoginBloc>(context)
+                                              .add(SendOtpEvent(
+                                                  phoneNumber:
+                                                      _selectedCountryCode
+                                                              .toString() +
+                                                          _phoneTextController
+                                                              .value.text));
+                                        }
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color(0xff404E65)),
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "Request Code",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontFamily: 'Raleway',
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                 ),
-                                child: Text(
-                                  "Request Code",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: 'Raleway',
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
+                              );
+                            }
+                            if (state is NetworkOffline) {
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding:  EdgeInsets.only(left: pgWidth * 0.03 , right: pgWidth *0.03),
+                                    child: Text(
+                                      "Please check your internet connection and try again.",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Color(0xffFF9E16),
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: pageHeight * 0.04,
+                                  ),
+                                ],
+                              );
+                            }
+                            return Container();
+                          },
                         ),
                         SizedBox(
                           height: pageHeight * 0.025,
@@ -475,36 +520,64 @@ class _OtpInputState extends State<OtpInput> {
                     ),
                   ),
                   SizedBox(height: pageHeight * 0.03),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      child: SizedBox(
-                        width: pageWidth * 0.8,
-                        height: pageHeight * 0.062,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xff404E65)),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                  BlocBuilder(
+                    bloc: _networkConnectivityBloc,
+                    builder:
+                        (BuildContext context, NetworkConnectivityState state) {
+                      if (state is NetworkOnline) {
+                        return Container(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 16.0, right: 16.0),
+                            child: SizedBox(
+                              width: pageWidth * 0.8,
+                              height: pageHeight * 0.062,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color(0xff404E65)),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Submit",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: 'Raleway',
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
                               ),
                             ),
                           ),
-                          child: Text(
-                            "Submit",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontFamily: 'Raleway',
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
+                        );
+                      }
+                      if (state is NetworkOffline) {
+                        return Column(
+                          children: [
+                            Text(
+                              "Please check your internet connection and try again.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xffFF9E16),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            SizedBox(
+                              height: pageHeight * 0.04,
+                            ),
+                          ],
+                        );
+                      }
+                      return Container();
+                    },
                   ),
                 ],
               ),

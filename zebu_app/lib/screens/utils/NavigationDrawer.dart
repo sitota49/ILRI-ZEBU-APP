@@ -17,9 +17,13 @@ import 'package:zebu_app/bloc/user/user_state.dart';
 import 'package:zebu_app/screens/announcement_page.dart';
 import 'package:zebu_app/screens/booking_page.dart';
 import 'package:zebu_app/screens/feedback_page.dart';
-import 'package:zebu_app/screens/membership_page.dart';
+
 import 'package:zebu_app/screens/menu_page.dart';
 import 'package:zebu_app/screens/my_booking_page.dart';
+import 'package:zebu_app/screens/my_order_page.dart';
+
+double pgHeight = 0;
+double pgWidth = 0;
 
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
@@ -31,6 +35,13 @@ class NavigationDrawer extends StatefulWidget {
 class _NavigationDrawerState extends State<NavigationDrawer> {
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
+
+    setState(() {
+      pgHeight = pageHeight;
+      pgWidth = pageWidth;
+    });
     AuthenticationBloc authBloc = BlocProvider.of<AuthenticationBloc>(context);
     UserBloc userBloc = BlocProvider.of<UserBloc>(context);
     userBloc.add(UserInfoLoad());
@@ -40,8 +51,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           children: <Widget>[
             Container(
                 color: Color(0xff404E65),
-                height: 170,
-                padding: EdgeInsets.only(top: 50),
+                height: pgHeight * 0.25,
+                padding: EdgeInsets.only(top: pgHeight * 0.05),
                 // margin: EdgeInsets.only(bottom:350),
                 child: BlocConsumer<UserBloc, UserState>(
                   listener: (context, userState) {},
@@ -73,7 +84,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14),
                             softWrap: true,
-                          )
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
                         ],
                       );
                     }
@@ -110,12 +124,17 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => MyBookingPage()));
+                    } else if (navState is MyOrder) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyOrderPage()));
                     }
                   },
                   builder: (context, navState) {
                     return Column(
                       children: [
-                        const SizedBox(height: 24),
+                        SizedBox(height: pgHeight * 0.04),
                         ListTile(
                           leading: Icon(Icons.calendar_month),
                           title: Text("My Bookings"),
@@ -125,7 +144,17 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             navBloc.add(MyBookingPageEvent());
                           },
                         ),
-                        const SizedBox(height: 24),
+                        SizedBox(height: pgHeight * 0.04),
+                        ListTile(
+                          leading: Icon(Icons.local_pizza),
+                          title: Text("My Orders"),
+                          onTap: () {
+                            final navBloc =
+                                BlocProvider.of<NavDrawerBloc>(context);
+                            navBloc.add(MyOrderPageEvent());
+                          },
+                        ),
+                        SizedBox(height: pgHeight * 0.04),
                         ListTile(
                           leading: Icon(Icons.logout),
                           title: Text("Logout"),

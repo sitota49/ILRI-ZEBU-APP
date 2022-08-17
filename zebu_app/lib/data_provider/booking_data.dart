@@ -95,7 +95,9 @@ class BookingDataProvider {
             "field_booking_email": booking.email,
             "field_phone_number": booking.phoneNo,
             "field_service_type": booking.serviceType,
-            "field_time": booking.time
+            "field_time": booking.time,
+            "field_guest_names": booking.guestNames,
+            "field_no_of_guests": booking.noOfGuests
           }
         }
       }),
@@ -125,7 +127,7 @@ class BookingDataProvider {
       );
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        if(json.length == 0){
+        if (json.length == 0) {
           return ["No Booking Items Found"];
         }
         var booking = json
@@ -149,9 +151,7 @@ class BookingDataProvider {
         'Accept': 'application/vnd.api+json',
         'Authorization': 'Basic QWRtaW46QWRtaW5AMTIzNDU2'
       },
-      body: jsonEncode(<String, dynamic>{
-     
-      }),
+      body: jsonEncode(<String, dynamic>{}),
     );
 
     if (response.statusCode == 204) {
@@ -194,7 +194,9 @@ class BookingDataProvider {
         "data": {
           "type": "node--booking",
           "id": booking.id,
-          "attributes": {"field_date": booking.date, "field_time": booking.time}
+          "attributes": {"field_date": booking.date, "field_time": booking.time,  "field_guest_names": booking.guestNames,
+            "field_no_of_guests": booking.noOfGuests
+          }
         }
       }),
     );
