@@ -43,6 +43,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
     _networkConnectivityBloc!.add(InitNetworkConnectivity());
     _networkConnectivityBloc!.add(ListenNetworkConnectivity());
 
+    _FoodIndex = -1;
+    _FacilityIndex = -1;
+    _ServiceIndex = -1;
     super.initState();
   }
 
@@ -101,8 +104,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         if (feedbackState is FeedbackSuccess) {
                           showDialog<String>(
                               context: context,
-                              builder: (BuildContext context) =>
-                                  AlertDialog(
+                              builder: (BuildContext context) => AlertDialog(
                                     // title: const Text('Time Not Set'),
                                     content: const Text(
                                         'Thank you for your feedback!'),
@@ -191,13 +193,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                                   child: Center(
                                                     child: Padding(
                                                       padding:
-                                                          const EdgeInsets
-                                                              .all(8.0),
+                                                          const EdgeInsets.all(
+                                                              8.0),
                                                       child: Text(
                                                         currentRating,
                                                         style: TextStyle(
-                                                            color: Colors
-                                                                .white,
+                                                            color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w700),
@@ -278,13 +279,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                                   child: Center(
                                                     child: Padding(
                                                       padding:
-                                                          const EdgeInsets
-                                                              .all(8.0),
+                                                          const EdgeInsets.all(
+                                                              8.0),
                                                       child: Text(
                                                         currentRating,
                                                         style: TextStyle(
-                                                            color: Colors
-                                                                .white,
+                                                            color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w700),
@@ -365,13 +365,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                                   child: Center(
                                                     child: Padding(
                                                       padding:
-                                                          const EdgeInsets
-                                                              .all(8.0),
+                                                          const EdgeInsets.all(
+                                                              8.0),
                                                       child: Text(
                                                         currentRating,
                                                         style: TextStyle(
-                                                            color: Colors
-                                                                .white,
+                                                            color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w700),
@@ -447,8 +446,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               height: 5,
                             ),
                             RadioButtonGroup(
-                              orientation:
-                                  GroupedButtonsOrientation.HORIZONTAL,
+                              orientation: GroupedButtonsOrientation.HORIZONTAL,
                               margin: const EdgeInsets.only(left: 12.0),
                               onSelected: (String selected) => setState(() {
                                 _pickedDine = selected;
@@ -468,8 +466,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               picked: _pickedDine,
                               itemBuilder: (Radio rb, Text txt, int i) {
                                 return Padding(
-                                  padding:
-                                      const EdgeInsets.only(right: 10.0),
+                                  padding: const EdgeInsets.only(right: 10.0),
                                   child: Column(
                                     children: <Widget>[
                                       rb,
@@ -495,8 +492,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               height: 5,
                             ),
                             RadioButtonGroup(
-                              orientation:
-                                  GroupedButtonsOrientation.HORIZONTAL,
+                              orientation: GroupedButtonsOrientation.HORIZONTAL,
                               margin: const EdgeInsets.only(left: 12.0),
                               onSelected: (String selected) => setState(() {
                                 _pickedLanguage = selected;
@@ -511,8 +507,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               picked: _pickedLanguage,
                               itemBuilder: (Radio rb, Text txt, int i) {
                                 return Padding(
-                                  padding:
-                                      const EdgeInsets.only(right: 10.0),
+                                  padding: const EdgeInsets.only(right: 10.0),
                                   child: Column(
                                     children: <Widget>[
                                       rb,
@@ -709,64 +704,54 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                           _ServiceIndex < 0) {
                                         showDialog<String>(
                                             context: context,
-                                            builder:
-                                                (BuildContext context) =>
-                                                    AlertDialog(
-                                                      // title: const Text('Time Not Set'),
-                                                      content: const Text(
-                                                          'Please give your rating.'),
-                                                      actions: <Widget>[
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context,
-                                                                  'OK'),
-                                                          child: const Text(
-                                                              'OK'),
-                                                        ),
-                                                      ],
-                                                    ));
+                                            builder: (BuildContext context) =>
+                                                AlertDialog(
+                                                  // title: const Text('Time Not Set'),
+                                                  content: const Text(
+                                                      'Please give your rating.'),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context, 'OK'),
+                                                      child: const Text('OK'),
+                                                    ),
+                                                  ],
+                                                ));
                                       } else {
-                                        final prefs =
-                                            await SharedPreferences
-                                                .getInstance();
-                                        var fetchedUser = json.decode(
-                                            prefs.getString('user')!);
+                                        final prefs = await SharedPreferences
+                                            .getInstance();
+                                        var fetchedUser = json
+                                            .decode(prefs.getString('user')!);
 
                                         MyFeedBack myFeedback = MyFeedBack(
                                             title: fetchedUser['name'],
                                             email: fetchedUser['email'],
-                                            phoneNo:
-                                                fetchedUser['phoneNumber'],
+                                            phoneNo: fetchedUser['phoneNumber'],
                                             dineOften: _pickedDine,
                                             englishCommuincation:
                                                 _pickedLanguage,
-                                            faciltiyRating:
-                                                _FacilityIndex + 1,
+                                            faciltiyRating: _FacilityIndex + 1,
                                             foodItemComment:
                                                 specificCommentTextController
                                                     .value.text,
                                             foodRating: _FoodIndex + 1,
-                                            improoveWhat:
-                                                improoveTextController
-                                                    .value.text,
-                                            menuAdded:
-                                                addedMenuTextController
-                                                    .value.text,
+                                            improoveWhat: improoveTextController
+                                                .value.text,
+                                            menuAdded: addedMenuTextController
+                                                .value.text,
                                             menudidntMatch:
                                                 describeMenuTextController
                                                     .value.text,
                                             outStandingService:
                                                 serviceOutstandingTextController
                                                     .value.text,
-                                            serviceRating:
-                                                _ServiceIndex + 1,
+                                            serviceRating: _ServiceIndex + 1,
                                             otherComment:
                                                 otherCommentTextController
                                                     .value.text);
 
-                                        BlocProvider.of<FeedbackBloc>(
-                                                context)
+                                        BlocProvider.of<FeedbackBloc>(context)
                                             .add(Post(myFeedback));
                                       }
                                     },
