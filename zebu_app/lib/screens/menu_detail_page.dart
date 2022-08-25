@@ -41,6 +41,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
 
   _MenuDetailPageState({required this.argObj});
   var id;
+  var menuItem;
   @override
   void initState() {
     super.initState();
@@ -50,6 +51,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
     _networkConnectivityBloc!.add(ListenNetworkConnectivity());
 
     id = argObj['id'];
+    qty = '1';
     final menuBloc = BlocProvider.of<MenuBloc>(context);
     menuBloc.add(SingleMenuLoad(id));
     noPicker = CustomNumberPicker(
@@ -144,7 +146,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
 
                     if (singleMenuState is SingleMenuLoadSuccess) {
                       var singleMenu = singleMenuState.singleMenu;
-
+                      menuItem = singleMenu;
                       return Container(
                         color: Colors.white,
                         child: Column(
@@ -279,10 +281,30 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                       top: pgHeight * 0.04,
                                       left: pgWidth * 0.05,
                                       right: pgWidth * 0.1),
-                                  child: Text(
-                                    singleMenu.description,
-                                    style: TextStyle(color: Color(0xff404E65)),
-                                    softWrap: true,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Non-member prices will be increased by 20%.',
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 12),
+                                        softWrap: true,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        singleMenu.description,
+                                        style: TextStyle(
+                                            color: Color(
+                                              0xff404E65,
+                                            ),
+                                            fontSize: 14),
+                                        softWrap: true,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -293,18 +315,30 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                   NetworkConnectivityState state) {
                                 if (state is NetworkOnline) {
                                   return Container(
-                                    child: singleMenu.category.contains("Pizza")
+                                    child: (singleMenu.category
+                                                .contains("Pizza")) ||
+                                            (singleMenu.category
+                                                .contains("Cake")) ||
+                                            (singleMenu.category
+                                                .contains("Bakery"))
                                         ? BlocConsumer<OrderBloc, OrderState>(
                                             listener: (ctx, orderState) {
                                             if (orderState is OrderSuccess) {
+                                              print(orderState);
                                               showDialog<String>(
                                                   context: context,
                                                   builder:
                                                       (BuildContext context) =>
                                                           AlertDialog(
                                                             // title: const Text('Time Not Set'),
-                                                            content: const Text(
-                                                                'Your order has been placed!'),
+                                                            content: menuItem
+                                                                    .category
+                                                                    .contains(
+                                                                        "Pizza")
+                                                                ? Text(
+                                                                    'Your order has been placed. It will be ready in 30 minutes!')
+                                                                : Text(
+                                                                    'Your has been placed. It will be ready tomorrow at noon!'),
                                                             actions: <Widget>[
                                                               TextButton(
                                                                 onPressed: () =>
@@ -331,7 +365,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                                           AlertDialog(
                                                             // title: const Text('Time Not Set'),
                                                             content: const Text(
-                                                                'Please check your internet connceetion and try again.'),
+                                                                'Please check your internet connection and try again.'),
                                                             actions: <Widget>[
                                                               TextButton(
                                                                 onPressed: () =>

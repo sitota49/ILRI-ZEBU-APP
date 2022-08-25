@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         backgroundColor: Color(0xff404E65),
         body:
-            // Home(),
+            // Home());
 
             BlocConsumer<AuthenticationBloc, AuthenticationState>(
                 listener: (context, state) {

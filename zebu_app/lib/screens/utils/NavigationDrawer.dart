@@ -146,7 +146,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         ),
                         SizedBox(height: pgHeight * 0.04),
                         ListTile(
-                          leading: Icon(Icons.local_pizza),
+                          leading: Icon(Icons.restaurant_menu),
                           title: Text("My Orders"),
                           onTap: () {
                             final navBloc =
