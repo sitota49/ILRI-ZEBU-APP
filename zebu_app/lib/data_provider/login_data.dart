@@ -12,7 +12,7 @@ class LoginDataProvider {
     try {
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/appuser?filter[field_phonenumber]=${phoneNumber.substring(1)}'),
+            'https://zebuapp.ilri.org/jsonapi/node/appuser?filter[field_phonenumber]=${phoneNumber.substring(1)}'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
@@ -38,7 +38,7 @@ class LoginDataProvider {
     try {
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/appuser?filter[field_email]=$email'),
+            'https://zebuapp.ilri.org/jsonapi/node/appuser?filter[field_email]=$email'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',

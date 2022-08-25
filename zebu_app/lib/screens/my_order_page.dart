@@ -141,7 +141,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                     height: MediaQuery.of(context).size.height / 1.3,
                     child: Center(
                       child: Text(
-                        "No Orders yet",
+                        "No orders yet",
                         style: TextStyle(
                           color: Color(0xff404E65),
                           fontSize: 14,

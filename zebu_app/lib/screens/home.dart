@@ -145,71 +145,69 @@ class _HomeState extends State<Home> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'What\'s new',
-                                  style: TextStyle(
-                                      color: Color(0xffff9e16),
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                SizedBox(
-                                  height: pageHeight * 0.011,
-                                ),
                                 GestureDetector(
                                   child: Container(
                                     width: pageWidth * 0.52,
-                                    child: Text(
-                                      newAnnouncement.title.length > 45
-                                          ? newAnnouncement.title
-                                                  .substring(0, 45) +
-                                              '...'
-                                          : newAnnouncement.title,
-                                      style: TextStyle(
-                                          fontFamily: 'Raleway',
-                                          fontSize: 15,
-                                          color: Color(0xff404E65),
-                                          fontWeight: FontWeight.w700),
-                                      softWrap: true,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'What\'s new',
+                                          style: TextStyle(
+                                              color: Color(0xffff9e16),
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        SizedBox(
+                                          height: pageHeight * 0.011,
+                                        ),
+                                        Text(
+                                          newAnnouncement.title.length > 45
+                                              ? newAnnouncement.title
+                                                      .substring(0, 45) +
+                                                  '...'
+                                              : newAnnouncement.title,
+                                          style: TextStyle(
+                                              fontFamily: 'Raleway',
+                                              fontSize: 15,
+                                              color: Color(0xff404E65),
+                                              fontWeight: FontWeight.w700),
+                                          softWrap: true,
+                                        ),
+                                        SizedBox(
+                                          height: pageHeight * 0.011,
+                                        ),
+                                        Container(
+                                          width: pageWidth * 0.52,
+                                          child: Text(
+                                            newAnnouncement.description.length >
+                                                    100
+                                                ? newAnnouncement.description
+                                                        .substring(0, 100) +
+                                                    '...'
+                                                : newAnnouncement.description,
+                                            style: TextStyle(
+                                                fontFamily: 'Raleway',
+                                                fontSize: 10,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500),
+                                            softWrap: true,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: pageHeight * 0.011,
+                                        ),
+                                        Text("Learn More >>",
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                fontFamily: 'Raleway',
+                                                color: Color(0xffff9e16),
+                                                fontWeight: FontWeight.w700)),
+                                      ],
                                     ),
                                   ),
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      RouteGenerator
-                                          .announcementDetailScreenName,
-                                      arguments: ScreenArguments(
-                                          {'id': newAnnouncement.id}),
-                                    );
-                                  },
-                                ),
-                                SizedBox(
-                                  height: pageHeight * 0.011,
-                                ),
-                                Container(
-                                  width: pageWidth * 0.52,
-                                  child: Text(
-                                    newAnnouncement.description.length > 100
-                                        ? newAnnouncement.description
-                                                .substring(0, 100) +
-                                            '...'
-                                        : newAnnouncement.description,
-                                    style: TextStyle(
-                                        fontFamily: 'Raleway',
-                                        fontSize: 10,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500),
-                                    softWrap: true,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: pageHeight * 0.011,
-                                ),
-                                GestureDetector(
-                                  child: Text("Learn More >>",
-                                      style: TextStyle(
-                                          fontSize: 10,
-                                          fontFamily: 'Raleway',
-                                          color: Color(0xffff9e16),
-                                          fontWeight: FontWeight.w700)),
                                   onTap: () {
                                     Navigator.pushNamed(
                                       context,

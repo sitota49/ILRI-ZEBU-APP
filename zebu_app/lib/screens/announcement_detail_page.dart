@@ -158,7 +158,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                                                   //     topRight: Radius.circular(15)),
                                                   image: DecorationImage(
                                                 image: NetworkImage(
-                                                  "http://45.79.249.127" +
+                                                  "https://zebuapp.ilri.org" +
                                                       announcement.image!,
                                                 ),
                                                 fit: BoxFit.fitWidth,

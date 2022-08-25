@@ -303,7 +303,7 @@ class _BookingPageState extends State<BookingPage>
                                                                     pgHeight *
                                                                         0.03),
                                                             Image.network(
-                                                              "http://45.79.249.127" +
+                                                              "https://zebuapp.ilri.org" +
                                                                   currentService
                                                                       .image,
                                                               height:

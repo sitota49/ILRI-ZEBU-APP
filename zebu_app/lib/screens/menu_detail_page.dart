@@ -164,7 +164,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                     image: singleMenu.image != null
                                         ? DecorationImage(
                                             image: NetworkImage(
-                                              "http://45.79.249.127" +
+                                              "https://zebuapp.ilri.org" +
                                                   singleMenu.image,
                                             ),
                                             fit: BoxFit.fitWidth,
@@ -675,7 +675,7 @@ class _RecentlyViewedState extends State<RecentlyViewed> {
                                               Radius.circular(12)),
                                           image: DecorationImage(
                                             image: NetworkImage(
-                                                "http://45.79.249.127" +
+                                                "https://zebuapp.ilri.org" +
                                                     decoded['image']),
                                             fit: BoxFit.cover,
                                             alignment: Alignment.topCenter,

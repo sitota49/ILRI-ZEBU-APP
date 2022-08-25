@@ -13,7 +13,7 @@ class BookingDataProvider {
     try {
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/booking?_format=json'),
+            'https://zebuapp.ilri.org/jsonapi/node/booking?_format=json'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
@@ -39,7 +39,7 @@ class BookingDataProvider {
   Future<dynamic> getServiceBooking(String service, String date) async {
     final response = await httpClient.get(
       Uri.parse(
-          'http://45.79.249.127/zebuapi/jsonapi/node/booking/service?service="$service"&date=$date&_format=json'),
+          'https://zebuapp.ilri.org/jsonapi/node/booking/service?service="$service"&date=$date&_format=json'),
       headers: <String, String>{
         'Accept': 'application/vnd.api+json',
         'Access-Control-Allow-Origin': '*',
@@ -61,7 +61,7 @@ class BookingDataProvider {
   Future<dynamic> getServiceDetail(String serviceDetail) async {
     final response = await httpClient.get(
       Uri.parse(
-          'http://45.79.249.127/zebuapi/jsonapi/node/servicedetail?_format=json&serviceDetail=$serviceDetail'),
+          'https://zebuapp.ilri.org/jsonapi/node/servicedetail?_format=json&serviceDetail=$serviceDetail'),
       headers: <String, String>{
         'Accept': 'application/vnd.api+json',
         'Access-Control-Allow-Origin': '*',
@@ -80,7 +80,7 @@ class BookingDataProvider {
 
   Future<dynamic> createBooking(Booking booking) async {
     final response = await httpClient.post(
-      Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/booking'),
+      Uri.parse('https://zebuapp.ilri.org/jsonapi/node/booking'),
       headers: <String, String>{
         'Content-Type': 'application/vnd.api+json',
         'Accept': 'application/vnd.api+json',
@@ -117,7 +117,7 @@ class BookingDataProvider {
       var phoneNo = fetchedUser['phoneNumber'];
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/booking/member?_format=json&phoneNo=$phoneNo'),
+            'https://zebuapp.ilri.org/jsonapi/node/booking/member?_format=json&phoneNo=$phoneNo'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
@@ -145,7 +145,7 @@ class BookingDataProvider {
 
   Future<dynamic> deleteBooking(String id) async {
     final response = await httpClient.delete(
-      Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/booking/$id'),
+      Uri.parse('https://zebuapp.ilri.org/jsonapi/node/booking/$id'),
       headers: <String, String>{
         'Content-Type': 'application/vnd.api+json',
         'Accept': 'application/vnd.api+json',
@@ -164,7 +164,7 @@ class BookingDataProvider {
   Future<dynamic> getSingleBooking(String id) async {
     final response = await httpClient.get(
       Uri.parse(
-          'http://45.79.249.127/zebuapi/jsonapi/node/booking/$id?_format=json'),
+          'https://zebuapp.ilri.org/jsonapi/node/booking/$id?_format=json'),
       headers: <String, String>{
         'Accept': 'application/vnd.api+json',
         'Access-Control-Allow-Origin': '*',
@@ -184,7 +184,7 @@ class BookingDataProvider {
   Future<dynamic> updateBooking(Booking booking) async {
     var id = booking.id;
     final response = await httpClient.patch(
-      Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/booking/$id'),
+      Uri.parse('https://zebuapp.ilri.org/jsonapi/node/booking/$id'),
       headers: <String, String>{
         'Content-Type': 'application/vnd.api+json',
         'Accept': 'application/vnd.api+json',

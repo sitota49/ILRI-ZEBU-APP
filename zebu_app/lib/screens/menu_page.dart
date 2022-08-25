@@ -265,7 +265,7 @@ class MenuItem extends StatelessWidget {
                     image: menu.image != null
                         ? DecorationImage(
                             image: NetworkImage(
-                              "http://45.79.249.127" + menu.image,
+                              "https://zebuapp.ilri.org" + menu.image,
                             ),
                             fit: BoxFit.fitWidth,
                             alignment: Alignment.topCenter,

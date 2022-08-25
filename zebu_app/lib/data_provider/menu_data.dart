@@ -11,7 +11,7 @@ class MenuDataProvider {
     try {
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/menu/search?title=$queryParam&_format=json'),
+            'https://zebuapp.ilri.org/jsonapi/node/menu/search?title=$queryParam&_format=json'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
@@ -51,7 +51,7 @@ class MenuDataProvider {
   Future<dynamic> getCategoryMenu(String id) async {
     final response = await httpClient.get(
       Uri.parse(
-          'http://45.79.249.127/zebuapi/jsonapi/node/menu/$id?_format=json'),
+          'https://zebuapp.ilri.org/jsonapi/node/menu/$id?_format=json'),
       headers: <String, String>{
         'Accept': 'application/vnd.api+json',
         'Access-Control-Allow-Origin': '*',
@@ -71,7 +71,7 @@ class MenuDataProvider {
   Future<dynamic> getSingleMenu(String id) async {
     final response = await httpClient.get(
       Uri.parse(
-          'http://45.79.249.127/zebuapi/jsonapi/node/menu/$id?_format=json'),
+          'https://zebuapp.ilri.org/jsonapi/node/menu/$id?_format=json'),
       headers: <String, String>{
         'Accept': 'application/vnd.api+json',
         'Access-Control-Allow-Origin': '*',

@@ -13,7 +13,7 @@ class FeedbackDataProvider {
 
   Future<dynamic> createFeedback(MyFeedBack feedback) async {
     final response = await httpClient.post(
-      Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/feedback'),
+      Uri.parse('https://zebuapp.ilri.org/jsonapi/node/feedback'),
       headers: <String, String>{
         'Content-Type': 'application/vnd.api+json',
         'Accept': 'application/vnd.api+json',

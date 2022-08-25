@@ -10,7 +10,7 @@ class OrderDataProvider {
 
   Future<dynamic> createOrder(Order order) async {
     final response = await httpClient.post(
-      Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/order'),
+      Uri.parse('https://zebuapp.ilri.org/jsonapi/node/order'),
       headers: <String, String>{
         'Content-Type': 'application/vnd.api+json',
         'Accept': 'application/vnd.api+json',
@@ -50,7 +50,7 @@ class OrderDataProvider {
       var phoneNo = fetchedUser['phoneNumber'];
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/order/member?_format=json&phoneNo=$phoneNo'),
+            'https://zebuapp.ilri.org/jsonapi/node/order/member?_format=json&phoneNo=$phoneNo'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
@@ -77,7 +77,7 @@ class OrderDataProvider {
 
   Future<dynamic> deleteOrder(String id) async {
     final response = await httpClient.delete(
-      Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/order/$id'),
+      Uri.parse('https://zebuapp.ilri.org/jsonapi/node/order/$id'),
       headers: <String, String>{
         'Content-Type': 'application/vnd.api+json',
         'Accept': 'application/vnd.api+json',

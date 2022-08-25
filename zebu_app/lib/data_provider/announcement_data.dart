@@ -11,7 +11,7 @@ class AnnouncementDataProvider {
     try {
       final response = await httpClient.get(
         Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/announcement?_format=json'),
+            'https://zebuapp.ilri.org/jsonapi/node/announcement?_format=json'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
@@ -36,7 +36,7 @@ class AnnouncementDataProvider {
   Future<dynamic> getAnnouncement(String id) async {
     final response = await httpClient.get(
       Uri.parse(
-          'http://45.79.249.127/zebuapi/jsonapi/node/announcement/${id}?_format=json'),
+          'https://zebuapp.ilri.org/jsonapi/node/announcement/${id}?_format=json'),
       headers: <String, String>{
         'Accept': 'application/vnd.api+json',
         'Access-Control-Allow-Origin': '*',
@@ -56,7 +56,7 @@ class AnnouncementDataProvider {
   Future<dynamic> getNewestAnnouncement() async {
     final response = await httpClient.get(
       Uri.parse(
-          'http://45.79.249.127/zebuapi/jsonapi/node/announcement?_format=json'),
+          'https://zebuapp.ilri.org/jsonapi/node/announcement?_format=json'),
       headers: <String, String>{
         'Accept': 'application/vnd.api+json',
         'Access-Control-Allow-Origin': '*',

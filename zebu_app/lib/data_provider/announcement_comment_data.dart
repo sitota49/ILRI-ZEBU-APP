@@ -8,9 +8,10 @@ class AnnouncementCommentDataProvider {
 
   AnnouncementCommentDataProvider({required this.httpClient});
 
-  Future<dynamic> createAnnouncementComment(AnnouncementComment announcementComment) async {
+  Future<dynamic> createAnnouncementComment(
+      AnnouncementComment announcementComment) async {
     final response = await httpClient.post(
-      Uri.parse('http://45.79.249.127/zebuapi/jsonapi/node/announcementcomment'),
+      Uri.parse('https://zebuapp.ilri.org/jsonapi/node/announcementcomment'),
       headers: <String, String>{
         'Content-Type': 'application/vnd.api+json',
         'Accept': 'application/vnd.api+json',

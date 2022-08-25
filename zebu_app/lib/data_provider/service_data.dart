@@ -10,8 +10,7 @@ class ServiceDataProvider {
   Future<List<dynamic>> getAllService() async {
     try {
       final response = await httpClient.get(
-        Uri.parse(
-            'http://45.79.249.127/zebuapi/jsonapi/node/service?_format=json'),
+        Uri.parse('https://zebuapp.ilri.org/jsonapi/node/service?_format=json'),
         headers: <String, String>{
           'Accept': 'application/vnd.api+json',
           'Access-Control-Allow-Origin': '*',
