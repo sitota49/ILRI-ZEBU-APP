@@ -12,6 +12,7 @@ import 'package:zebu_app/routeGenerator.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
+double textScale = 0;
 
 class MyBookingPage extends StatefulWidget {
   const MyBookingPage({Key? key}) : super(key: key);
@@ -39,9 +40,11 @@ class _MyBookingPageState extends State<MyBookingPage> {
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
 
+    double txtScale = MediaQuery.of(context).textScaleFactor;
     setState(() {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
+      textScale = txtScale;
     });
     var fetched = loadUser();
 
@@ -72,7 +75,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
               'BOOKINGS',
               style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 18,
+                  fontSize: 18 * textScale,
                   color: Color(0xff404E65),
                   fontWeight: FontWeight.w500),
             ),
@@ -125,7 +128,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Color(0xff404E65),
-                            fontSize: 16,
+                            fontSize: 16 * textScale,
                           ),
                         ),
                       ),
@@ -141,7 +144,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                         "No items yet",
                         style: TextStyle(
                           color: Color(0xff404E65),
-                          fontSize: 14,
+                          fontSize: 14 * textScale,
                         ),
                       ),
                     ),

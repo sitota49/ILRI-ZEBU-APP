@@ -16,6 +16,10 @@ import 'package:zebu_app/routeGenerator.dart';
 import 'package:zebu_app/screens/splash_page.dart';
 import 'package:zebu_app/screens/utils/EditTextUtils.dart';
 
+double pgHeight = 0;
+double pgWidth = 0;
+double textScale = 0;
+
 class OnBoardingPage extends StatefulWidget {
   OnBoardingPage({Key? key}) : super(key: key);
 
@@ -59,21 +63,28 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   Widget build(BuildContext context) {
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
-    const bodyStyle = TextStyle(
+
+    double txtScale = MediaQuery.of(context).textScaleFactor;
+    setState(() {
+      pgHeight = pageHeight;
+      pgWidth = pageWidth;
+      textScale = txtScale;
+    });
+    var bodyStyle = TextStyle(
       fontFamily: 'Raleway',
-      fontSize: 15,
+      fontSize: 15 * textScale,
       color: const Color(0xff000000),
       fontWeight: FontWeight.w600,
     );
 
-    const titleStyle = TextStyle(
+    var titleStyle = TextStyle(
       fontFamily: 'Raleway',
-      fontSize: 26,
+      fontSize: 26 * textScale,
       color: const Color(0xff000000),
       fontWeight: FontWeight.w800,
     );
 
-    const pageDecoration = const PageDecoration(
+    var pageDecoration = PageDecoration(
         titleTextStyle: titleStyle,
         bodyTextStyle: bodyStyle,
         // bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
@@ -119,7 +130,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     child: Text('Personal Information',
                         style: TextStyle(
                           fontFamily: 'Raleway',
-                          fontSize: 24,
+                          fontSize: 24 * textScale,
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w900,
                         )),
@@ -131,7 +142,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     'Please register to continue',
                     style: TextStyle(
                       fontFamily: 'Raleway',
-                      fontSize: 13,
+                      fontSize: 13 * textScale,
                       color: const Color(0xff000000),
                       fontWeight: FontWeight.w700,
                     ),
@@ -151,7 +162,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             'Name',
                             style: TextStyle(
                               fontFamily: 'Raleway',
-                              fontSize: 14,
+                              fontSize: 14 * textScale,
                               fontWeight: FontWeight.w600,
                               color: const Color(0xff000000),
                             ),
@@ -177,7 +188,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             'E-mail',
                             style: TextStyle(
                               fontFamily: 'Raleway',
-                              fontSize: 14,
+                              fontSize: 14 * textScale,
                               fontWeight: FontWeight.w600,
                               color: const Color(0xff000000),
                             ),
@@ -204,7 +215,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             'Address',
                             style: TextStyle(
                               fontFamily: 'Raleway',
-                              fontSize: 14,
+                              fontSize: 14 * textScale,
                               fontWeight: FontWeight.w600,
                               color: const Color(0xff000000),
                             ),
@@ -285,7 +296,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             overrideDone: GestureDetector(
               child: Text("Done",
                   style: TextStyle(
-                      fontFamily: 'Raleway', fontWeight: FontWeight.w700)),
+                      fontSize: 14 * textScale,
+                      fontFamily: 'Raleway',
+                      fontWeight: FontWeight.w700)),
               onTap: () {
                 BlocProvider.of<AuthenticationBloc>(context)
                     .add(FinishInitializing());
@@ -330,7 +343,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Raleway',
-                          fontSize: 26,
+                          fontSize: 26 * textScale,
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w900,
                         ),
@@ -345,7 +358,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         "Stay up to date on announcements and Zebu Club activities directly through your smart device.",
                         style: TextStyle(
                           fontFamily: 'Raleway',
-                          fontSize: 15,
+                          fontSize: 15 * textScale,
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w500,
                         ),
@@ -375,7 +388,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Raleway',
-                          fontSize: 26,
+                          fontSize: 26 * textScale,
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w900,
                         ),
@@ -390,7 +403,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         "Explore the latest food items made with fresh produce from the Zebu Club's kitchen.",
                         style: TextStyle(
                           fontFamily: 'Raleway',
-                          fontSize: 15,
+                          fontSize: 15 * textScale,
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w500,
                         ),
@@ -420,7 +433,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Raleway',
-                          fontSize: 26,
+                          fontSize: 26 * textScale,
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w900,
                         ),
@@ -435,7 +448,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         "Secure time slots and make multiple appointments up to two weeks in advance to use Zebu Club facilities.",
                         style: TextStyle(
                           fontFamily: 'Raleway',
-                          fontSize: 15,
+                          fontSize: 15 * textScale,
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w500,
                         ),
@@ -465,7 +478,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Raleway',
-                          fontSize: 26,
+                          fontSize: 26 * textScale,
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w900,
                         ),
@@ -480,7 +493,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         "Give feedback on our services, facilities and food, as well as any other suggestions to improve your comfort at Zebu Club. ",
                         style: TextStyle(
                           fontFamily: 'Raleway',
-                          fontSize: 15,
+                          fontSize: 15 * textScale,
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w500,
                         ),
@@ -508,9 +521,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             // back: const Icon(Icons.arrow_back),
             // skip: const Text('Skip', style: TextStyle(fontWeight: FontWeight.w600)),
             // next: const Icon(Icons.arrow_forward),
-            done: const Text('Done',
+            done: Text('Done',
                 style: TextStyle(
-                    fontWeight: FontWeight.w600, color: Color(0xFF404E65))),
+                    fontSize: 14 * textScale,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF404E65))),
             curve: Curves.fastLinearToSlowEaseIn,
             controlsMargin: const EdgeInsets.all(16),
             controlsPadding: kIsWeb

@@ -15,6 +15,7 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
+double textScale = 0;
 NetworkConnectivityBloc? _networkConnectivityBloc;
 
 class FeedbackPage extends StatefulWidget {
@@ -54,9 +55,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
 
+    double txtScale = MediaQuery.of(context).textScaleFactor;
     setState(() {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
+      textScale = txtScale;
     });
     var ratings = ['1', '2', '3', '4'];
     var ratingDescription = ['Poor', 'Fair', 'Good', 'Excellent'];
@@ -84,7 +87,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               'FEEDBACK',
               style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 18,
+                  fontSize: 18 * textScale,
                   color: Color(0xff404E65),
                   fontWeight: FontWeight.w500),
             ),
@@ -134,7 +137,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w900,
-                                  fontSize: 18,
+                                  fontSize: 18 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -146,7 +149,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -213,7 +216,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                                 color: Color(
                                                   0xff404E65,
                                                 ),
-                                                fontSize: 10,
+                                                fontSize: 10 * textScale,
                                               ),
                                             )
                                           ],
@@ -232,7 +235,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -299,7 +302,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                                 color: Color(
                                                   0xff404E65,
                                                 ),
-                                                fontSize: 10,
+                                                fontSize: 10 * textScale,
                                               ),
                                             )
                                           ],
@@ -318,7 +321,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -385,7 +388,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                                 color: Color(
                                                   0xff404E65,
                                                 ),
-                                                fontSize: 10,
+                                                fontSize: 10 * textScale,
                                               ),
                                             )
                                           ],
@@ -404,7 +407,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -426,7 +429,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 12.0,
+                                fontSize: 12.0 * textScale,
                               ),
                               controller: improoveTextController,
                             ),
@@ -438,7 +441,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -454,7 +457,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               labelStyle: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 10,
+                                  fontSize: 10 * textScale,
                                   fontFamily: 'Raleway'),
                               labels: <String>[
                                 "Daily",
@@ -484,7 +487,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -500,7 +503,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               labelStyle: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 10,
+                                  fontSize: 10 * textScale,
                                   fontFamily: 'Raleway'),
                               labels: <String>["Yes", "No"],
                               activeColor: Color(0xff404E65),
@@ -525,7 +528,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -547,7 +550,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 12.0,
+                                fontSize: 12.0 * textScale,
                               ),
                               controller: specificCommentTextController,
                             ),
@@ -559,7 +562,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -581,7 +584,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 12.0,
+                                fontSize: 12.0 * textScale,
                               ),
                               controller: describeMenuTextController,
                             ),
@@ -593,7 +596,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -615,7 +618,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 12.0,
+                                fontSize: 12.0 * textScale,
                               ),
                               controller: addedMenuTextController,
                             ),
@@ -627,7 +630,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -649,7 +652,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 12.0,
+                                fontSize: 12.0 * textScale,
                               ),
                               controller: serviceOutstandingTextController,
                             ),
@@ -661,7 +664,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway'),
                               softWrap: true,
                             ),
@@ -683,7 +686,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 12.0,
+                                fontSize: 12.0 * textScale,
                               ),
                               controller: otherCommentTextController,
                             ),
@@ -772,7 +775,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontFamily: 'Raleway',
-                                          fontSize: 17,
+                                          fontSize: 17 * textScale,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
                                     ),
@@ -796,7 +799,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color(0xff404E65),
-                              fontSize: 16,
+                              fontSize: 14 * textScale,
                             ),
                           ),
                         ),

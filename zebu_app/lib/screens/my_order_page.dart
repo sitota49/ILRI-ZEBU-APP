@@ -16,6 +16,7 @@ import 'package:zebu_app/routeGenerator.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
+double textScale = 0;
 
 class MyOrderPage extends StatefulWidget {
   const MyOrderPage({Key? key}) : super(key: key);
@@ -43,9 +44,11 @@ class _MyOrderPageState extends State<MyOrderPage> {
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
 
+   double txtScale = MediaQuery.of(context).textScaleFactor;
     setState(() {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
+      textScale = txtScale;
     });
     var fetched = loadUser();
 
@@ -76,7 +79,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
               'ORDERS',
               style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 18,
+                  fontSize: 18 * textScale,
                   color: Color(0xff404E65),
                   fontWeight: FontWeight.w500),
             ),
@@ -128,7 +131,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Color(0xff404E65),
-                            fontSize: 16,
+                            fontSize: 16 * textScale,
                           ),
                         ),
                       ),
@@ -144,7 +147,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                         "No orders yet",
                         style: TextStyle(
                           color: Color(0xff404E65),
-                          fontSize: 14,
+                          fontSize: 14 * textScale,
                         ),
                       ),
                     ),

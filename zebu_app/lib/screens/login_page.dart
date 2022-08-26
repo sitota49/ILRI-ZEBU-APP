@@ -19,6 +19,9 @@ import 'package:zebu_app/screens/announcement_detail_page.dart';
 import 'package:zebu_app/screens/utils/EditTextUtils.dart';
 import 'package:zebu_app/screens/utils/fadeAnimation.dart';
 
+double pgHeight = 0;
+double pgWidth = 0;
+double textScale = 0;
 NetworkConnectivityBloc? _networkConnectivityBloc;
 
 class LoginPage extends StatefulWidget {
@@ -46,6 +49,15 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
+
+    double txtScale = MediaQuery.of(context).textScaleFactor;
+    setState(() {
+      pgHeight = pageHeight;
+      pgWidth = pageWidth;
+      textScale = txtScale;
+    });
     return BlocListener<LoginBloc, LoginState>(
       bloc: _loginBloc,
       listener: (context, loginState) {
@@ -124,7 +136,7 @@ class _LoadingIndicatorState extends State<LoadingIndicator> {
                 message!,
                 style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 15,
+                  fontSize: 15 * textScale,
                   color: const Color(0xff000000),
                   fontWeight: FontWeight.w500,
                 ),
@@ -201,7 +213,7 @@ class _CredentialInputState extends State<CredentialInput> {
                       SizedBox(width: pageWidth * 0.01),
                       Text(
                         value,
-                        style: TextStyle(fontSize: 12.0),
+                        style: TextStyle(fontSize: 12.0 * textScale),
                       ),
                     ],
                   ));
@@ -238,7 +250,7 @@ class _CredentialInputState extends State<CredentialInput> {
                         child: Text('Login ',
                             style: TextStyle(
                               fontFamily: 'Raleway',
-                              fontSize: 24,
+                              fontSize: 24 * textScale,
                               color: const Color(0xff000000),
                               fontWeight: FontWeight.w900,
                             )),
@@ -250,7 +262,7 @@ class _CredentialInputState extends State<CredentialInput> {
                         'Hello, welcome to Zebu Club. \nPlease login to continue',
                         style: TextStyle(
                           fontFamily: 'Raleway',
-                          fontSize: 15,
+                          fontSize: 15 * textScale,
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w700,
                         ),
@@ -278,7 +290,7 @@ class _CredentialInputState extends State<CredentialInput> {
                               'Phone number',
                               style: TextStyle(
                                 fontFamily: 'Raleway',
-                                fontSize: 14,
+                                fontSize: 14 * textScale,
                                 fontWeight: FontWeight.w600,
                                 color: const Color(0xff000000),
                               ),
@@ -341,7 +353,7 @@ class _CredentialInputState extends State<CredentialInput> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontFamily: 'Raleway',
-                                            fontSize: 17,
+                                            fontSize: 17 * textScale,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white),
                                       ),
@@ -354,11 +366,14 @@ class _CredentialInputState extends State<CredentialInput> {
                               return Column(
                                 children: [
                                   Padding(
-                                    padding:  EdgeInsets.only(left: pgWidth * 0.03 , right: pgWidth *0.03),
+                                    padding: EdgeInsets.only(
+                                        left: pgWidth * 0.03,
+                                        right: pgWidth * 0.03),
                                     child: Text(
                                       "Please check your internet connection and try again.",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
+                                        fontSize: 16 * textScale,
                                         color: Color(0xffFF9E16),
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -447,7 +462,7 @@ class _OtpInputState extends State<OtpInput> {
                             'Verification Code',
                             style: TextStyle(
                               fontFamily: 'Raleway',
-                              fontSize: 26,
+                              fontSize: 26 * textScale,
                               fontWeight: FontWeight.w900,
                               color: Colors.black,
                             ),
@@ -458,7 +473,7 @@ class _OtpInputState extends State<OtpInput> {
                             'We have sent a verification code to\n your number',
                             style: TextStyle(
                               fontFamily: 'Raleway',
-                              fontSize: 15,
+                              fontSize: 15 * textScale,
                               color: const Color(0xff000000),
                               fontWeight: FontWeight.w500,
                             ),
@@ -470,7 +485,7 @@ class _OtpInputState extends State<OtpInput> {
                             phoneNo ?? '',
                             style: TextStyle(
                               fontFamily: 'Raleway',
-                              fontSize: 18,
+                              fontSize: 18 * textScale,
                               color: const Color(0xffFF9E16),
                               fontWeight: FontWeight.w700,
                             ),
@@ -497,7 +512,7 @@ class _OtpInputState extends State<OtpInput> {
                           'Didn\'t get code?',
                           style: TextStyle(
                             fontFamily: 'Raleway',
-                            fontSize: 12,
+                            fontSize: 12 * textScale,
                             color: const Color(0xff000000),
                             fontWeight: FontWeight.w500,
                           ),
@@ -507,7 +522,7 @@ class _OtpInputState extends State<OtpInput> {
                         GestureDetector(
                           child: Text("Resend Code",
                               style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12 * textScale,
                                   fontFamily: 'Raleway',
                                   fontWeight: FontWeight.w700,
                                   color: Color(0xffFF9E16))),
@@ -550,7 +565,7 @@ class _OtpInputState extends State<OtpInput> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontFamily: 'Raleway',
-                                      fontSize: 17,
+                                      fontSize: 17 * textScale,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
                                 ),
@@ -566,6 +581,7 @@ class _OtpInputState extends State<OtpInput> {
                               "Please check your internet connection and try again.",
                               textAlign: TextAlign.center,
                               style: TextStyle(
+                                fontSize: 14 * textScale,
                                 color: Color(0xffFF9E16),
                                 fontWeight: FontWeight.w700,
                               ),

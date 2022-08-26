@@ -8,6 +8,10 @@ import 'package:zebu_app/bloc/network_connectivity/network_connectivity_state.da
 import 'package:zebu_app/routeGenerator.dart';
 import 'package:zebu_app/screens/utils/fadeAnimation.dart';
 
+double pgHeight = 0;
+double pgWidth = 0;
+double textScale = 0;
+
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
 
@@ -37,6 +41,12 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
+    double txtScale = MediaQuery.of(context).textScaleFactor;
+    setState(() {
+      pgHeight = pageHeight;
+      pgWidth = pageWidth;
+      textScale = txtScale;
+    });
     return DefaultTextStyle(
       style: TextStyle(decoration: TextDecoration.none),
       child: Container(
@@ -78,7 +88,7 @@ class _SplashPageState extends State<SplashPage> {
                   style: TextStyle(
                     fontFamily: 'Raleway',
                     fontStyle: FontStyle.italic,
-                    fontSize: 16,
+                    fontSize: 16 * textScale,
                     color: Colors.white,
                   ),
                   softWrap: false,
@@ -130,7 +140,7 @@ class _SplashPageState extends State<SplashPage> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontFamily: 'Raleway',
-                                            fontSize: 17,
+                                            fontSize: 17 * textScale,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white),
                                       ),
@@ -155,6 +165,7 @@ class _SplashPageState extends State<SplashPage> {
                               "Please check your internet connection and try again.",
                               textAlign: TextAlign.center,
                               style: TextStyle(
+                                fontSize: 14 * textScale,
                                 color: Color(0xffFF9E16),
                                 fontWeight: FontWeight.w700,
                               ),

@@ -18,6 +18,8 @@ import 'package:zebu_app/routeGenerator.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
+double textScale = 0;
+
 var commentTextController;
 NetworkConnectivityBloc? _networkConnectivityBloc;
 
@@ -56,9 +58,11 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
 
+     double txtScale = MediaQuery.of(context).textScaleFactor;
     setState(() {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
+      textScale = txtScale;
     });
 
     return WillPopScope(
@@ -88,7 +92,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
               'ANNOUNCEMENTS',
               style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 18,
+                  fontSize: 18 * textScale,
                   color: Color(0xff404E65),
                   fontWeight: FontWeight.w500),
             ),
@@ -123,7 +127,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Color(0xff404E65),
-                                    fontSize: 16,
+                                    fontSize: 16 * textScale,
                                   ),
                                 ),
                               ),
@@ -174,7 +178,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                                     style: TextStyle(
                                         color: Color(0xff404E65),
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 18),
+                                        fontSize: 18 * textScale),
                                     softWrap: true,
                                   ),
                                   SizedBox(
@@ -185,7 +189,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                                     style: TextStyle(
                                         color: Color(0xffFF9E16),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 14),
+                                        fontSize: 14* textScale),
                                   ),
                                   SizedBox(
                                     height: pgHeight * 0.02,
@@ -213,9 +217,9 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
                                 // title: const Text('Time Not Set'),
-                                content: const Text(
+                                content:  Text(
                                   'Thank you for your comment!',
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 16 * textScale),
                                 ),
                                 actions: <Widget>[
                                   TextButton(
@@ -254,7 +258,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                                       style: TextStyle(
                                           color: Color(0xff404E65),
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 14,
+                                          fontSize: 14 * textScale,
                                           fontFamily: 'Raleway'),
                                       softWrap: true,
                                     ),
@@ -276,7 +280,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: 12.0,
+                                          fontSize: 12.0 * textScale,
                                         ),
                                         controller: commentTextController),
                                     SizedBox(
@@ -356,7 +360,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                   fontFamily: 'Raleway',
-                                                  fontSize: 17,
+                                                  fontSize: 17 * textScale,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.white),
                                             ),
@@ -385,6 +389,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
                                       "Please connect to the internet to comment.",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
+                                        fontSize:  14 * textScale,
                                         color: Color(0xffFF9E16),
                                         fontWeight: FontWeight.w700,
                                       ),

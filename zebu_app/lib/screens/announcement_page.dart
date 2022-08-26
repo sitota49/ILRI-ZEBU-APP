@@ -11,6 +11,7 @@ import 'package:zebu_app/screens/booking_page.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
+double textScale = 0;
 
 class AnnouncementPage extends StatefulWidget {
   const AnnouncementPage({Key? key}) : super(key: key);
@@ -30,9 +31,11 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
 
+    double txtScale = MediaQuery.of(context).textScaleFactor;
     setState(() {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
+      textScale = txtScale;
     });
     final announcementBloc = BlocProvider.of<AnnouncementBloc>(context);
     announcementBloc.add(const AnnouncementsLoad());
@@ -60,7 +63,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
               'ANNOUNCEMENTS',
               style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 18,
+                  fontSize: 18 * textScale,
                   color: Color(0xff404E65),
                   fontWeight: FontWeight.w500),
             ),
@@ -98,7 +101,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Color(0xff404E65),
-                                    fontSize: 16,
+                                    fontSize: 16 * textScale,
                                   ),
                                 ),
                               ),
@@ -172,6 +175,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                                         : currentAnnouncement
                                                             .title,
                                                     style: TextStyle(
+                                                        fontSize:
+                                                            15 * textScale,
                                                         fontWeight:
                                                             FontWeight.w500),
                                                     softWrap: true,
@@ -196,7 +201,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                                         style: TextStyle(
                                                             color: Color(
                                                                 0xffFF9E16),
-                                                            fontSize: 14,
+                                                            fontSize: 14 * textScale,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w500),
@@ -209,7 +214,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                                             ? "0" + day
                                                             : day,
                                                         style: TextStyle(
-                                                            fontSize: 22),
+                                                            fontSize: 22 * textScale),
                                                       ),
                                                       SizedBox(
                                                           height:
@@ -219,7 +224,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                                         style: TextStyle(
                                                             color: Color(
                                                                 0xffFF9E16),
-                                                            fontSize: 14,
+                                                            fontSize: 14 * textScale,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w500),

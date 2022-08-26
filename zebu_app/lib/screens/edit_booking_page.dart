@@ -20,6 +20,7 @@ import 'package:zebu_app/screens/utils/CalendarUtils.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
+double textScale = 0;
 NetworkConnectivityBloc? _networkConnectivityBloc;
 var guestNamesTextController;
 var _selectedDay;
@@ -103,10 +104,11 @@ class _EditBookingPageState extends State<EditBookingPage> {
   Widget build(BuildContext context) {
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
-
+    double txtScale = MediaQuery.of(context).textScaleFactor;
     setState(() {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
+      textScale = txtScale;
     });
     // DateTime _focusedDay = new DateTime(
     //     DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
@@ -145,7 +147,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
               'BOOKING',
               style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 18,
+                  fontSize: 18 * textScale,
                   color: Color(0xff404E65),
                   fontWeight: FontWeight.w500),
             ),
@@ -172,7 +174,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                               style: TextStyle(
                                   color: Color(0xff404E65),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 18),
+                                  fontSize: 18 * textScale),
                               softWrap: true,
                             ),
                           ),
@@ -185,7 +187,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                           style: TextStyle(
                               color: Color(0xff404E65),
                               fontWeight: FontWeight.w700,
-                              fontSize: 14),
+                              fontSize: 14 * textScale),
                           softWrap: true,
                         ),
                         _CalendarBloc,
@@ -196,8 +198,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                           padding: EdgeInsets.only(
                               left: pgWidth * 0.11, right: pgWidth * 0.11),
                           child: Center(
-                            child: serviceSelected ==
-                                        'Group Dining Lunch' ||
+                            child: serviceSelected == 'Group Dining Lunch' ||
                                     serviceSelected == 'Group Dining Dinner'
                                 ? Container(
                                     child: Column(
@@ -213,6 +214,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                               Text(
                                                 "Number of Guests",
                                                 style: TextStyle(
+                                                    fontSize: 14 * textScale,
                                                     color: Colors.black,
                                                     fontWeight:
                                                         FontWeight.w700),
@@ -221,11 +223,9 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                                 width: pgWidth * 0.05,
                                               ),
                                               CustomNumberPicker(
-                                                shape:
-                                                    RoundedRectangleBorder(
+                                                shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          15),
+                                                      BorderRadius.circular(15),
                                                   side: BorderSide(
                                                       color: Colors.grey),
                                                 ),
@@ -237,8 +237,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                                 enable: true,
                                                 onValue: (value) {
                                                   setState(() {
-                                                    guestNo =
-                                                        value.toString();
+                                                    guestNo = value.toString();
                                                   });
                                                 },
                                               ),
@@ -253,7 +252,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                           style: TextStyle(
                                               color: Color(0xff404E65),
                                               fontWeight: FontWeight.w700,
-                                              fontSize: 12,
+                                              fontSize: 12 * textScale,
                                               fontFamily: 'Raleway'),
                                           softWrap: true,
                                         ),
@@ -267,25 +266,21 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                           // initialValue: guestNames,
                                           minLines: 4,
                                           maxLines: null,
-                                          keyboardType:
-                                              TextInputType.multiline,
+                                          keyboardType: TextInputType.multiline,
                                           decoration: InputDecoration(
                                             // hintText: "Input your opinion",
                                             // hintStyle: TextStyle(color: Colors.white30),
                                             border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.all(
-                                                        new Radius.circular(
-                                                            10.0))),
+                                                borderRadius: BorderRadius.all(
+                                                    new Radius.circular(10.0))),
                                             // labelStyle: TextStyle(color: Colors.white)
                                           ),
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 12.0,
+                                            fontSize: 12.0 * textScale,
                                           ),
-                                          controller:
-                                              guestNamesTextController,
+                                          controller: guestNamesTextController,
                                         ),
                                         SizedBox(
                                           height: pgHeight * 0.06,
@@ -299,8 +294,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                         Container(
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: pgWidth * 0.11,
-                                right: pgWidth * 0.11),
+                                left: pgWidth * 0.11, right: pgWidth * 0.11),
                             child: SizedBox(
                               width: double.infinity,
                               height: pgHeight * 0.06,
@@ -316,12 +310,11 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                       time: selectedTime,
                                       date: serviceSelectedDay,
                                       serviceType: serviceSelected,
-                                      guestNames: guestNamesTextController
-                                          .value.text,
+                                      guestNames:
+                                          guestNamesTextController.value.text,
                                       noOfGuests: guestNo);
 
-                                  BlocProvider.of<DiningBookingBloc>(
-                                          context)
+                                  BlocProvider.of<DiningBookingBloc>(context)
                                       .add(UpdateBooking(myBooking));
                                 },
                                 style: ButtonStyle(
@@ -331,8 +324,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                   shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
                                   ),
                                 ),
@@ -341,7 +333,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontFamily: 'Raleway',
-                                      fontSize: 17,
+                                      fontSize: 17 * textScale,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
                                 ),
@@ -366,13 +358,12 @@ class _EditBookingPageState extends State<EditBookingPage> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color(0xff404E65),
-                              fontSize: 16,
+                              fontSize: 16 * textScale,
                             ),
                           ),
                         ),
                       ),
                     );
-                   
                   }
                   return Container();
                 },
@@ -406,8 +397,8 @@ class _CalendarBlocState extends State<CalendarBloc> {
             context: context,
             builder: (BuildContext context) => AlertDialog(
                   // title: const Text('Time Not Set'),
-                  content: const Text('Booking Rescheduled Succefully',
-                      style: TextStyle(fontSize: 16)),
+                  content: Text('Booking Rescheduled Succefully',
+                      style: TextStyle(fontSize: 16 * textScale)),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () => {
@@ -444,7 +435,7 @@ class _CalendarBlocState extends State<CalendarBloc> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xff404E65),
-                  fontSize: 16,
+                  fontSize: 16 * textScale,
                 ),
               ),
             ),
@@ -515,7 +506,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             rightChevronVisible: false,
             formatButtonVisible: false,
             titleCentered: false,
-            titleTextStyle: TextStyle(color: Colors.black, fontSize: 28),
+            titleTextStyle:
+                TextStyle(color: Colors.black, fontSize: 28 * textScale),
             formatButtonTextStyle: TextStyle(color: Colors.white),
             formatButtonShowsNext: false,
           ),
@@ -528,7 +520,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             disabledTextStyle: TextStyle(
               color: Color(0xffFFDEDE),
               fontWeight: FontWeight.w500,
-              fontSize: 13.0,
+              fontSize: 13.0 * textScale,
             ),
             defaultTextStyle: TextStyle(
                 color: Color(0xff3D3D3D), fontWeight: FontWeight.w700),
@@ -536,14 +528,14 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                 color: const Color(0xFFFF9E16), shape: BoxShape.rectangle),
             selectedTextStyle: TextStyle(
               fontWeight: FontWeight.w700,
-              fontSize: 13.0,
+              fontSize: 13.0 * textScale,
             ),
             todayDecoration:
                 BoxDecoration(color: Colors.white, shape: BoxShape.rectangle),
             todayTextStyle: TextStyle(
               color: Color(0xFFFF9E16),
               fontWeight: FontWeight.w700,
-              fontSize: 13.0,
+              fontSize: 13.0 * textScale,
             ),
           ),
           firstDay: kFirstDay,
@@ -646,7 +638,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                       color: selectedTime == timeslot
                                           ? Colors.white
                                           : Color(0xff5D7498),
-                                      fontSize: 14,
+                                      fontSize: 14 * textScale,
                                       fontWeight: FontWeight.w700),
                                 ),
                               ),

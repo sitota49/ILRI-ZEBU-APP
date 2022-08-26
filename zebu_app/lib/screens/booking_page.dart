@@ -25,6 +25,7 @@ import 'package:zebu_app/screens/utils/CalendarUtils.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
+double textScale = 0;
 NetworkConnectivityBloc? _networkConnectivityBloc;
 
 class BookingPage extends StatefulWidget {
@@ -78,9 +79,11 @@ class _BookingPageState extends State<BookingPage>
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
 
+    double txtScale = MediaQuery.of(context).textScaleFactor;
     setState(() {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
+      textScale = txtScale;
     });
     return WillPopScope(
       onWillPop: () async {
@@ -106,7 +109,7 @@ class _BookingPageState extends State<BookingPage>
               'BOOKNG',
               style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 18,
+                  fontSize: 18 * textScale,
                   color: Color(0xff404E65),
                   fontWeight: FontWeight.w500),
             ),
@@ -127,8 +130,7 @@ class _BookingPageState extends State<BookingPage>
                               if (serviceListState is LoadingService) {
                                 return SizedBox(
                                   height:
-                                      MediaQuery.of(context).size.height /
-                                          1.3,
+                                      MediaQuery.of(context).size.height / 1.3,
                                   child: Center(
                                     child: CircularProgressIndicator(
                                       color: Color(0xff5D7498),
@@ -137,15 +139,12 @@ class _BookingPageState extends State<BookingPage>
                                 );
                               }
 
-                              if (serviceListState
-                                      is AllServiceLoadFailure ||
-                                  serviceListState
-                                      is AllServiceEmpltyFailure) {
+                              if (serviceListState is AllServiceLoadFailure ||
+                                  serviceListState is AllServiceEmpltyFailure) {
                                 return Center(
                                   child: SizedBox(
-                                    height:
-                                        MediaQuery.of(context).size.height /
-                                            1.3,
+                                    height: MediaQuery.of(context).size.height /
+                                        1.3,
                                     width: pgWidth * 0.7,
                                     child: Center(
                                       child: Text(
@@ -153,7 +152,7 @@ class _BookingPageState extends State<BookingPage>
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: Color(0xff404E65),
-                                          fontSize: 16,
+                                          fontSize: 16 * textScale,
                                         ),
                                       ),
                                     ),
@@ -161,10 +160,8 @@ class _BookingPageState extends State<BookingPage>
                                 );
                               }
 
-                              if (serviceListState
-                                  is AllServiceLoadSuccess) {
-                                final services =
-                                    serviceListState.allServices;
+                              if (serviceListState is AllServiceLoadSuccess) {
+                                final services = serviceListState.allServices;
                                 return SingleChildScrollView(
                                   child: Column(
                                     children: [
@@ -198,41 +195,28 @@ class _BookingPageState extends State<BookingPage>
                                                   //             .size
                                                   //             .width);
 
-                                                  var serviceDetailPhrase =
-                                                      serviceSelected ==
-                                                                  'Group Dining Lunch' ||
-                                                              serviceSelected ==
-                                                                  'Group Dining Dinner' ||
-                                                              serviceSelected ==
-                                                                  'Steam Sauna Men' ||
-                                                              serviceSelected ==
-                                                                  'Steam Sauna Women'
-                                                          ? serviceSelected
-                                                          : selectedServiceIndex;
+                                                  var serviceDetailPhrase = serviceSelected ==
+                                                              'Group Dining Lunch' ||
+                                                          serviceSelected ==
+                                                              'Group Dining Dinner' ||
+                                                          serviceSelected ==
+                                                              'Steam Sauna Men' ||
+                                                          serviceSelected ==
+                                                              'Steam Sauna Women'
+                                                      ? serviceSelected
+                                                      : selectedServiceIndex;
 
-                                                  _focusedDay =
-                                                      new DateTime(
-                                                          DateTime.now()
-                                                              .year,
-                                                          DateTime.now()
-                                                              .month,
-                                                          DateTime.now()
-                                                                  .day +
-                                                              1);
-                                                  _selectedDay =
-                                                      new DateTime(
-                                                          DateTime.now()
-                                                              .year,
-                                                          DateTime.now()
-                                                              .month,
-                                                          DateTime.now()
-                                                                  .day +
-                                                              1);
+                                                  _focusedDay = new DateTime(
+                                                      DateTime.now().year,
+                                                      DateTime.now().month,
+                                                      DateTime.now().day + 1);
+                                                  _selectedDay = new DateTime(
+                                                      DateTime.now().year,
+                                                      DateTime.now().month,
+                                                      DateTime.now().day + 1);
                                                   serviceSelectedDay =
-                                                      DateFormat(
-                                                              'yyyy-MM-dd')
-                                                          .format(
-                                                              _selectedDay);
+                                                      DateFormat('yyyy-MM-dd')
+                                                          .format(_selectedDay);
                                                   selectedTime = '';
                                                   guestNamesTextController
                                                       .text = '';
@@ -252,11 +236,10 @@ class _BookingPageState extends State<BookingPage>
                                                 child: Container(
                                                   height: pgHeight * 0.2625,
                                                   width: pgWidth * 0.45,
-                                                  decoration:
-                                                      new BoxDecoration(
+                                                  decoration: new BoxDecoration(
                                                     borderRadius:
-                                                        BorderRadius
-                                                            .circular(25),
+                                                        BorderRadius.circular(
+                                                            25),
                                                     boxShadow:
                                                         selectedServiceIndex ==
                                                                 currentService
@@ -281,136 +264,153 @@ class _BookingPageState extends State<BookingPage>
                                                             : [],
                                                   ),
                                                   child: Card(
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    17)),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        17)),
                                                     color:
                                                         selectedServiceIndex ==
                                                                 currentService
                                                                     .title
-                                                            ? Color(
-                                                                0xffFF9E16)
-                                                            : Color(
-                                                                0xff404E65),
+                                                            ? Color(0xffFF9E16)
+                                                            : Color(0xff404E65),
                                                     child: SafeArea(
-                                                      child: Column(
-                                                          children: <
-                                                              Widget>[
-                                                            SizedBox(
-                                                                height:
-                                                                    pgHeight *
-                                                                        0.03),
-                                                            Image.network(
-                                                              "https://zebuapp.ilri.org" +
-                                                                  currentService
-                                                                      .image,
-                                                              height:
-                                                                  pgHeight *
-                                                                      0.07,
-                                                            ),
-                                                            SizedBox(
-                                                                height:
-                                                                    pgHeight *
-                                                                        0.003),
-                                                            Text(
+                                                      child: Column(children: <
+                                                          Widget>[
+                                                        SizedBox(
+                                                            height: pgHeight *
+                                                                0.03),
+                                                        Image.network(
+                                                          "https://zebuapp.ilri.org" +
                                                               currentService
-                                                                  .title,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  color: selectedServiceIndex ==
-                                                                          currentService
-                                                                              .title
-                                                                      ? Colors
-                                                                          .black
-                                                                      : Color(
-                                                                          0xffFF9E16),
-                                                                  fontSize: currentService.title.length >
-                                                                          20
-                                                                      ? 12.0
-                                                                      : 14.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700),
-                                                            ),
-                                                            SizedBox(
-                                                                height:
-                                                                    pgHeight *
-                                                                        0.003),
-                                                            Text(
-                                                              currentService
-                                                                  .description!,
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      11.0),
-                                                            ),
-                                                            SizedBox(
-                                                                height: currentService.title.length >
-                                                                        20
-                                                                    ? pgHeight *
-                                                                        0.003
-                                                                    : pgHeight *
-                                                                        0.02),
-                                                            Padding(
-                                                              padding: const EdgeInsets
+                                                                  .image,
+                                                          height:
+                                                              pgHeight * 0.07,
+                                                        ),
+                                                        SizedBox(
+                                                            height: pgHeight *
+                                                                0.003),
+                                                        Text(
+                                                          currentService.title,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              color: selectedServiceIndex ==
+                                                                      currentService
+                                                                          .title
+                                                                  ? Colors.black
+                                                                  : Color(
+                                                                      0xffFF9E16),
+                                                              fontSize: currentService
+                                                                          .title
+                                                                          .length >
+                                                                      20
+                                                                  ? 12.0 *
+                                                                      textScale
+                                                                  : 14.0 *
+                                                                      textScale,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                        SizedBox(
+                                                            height: pgHeight *
+                                                                0.003),
+                                                        Text(
+                                                          currentService
+                                                              .description!,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 11.0 *
+                                                                  textScale),
+                                                        ),
+                                                        SizedBox(
+                                                            height: currentService
+                                                                        .title
+                                                                        .length >
+                                                                    20
+                                                                ? pgHeight *
+                                                                    0.003
+                                                                : pgHeight *
+                                                                    0.02),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
                                                                       .only(
                                                                   left: 8.0,
-                                                                  right:
-                                                                      8.0),
-                                                              child:
-                                                                  Container(
-                                                                child: currentService.options.length ==
-                                                                        2
-                                                                    ? FlutterToggleTab(
-                                                                        // width in percent, to set full width just set to 100
-                                                                        width:
-                                                                            40,
-                                                                        borderRadius:
-                                                                            16,
-                                                                        height:
-                                                                            pgHeight * 0.02,
-                                                                        // initialIndex: 0,
-                                                                        selectedBackgroundColors: [
-                                                                          Colors.white
-                                                                        ],
-                                                                        selectedTextStyle: TextStyle(
-                                                                            color: Color(0xff7D7D7D),
-                                                                            fontSize: 8,
-                                                                            fontWeight: FontWeight.w700),
-                                                                        unSelectedTextStyle: TextStyle(
-                                                                            color: Color(0xff7D7D7D),
-                                                                            fontSize: 8,
-                                                                            fontWeight: FontWeight.w500),
-                                                                        labels:
-                                                                            currentService.options,
-                                                                        selectedLabelIndex:
-                                                                            (labelIndex) {
-                                                                          setState(() {
-                                                                            _selectedIndex = labelIndex;
-                                                                            selectedServiceIndex = services[index].title;
-                                                                            serviceSelected = selectedServiceIndex + ' ' + currentService.options[labelIndex];
+                                                                  right: 8.0),
+                                                          child: Container(
+                                                            child: currentService
+                                                                        .options
+                                                                        .length ==
+                                                                    2
+                                                                ? FlutterToggleTab(
+                                                                    // width in percent, to set full width just set to 100
+                                                                    width: 40,
+                                                                    borderRadius:
+                                                                        16,
+                                                                    height:
+                                                                        pgHeight *
+                                                                            0.02,
+                                                                    // initialIndex: 0,
+                                                                    selectedBackgroundColors: [
+                                                                      Colors
+                                                                          .white
+                                                                    ],
+                                                                    selectedTextStyle: TextStyle(
+                                                                        color: Color(
+                                                                            0xff7D7D7D),
+                                                                        fontSize: 8 *
+                                                                            textScale,
+                                                                        fontWeight:
+                                                                            FontWeight.w700),
+                                                                    unSelectedTextStyle: TextStyle(
+                                                                        color: Color(
+                                                                            0xff7D7D7D),
+                                                                        fontSize: 8 *
+                                                                            textScale,
+                                                                        fontWeight:
+                                                                            FontWeight.w500),
+                                                                    labels: currentService
+                                                                        .options,
+                                                                    selectedLabelIndex:
+                                                                        (labelIndex) {
+                                                                      setState(
+                                                                          () {
+                                                                        _selectedIndex =
+                                                                            labelIndex;
+                                                                        selectedServiceIndex =
+                                                                            services[index].title;
+                                                                        serviceSelected = selectedServiceIndex +
+                                                                            ' ' +
+                                                                            currentService.options[labelIndex];
 
-                                                                            var serviceDetailPhrase = serviceSelected == 'Group Dining Lunch' || serviceSelected == 'Group Dining Dinner' || serviceSelected == 'Steam Sauna Men' || serviceSelected == 'Steam Sauna Women' ? serviceSelected : selectedServiceIndex;
+                                                                        var serviceDetailPhrase = serviceSelected == 'Group Dining Lunch' ||
+                                                                                serviceSelected == 'Group Dining Dinner' ||
+                                                                                serviceSelected == 'Steam Sauna Men' ||
+                                                                                serviceSelected == 'Steam Sauna Women'
+                                                                            ? serviceSelected
+                                                                            : selectedServiceIndex;
 
-                                                                            bookingbloc.add(ServiceBookingLoad(serviceSelected, serviceSelectedDay, serviceDetailPhrase));
-                                                                          });
-                                                                        },
-                                                                        selectedIndex:
-                                                                            _selectedIndex,
-                                                                      )
-                                                                    : Container(),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                                height:
-                                                                    pgHeight *
-                                                                        0.01),
-                                                          ]),
+                                                                        bookingbloc.add(ServiceBookingLoad(
+                                                                            serviceSelected,
+                                                                            serviceSelectedDay,
+                                                                            serviceDetailPhrase));
+                                                                      });
+                                                                    },
+                                                                    selectedIndex:
+                                                                        _selectedIndex,
+                                                                  )
+                                                                : Container(),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                            height: pgHeight *
+                                                                0.01),
+                                                      ]),
                                                     ),
                                                   ),
                                                 ),
@@ -436,11 +436,9 @@ class _BookingPageState extends State<BookingPage>
                           if (bookingState is BookingSuccess) {
                             showDialog<String>(
                                 context: context,
-                                builder: (BuildContext context) =>
-                                    AlertDialog(
+                                builder: (BuildContext context) => AlertDialog(
                                       // title: const Text('Time Not Set'),
-                                      content:
-                                          const Text('Booked Succefully'),
+                                      content: const Text('Booked Succefully'),
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () => {
@@ -457,8 +455,7 @@ class _BookingPageState extends State<BookingPage>
                           if (bookingState is BookingFailure) {
                             showDialog<String>(
                                 context: context,
-                                builder: (BuildContext context) =>
-                                    AlertDialog(
+                                builder: (BuildContext context) => AlertDialog(
                                       // title: const Text('Time Not Set'),
                                       content: const Text(
                                           'Sorry, please try again.'),
@@ -478,8 +475,7 @@ class _BookingPageState extends State<BookingPage>
                         }, builder: (_, bookingState) {
                           if (bookingState is LoadingBooking) {
                             return SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height / 1.3,
+                              height: MediaQuery.of(context).size.height / 1.3,
                               child: Center(
                                 child: CircularProgressIndicator(
                                   color: Color(0xff5D7498),
@@ -491,8 +487,8 @@ class _BookingPageState extends State<BookingPage>
                           if (bookingState is ServiceBookingLoadFailure) {
                             return Center(
                               child: SizedBox(
-                                height: MediaQuery.of(context).size.height /
-                                    1.3,
+                                height:
+                                    MediaQuery.of(context).size.height / 1.3,
                                 width: pgWidth * 0.7,
                                 child: Center(
                                   child: Text(
@@ -500,7 +496,7 @@ class _BookingPageState extends State<BookingPage>
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Color(0xff404E65),
-                                      fontSize: 16,
+                                      fontSize: 16 * textScale,
                                     ),
                                   ),
                                 ),
@@ -529,12 +525,10 @@ class _BookingPageState extends State<BookingPage>
 
                             return Container(
                               padding: EdgeInsets.only(
-                                  left: pgWidth * 0.08,
-                                  right: pgWidth * 0.08),
+                                  left: pgWidth * 0.08, right: pgWidth * 0.08),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   TableCalendar(
                                     rowHeight: pgHeight * 0.05,
@@ -550,7 +544,7 @@ class _BookingPageState extends State<BookingPage>
                                       titleCentered: false,
                                       titleTextStyle: TextStyle(
                                           color: Colors.black,
-                                          fontSize: 28),
+                                          fontSize: 28 * textScale),
                                       formatButtonTextStyle:
                                           TextStyle(color: Colors.white),
                                       formatButtonShowsNext: false,
@@ -567,7 +561,7 @@ class _BookingPageState extends State<BookingPage>
                                       disabledTextStyle: TextStyle(
                                         color: Color(0xffFFDEDE),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 13.0,
+                                        fontSize: 13.0 * textScale,
                                       ),
                                       defaultTextStyle: TextStyle(
                                           color: Color(0xff3D3D3D),
@@ -577,7 +571,7 @@ class _BookingPageState extends State<BookingPage>
                                           shape: BoxShape.rectangle),
                                       selectedTextStyle: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 13.0,
+                                        fontSize: 13.0 * textScale,
                                       ),
                                       todayDecoration: BoxDecoration(
                                           color: Colors.white,
@@ -585,7 +579,7 @@ class _BookingPageState extends State<BookingPage>
                                       todayTextStyle: TextStyle(
                                         color: Color(0xFFFF9E16),
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 13.0,
+                                        fontSize: 13.0 * textScale,
                                       ),
                                     ),
                                     firstDay: kFirstDay,
@@ -600,8 +594,7 @@ class _BookingPageState extends State<BookingPage>
                                       // the time-part of compared DateTime objects.
                                       return isSameDay(_selectedDay, day);
                                     },
-                                    onDaySelected:
-                                        (selectedDay, focusedDay) {
+                                    onDaySelected: (selectedDay, focusedDay) {
                                       if (!isSameDay(
                                           _selectedDay, selectedDay)) {
                                         // Call `setState()` when updating the selected day
@@ -652,16 +645,13 @@ class _BookingPageState extends State<BookingPage>
                                         availableSlots.length == 0
                                             ? Padding(
                                                 padding:
-                                                    const EdgeInsets.all(
-                                                        15.0),
+                                                    const EdgeInsets.all(15.0),
                                                 child: Text(
                                                   'No Data Available',
-                                                  textAlign:
-                                                      TextAlign.center,
+                                                  textAlign: TextAlign.center,
                                                   style: TextStyle(
-                                                    color:
-                                                        Color(0xff5D7498),
-                                                    fontSize: 18,
+                                                    color: Color(0xff5D7498),
+                                                    fontSize: 18 * textScale,
                                                   ),
                                                 ),
                                               )
@@ -671,38 +661,32 @@ class _BookingPageState extends State<BookingPage>
                                                   crossAxisCount: 3,
                                                   crossAxisSpacing: 5,
                                                   mainAxisSpacing: 5,
-                                                  childAspectRatio:
-                                                      0.90 / 0.35,
+                                                  childAspectRatio: 0.90 / 0.35,
                                                 ),
-                                                scrollDirection:
-                                                    Axis.vertical,
+                                                scrollDirection: Axis.vertical,
                                                 shrinkWrap: true,
                                                 physics:
                                                     ClampingScrollPhysics(),
                                                 itemCount:
                                                     availableSlots.length,
-                                                itemBuilder:
-                                                    (context, index) {
+                                                itemBuilder: (context, index) {
                                                   var timeslot =
                                                       availableSlots[index];
                                                   return Container(
                                                     height: 20.0,
-                                                    width: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width /
-                                                        3.5,
-                                                    decoration:
-                                                        BoxDecoration(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            3.5,
+                                                    decoration: BoxDecoration(
                                                       color: selectedTime ==
                                                               timeslot
-                                                          ? Color(
-                                                              0xFFFF9E16)
+                                                          ? Color(0xFFFF9E16)
                                                           : Colors.white,
                                                       borderRadius:
                                                           BorderRadius.all(
-                                                        Radius.circular(
-                                                            17.0),
+                                                        Radius.circular(17.0),
                                                       ),
                                                     ),
                                                     child: GestureDetector(
@@ -718,8 +702,7 @@ class _BookingPageState extends State<BookingPage>
                                                                 .all(8.0),
                                                         child: Center(
                                                           child: Text(
-                                                            timeslot
-                                                                .toString(),
+                                                            timeslot.toString(),
                                                             style: TextStyle(
                                                                 color: selectedTime ==
                                                                         timeslot
@@ -727,8 +710,8 @@ class _BookingPageState extends State<BookingPage>
                                                                         .white
                                                                     : Color(
                                                                         0xff5D7498),
-                                                                fontSize:
-                                                                    14,
+                                                                fontSize: 14 *
+                                                                    textScale,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w700),
@@ -758,17 +741,16 @@ class _BookingPageState extends State<BookingPage>
                                                   right: pgWidth * 0.03),
                                               child: Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
-                                                    padding:
-                                                        EdgeInsets.only(
-                                                            top: pgHeight *
-                                                                0.01),
+                                                    padding: EdgeInsets.only(
+                                                        top: pgHeight * 0.01),
                                                     child: Text(
                                                       specDesc,
                                                       style: TextStyle(
+                                                          fontSize:
+                                                              12 * textScale,
                                                           color: Color(
                                                               0xff641E0D)),
                                                     ),
@@ -782,15 +764,14 @@ class _BookingPageState extends State<BookingPage>
                                                         Text(
                                                           "Number of Guests",
                                                           style: TextStyle(
-                                                              color: Colors
-                                                                  .black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700),
                                                         ),
                                                         SizedBox(
-                                                          width: pgWidth *
-                                                              0.05,
+                                                          width: pgWidth * 0.05,
                                                         ),
                                                         CustomNumberPicker(
                                                           shape:
@@ -824,13 +805,13 @@ class _BookingPageState extends State<BookingPage>
                                                   Text(
                                                     'Guest Names',
                                                     style: TextStyle(
-                                                        color: Color(
-                                                            0xff404E65),
+                                                        color:
+                                                            Color(0xff404E65),
                                                         fontWeight:
                                                             FontWeight.w700,
-                                                        fontSize: 12,
-                                                        fontFamily:
-                                                            'Raleway'),
+                                                        fontSize:
+                                                            12 * textScale,
+                                                        fontFamily: 'Raleway'),
                                                     softWrap: true,
                                                   ),
                                                   SizedBox(
@@ -840,10 +821,8 @@ class _BookingPageState extends State<BookingPage>
                                                     minLines: 4,
                                                     maxLines: null,
                                                     keyboardType:
-                                                        TextInputType
-                                                            .multiline,
-                                                    decoration:
-                                                        InputDecoration(
+                                                        TextInputType.multiline,
+                                                    decoration: InputDecoration(
                                                       // hintText: "Input your opinion",
                                                       // hintStyle: TextStyle(color: Colors.white30),
                                                       border: OutlineInputBorder(
@@ -854,11 +833,11 @@ class _BookingPageState extends State<BookingPage>
                                                                       10.0))),
                                                       // labelStyle: TextStyle(color: Colors.white)
                                                     ),
-                                                    textAlign:
-                                                        TextAlign.start,
+                                                    textAlign: TextAlign.start,
                                                     style: TextStyle(
                                                       color: Colors.black,
-                                                      fontSize: 12.0,
+                                                      fontSize:
+                                                          12.0 * textScale,
                                                     ),
                                                     controller:
                                                         guestNamesTextController,
@@ -881,8 +860,7 @@ class _BookingPageState extends State<BookingPage>
                         Container(
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: pgWidth * 0.11,
-                                right: pgWidth * 0.11),
+                                left: pgWidth * 0.11, right: pgWidth * 0.11),
                             child: SizedBox(
                               width: double.infinity,
                               height: pgHeight * 0.06,
@@ -900,12 +878,12 @@ class _BookingPageState extends State<BookingPage>
                                             AlertDialog(
                                               title: Text('Time Not Set',
                                                   style: TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 18 * textScale,
                                                   )),
                                               content: Text(
                                                   'Please select prefered time.',
                                                   style: TextStyle(
-                                                    fontSize: 16,
+                                                    fontSize: 16 * textScale,
                                                   )),
                                               actions: <Widget>[
                                                 TextButton(
@@ -929,12 +907,12 @@ class _BookingPageState extends State<BookingPage>
                                               title: Text(
                                                   'Guest names required',
                                                   style: TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 18 * textScale,
                                                   )),
-                                              content: const Text(
+                                              content: Text(
                                                   'Please enter guest names.',
                                                   style: TextStyle(
-                                                    fontSize: 16,
+                                                    fontSize: 16 * textScale,
                                                   )),
                                               actions: <Widget>[
                                                 TextButton(
@@ -962,8 +940,7 @@ class _BookingPageState extends State<BookingPage>
                                         guestNames: guestNamesTextController
                                             .value.text);
 
-                                    BlocProvider.of<DiningBookingBloc>(
-                                            context)
+                                    BlocProvider.of<DiningBookingBloc>(context)
                                         .add(Book(myBooking));
                                   }
                                 },
@@ -974,8 +951,7 @@ class _BookingPageState extends State<BookingPage>
                                   shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
                                   ),
                                 ),
@@ -984,7 +960,7 @@ class _BookingPageState extends State<BookingPage>
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontFamily: 'Raleway',
-                                      fontSize: 17,
+                                      fontSize: 17 * textScale,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
                                 ),
@@ -1006,7 +982,7 @@ class _BookingPageState extends State<BookingPage>
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color(0xff404E65),
-                              fontSize: 16,
+                              fontSize: 16 * textScale,
                             ),
                           ),
                         ),

@@ -15,6 +15,7 @@ import 'package:zebu_app/screens/utils/NavigationDrawer.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
+double textScale = 0;
 
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -56,9 +57,11 @@ class _MenuPageState extends State<MenuPage>
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
 
+    double txtScale = MediaQuery.of(context).textScaleFactor;
     setState(() {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
+      textScale = txtScale;
     });
     return WillPopScope(
       onWillPop: () async {
@@ -84,7 +87,7 @@ class _MenuPageState extends State<MenuPage>
               'MENU',
               style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 18,
+                  fontSize: 18 * textScale,
                   color: Color(0xff404E65),
                   fontWeight: FontWeight.w500),
             ),
@@ -146,11 +149,13 @@ class _MenuPageState extends State<MenuPage>
                               indicatorColor: Colors.transparent,
                               unselectedLabelColor: Colors.white,
                               unselectedLabelStyle: TextStyle(
-                                  fontWeight: FontWeight.w300, fontSize: 14),
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 14 * textScale),
                               isScrollable: true,
                               labelColor: Colors.white,
                               labelStyle: TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 19),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 19 * textScale),
                               tabs: [
                                 Tab(
                                   text: 'All',
@@ -246,8 +251,8 @@ class MenuItem extends StatelessWidget {
             );
           },
           child: Container(
-            width: pgWidth * 0.43,
-            height: pgHeight * 0.7,
+            // width: pgWidth * 0.43,
+            // height: pgHeight * 0.7,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(17),
@@ -257,7 +262,9 @@ class MenuItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  height: pgHeight * 0.16,
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  // height: pgHeight * 0.16,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
@@ -290,18 +297,19 @@ class MenuItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(height: pgHeight * 0.008),
                             Text(
                               menu.title.length > 15
                                   ? menu.title.substring(0, 14) + '...'
                                   : menu.title,
                               style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 13 * textScale,
                                 color: Color(0xff404E65),
                                 fontWeight: FontWeight.w700,
                               ),
                               softWrap: true,
                             ),
-                            SizedBox(height: pgHeight * 0.0075),
+                            SizedBox(height: pgHeight * 0.008),
                             Container(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -345,12 +353,13 @@ class MenuItem extends StatelessWidget {
                                   style: TextStyle(
                                       color: Color(0xffFF9E16),
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 18),
+                                      fontSize: 18 * textScale),
                                 ),
                                 Text(
                                   'Birr',
                                   style: TextStyle(
-                                      color: Color(0xffFF9E16), fontSize: 12),
+                                      color: Color(0xffFF9E16),
+                                      fontSize: 12 * textScale),
                                 ),
                               ]),
                         ),
@@ -412,7 +421,7 @@ class _AllMenuState extends State<AllMenu> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 16 * textScale,
                   ),
                 ),
               ),
@@ -431,7 +440,7 @@ class _AllMenuState extends State<AllMenu> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 16 * textScale,
                   ),
                 ),
               ),
@@ -446,8 +455,8 @@ class _AllMenuState extends State<AllMenu> {
             child: Container(
               color: Color(0xff5D7498),
               child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 400,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     childAspectRatio: 1.0,
@@ -500,7 +509,7 @@ class CategoryMenu extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 16 * textScale,
                   ),
                 ),
               ),
@@ -535,7 +544,7 @@ class CategoryMenu extends StatelessWidget {
               color: Color(0xff5D7498),
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
+                    maxCrossAxisExtent: 400,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     childAspectRatio: 1.0,

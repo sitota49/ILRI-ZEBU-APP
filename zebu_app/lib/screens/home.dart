@@ -12,6 +12,7 @@ import 'package:zebu_app/screens/utils/NavigationDrawer.dart';
 import 'dart:math' as math;
 
 bool networkCheck = true;
+double textScale = 0;
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -49,10 +50,11 @@ class _HomeState extends State<Home> {
     announcementBloc.add(NewAnnouncementLoad());
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
-
+    double txtScale = MediaQuery.of(context).textScaleFactor;
     setState(() {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
+      textScale = txtScale;
     });
     return WillPopScope(
         onWillPop: () async => false,
@@ -98,6 +100,7 @@ class _HomeState extends State<Home> {
                                   'Welcome',
                                   style: TextStyle(
                                       color: Color(0xffff9e16),
+                                      fontSize: 11 * textScale,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(
@@ -109,7 +112,7 @@ class _HomeState extends State<Home> {
                                     'Zebu Club Mobile App',
                                     style: TextStyle(
                                         fontFamily: 'Raleway',
-                                        fontSize: 15,
+                                        fontSize: 15 * textScale,
                                         color: Color(0xff404E65),
                                         fontWeight: FontWeight.w700),
                                     softWrap: true,
@@ -124,7 +127,7 @@ class _HomeState extends State<Home> {
                                     'Feel free to browse through our different services and book your stay!',
                                     style: TextStyle(
                                         fontFamily: 'Raleway',
-                                        fontSize: 10,
+                                        fontSize: 10 * textScale,
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500),
                                     softWrap: true,
@@ -158,6 +161,7 @@ class _HomeState extends State<Home> {
                                           'What\'s new',
                                           style: TextStyle(
                                               color: Color(0xffff9e16),
+                                              fontSize: 11 * textScale,
                                               fontWeight: FontWeight.w500),
                                         ),
                                         SizedBox(
@@ -171,7 +175,7 @@ class _HomeState extends State<Home> {
                                               : newAnnouncement.title,
                                           style: TextStyle(
                                               fontFamily: 'Raleway',
-                                              fontSize: 15,
+                                              fontSize: 15 * textScale,
                                               color: Color(0xff404E65),
                                               fontWeight: FontWeight.w700),
                                           softWrap: true,
@@ -190,7 +194,7 @@ class _HomeState extends State<Home> {
                                                 : newAnnouncement.description,
                                             style: TextStyle(
                                                 fontFamily: 'Raleway',
-                                                fontSize: 10,
+                                                fontSize: 10 * textScale,
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.w500),
                                             softWrap: true,
@@ -201,7 +205,7 @@ class _HomeState extends State<Home> {
                                         ),
                                         Text("Learn More >>",
                                             style: TextStyle(
-                                                fontSize: 10,
+                                                fontSize: 11 * textScale,
                                                 fontFamily: 'Raleway',
                                                 color: Color(0xffff9e16),
                                                 fontWeight: FontWeight.w700)),
@@ -377,9 +381,10 @@ class _HomeState extends State<Home> {
                                         children: [
                                           Container(
                                               child: Text(
-                                            "Please check your internet connection and try again",
+                                            "Please enable your internet connection",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
+                                              fontSize: 14 * textScale,
                                               color: Colors.red,
                                               fontWeight: FontWeight.w700,
                                             ),
@@ -504,7 +509,7 @@ class _HomeState extends State<Home> {
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 12,
+                  fontSize: 12 * textScale,
                   color: textColor,
                   fontWeight: FontWeight.w700),
             ),

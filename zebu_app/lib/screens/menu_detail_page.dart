@@ -23,6 +23,7 @@ import 'package:intl/intl.dart';
 
 double pgHeight = 0;
 double pgWidth = 0;
+double textScale = 0;
 var noPicker;
 var qty = '1';
 NetworkConnectivityBloc? _networkConnectivityBloc;
@@ -77,11 +78,12 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
     double pageWidth = MediaQuery.of(context).size.width;
     double pageHeight = MediaQuery.of(context).size.height;
 
+    double txtScale = MediaQuery.of(context).textScaleFactor;
     setState(() {
       pgHeight = pageHeight;
       pgWidth = pageWidth;
+      textScale = txtScale;
     });
-
     // late String qty = '1';
 
     return WillPopScope(
@@ -202,7 +204,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                                 style: TextStyle(
                                                     color: Color(0xff404E65),
                                                     fontWeight: FontWeight.w700,
-                                                    fontSize: 18),
+                                                    fontSize: 18 * textScale),
                                                 softWrap: true,
                                               ),
                                             ),
@@ -260,14 +262,16 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                                             Color(0xffFF9E16),
                                                         fontWeight:
                                                             FontWeight.w700,
-                                                        fontSize: 24),
+                                                        fontSize:
+                                                            24 * textScale),
                                                   ),
                                                   Text(
                                                     'Birr',
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xffFF9E16),
-                                                        fontSize: 14),
+                                                        fontSize:
+                                                            14 * textScale),
                                                   ),
                                                 ]),
                                           ),
@@ -301,7 +305,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                             color: Color(
                                               0xff404E65,
                                             ),
-                                            fontSize: 14),
+                                            fontSize: 14 * textScale),
                                         softWrap: true,
                                       ),
                                     ],
@@ -477,7 +481,8 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                                           style: TextStyle(
                                                               fontFamily:
                                                                   'Raleway',
-                                                              fontSize: 17,
+                                                              fontSize: 17 *
+                                                                  textScale,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
@@ -512,6 +517,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             color: Color(0xffFF9E16),
+                                            fontSize: 14 * textScale,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -609,7 +615,7 @@ class _RecentlyViewedState extends State<RecentlyViewed> {
                       style: TextStyle(
                           color: Color(0xff404E65),
                           fontWeight: FontWeight.w900,
-                          fontSize: 16),
+                          fontSize: 16 * textScale),
                       softWrap: true,
                     ),
                   ),
