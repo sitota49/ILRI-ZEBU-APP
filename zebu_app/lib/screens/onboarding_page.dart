@@ -31,7 +31,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final _emailTextController = TextEditingController();
 
   String? validateEmail(String email) {
-    if (RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email)) {
+    if (RegExp(r"^[a-zA-Z0-9.-]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email)) {
       return null;
     } else {
       return 'Enter valid Email Address';

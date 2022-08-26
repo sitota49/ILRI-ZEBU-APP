@@ -246,8 +246,8 @@ class MenuItem extends StatelessWidget {
             );
           },
           child: Container(
-            width: pgWidth * 0.43,
-            height: pgHeight * 0.7,
+            // width: pgWidth * 0.43,
+            // height: pgHeight * 0.7,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(17),
@@ -257,7 +257,9 @@ class MenuItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  height: pgHeight * 0.16,
+                  // height: pgHeight * 0.16,
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.15,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
@@ -290,6 +292,7 @@ class MenuItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(height: pgHeight * 0.008),
                             Text(
                               menu.title.length > 15
                                   ? menu.title.substring(0, 14) + '...'
@@ -301,7 +304,7 @@ class MenuItem extends StatelessWidget {
                               ),
                               softWrap: true,
                             ),
-                            SizedBox(height: pgHeight * 0.0075),
+                            SizedBox(height: pgHeight * 0.008),
                             Container(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -447,7 +450,7 @@ class _AllMenuState extends State<AllMenu> {
               color: Color(0xff5D7498),
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
+                    maxCrossAxisExtent: 300,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     childAspectRatio: 1.0,
@@ -535,7 +538,7 @@ class CategoryMenu extends StatelessWidget {
               color: Color(0xff5D7498),
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
+                    maxCrossAxisExtent: 300,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     childAspectRatio: 1.0,
