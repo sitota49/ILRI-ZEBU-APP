@@ -8,8 +8,8 @@ the club's environment on their personal handheld smart mobile devices. A centra
 that monitors, manages, and maintains their membership experience on campus, 
 such as notfying users for announcements, providing daily food menus and pizza ordering feature, 
 easy access to booking services such as the swimming pool, gym sessions, and tennis/squash and basketball courts and giving feedback to these services. 
-
-[iOS](https://apps.apple.com/app/zebu-club/id6444002664)
+ 
+[iOS](https://apps.apple.com/app/zebu-club/id6444002664) <br />
 [Android](https://play.google.com/store/apps/details?id=org.ilri.zebu_app)
 
 
